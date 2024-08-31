@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+  @apply font-pretendard max-w-screen-xs mx-auto;
+}
