@@ -1,11 +1,17 @@
 interface ShipstatPropsType {
-  step: number;
+  step: 0 | 1 | 2 | 3 | 4;
 }
 
 function Shipstate({ step }: ShipstatPropsType) {
   return (
     <div className="w-full h-[49px] flex [flex-flow:column] gap-[10px]">
-      <div className="w-full h-[9px] rounded-[31px] bg-[#D9D9D9]">
+      <div
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={4}
+        aria-valuenow={step}
+        className="w-full h-[9px] rounded-[31px] bg-[#D9D9D9]"
+      >
         <div
           className="h-[9px]  rounded-[31px] bg-[#000]"
           style={{ width: `${step * 25}%` }} // 동적으로 받는 스타일은 테일윈드 백틱이 안먹음
