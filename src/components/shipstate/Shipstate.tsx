@@ -2,7 +2,7 @@ interface ShipstatPropsType {
   step: 0 | 1 | 2 | 3 | 4;
 }
 
-function Shipstate({ step }: ShipstatPropsType) {
+const Shipstate = ({ step }: ShipstatPropsType): JSX.Element => {
   return (
     <div className="w-full h-[49px] flex [flex-flow:column] gap-[10px]">
       <div
@@ -25,6 +25,6 @@ function Shipstate({ step }: ShipstatPropsType) {
       </div>
     </div>
   );
-}
+};
 
 export default Shipstate;
