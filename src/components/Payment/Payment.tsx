@@ -10,11 +10,11 @@ interface paymentProp {
 //
 const COMMISSION = 1000;
 
-function Payment({
+const Payment = ({
   productPrice,
   shippingFee,
   customsDuties,
-}: paymentProp): JSX.Element {
+}: paymentProp): JSX.Element => {
   return (
     <section className="w-full flex flex-col  text-[#000] text-base not-italic font-bold leading-[24px]">
       <h2 className="border-b-2 border-[#020715] font-normal px-[0] py-[10px] justify-center items-start">
@@ -37,6 +37,6 @@ function Payment({
       </div>
     </section>
   );
-}
+};
 
 export default Payment;
