@@ -9,3 +9,4 @@ const BoastDetail = () => {
 };
 
 export default BoastDetail;
+  
