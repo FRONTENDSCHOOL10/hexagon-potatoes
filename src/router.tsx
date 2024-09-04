@@ -1,80 +1,169 @@
-import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
-import RootLayout from './layout/RootLayout';
-import LandingPage from './pages/Landing';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import PartyCollect from './pages/PartyCollect';
-import PartyDetail from './pages/PartyDetail';
-import HomePage from './pages/HomePage';
-import ChatHome from './pages/ChatHome';
-import Community from './pages/Community';
-import TipDetail from './pages/TipDetail';
-import BoastDetail from './pages/BoastDetail';
-import MyPage from './pages/MyPage';
-import SearchPage from './pages/Search';
-import SearchResultPage from './pages/SearchResult';
+import React, { Suspense, lazy } from 'react';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+import RootLayout from '@/layout/RootLayout';
+import Tutorial from '@/pages/Tutorial';
+import Landing from '@/pages/Landing';
+import Login from '@/pages/Login';
+import SignUp from '@/pages/SignUp';
+
+// 동적 로딩할 컴포넌트 설정
+const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
+const PartyDetail = lazy(() => import('@/pages/PartyDetail'));
+const ChatHome = lazy(() => import('@/pages/ChatHome'));
+const Community = lazy(() => import('@/pages/Community'));
+const TipDetail = lazy(() => import('@/pages/TipDetail'));
+const BoastDetail = lazy(() => import('@/pages/BoastDetail'));
+const MyPage = lazy(() => import('@/pages/MyPage'));
+const SearchPage = lazy(() => import('@/pages/Search'));
+const SearchResultPage = lazy(() => import('@/pages/SearchResult'));
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const Setting = lazy(() => import('@/pages/Setting'));
+const Notifications = lazy(() => import('@/pages/Notifications'));
+const WritePost = lazy(() => import('@/pages/WritePost'));
+
+// 튜토리얼 완료 상태 확인
+const isTutorialCompleted = () => {
+  return localStorage.getItem('tutorialCompleted') === 'true';
+};
+
+// 튜토리얼 완료 여부에 따른 라우트 보호
+const requireTutorial = (element: JSX.Element) => {
+  return isTutorialCompleted() ? element : <Navigate to="/tutorial" />;
+};
+
+// 로딩 중 표시할 컴포넌트
+const Loading = () => <div>로딩 중...</div>;
+
 const routes = [
   {
+    path: '/tutorial',
+    element: <Tutorial />,
+  },
+  {
     path: '/',
+    element: isTutorialCompleted() ? <Landing /> : <Navigate to="/tutorial" />,
+  },
+  {
+    path: '/login',
     element: <RootLayout />,
     children: [
       {
         index: true,
-        element: <LandingPage />,
-      },
-      {
-        path: 'login',
-        element: <Login />,
+        element: requireTutorial(<Login />),
       },
       {
         path: 'signup',
-        element: <SignUp />,
+        element: requireTutorial(<SignUp />),
+      },
+    ],
+  },
+  {
+    path: '/home',
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: requireTutorial(
+          <Suspense fallback={<Loading />}>
+            <HomePage />
+          </Suspense>
+        ),
       },
       {
-        path: 'home',
-        children: [
-          {
-            index: true,
-            element: <HomePage />,
-          },
-          {
-            path: 'chatHome',
-            element: <ChatHome />,
-          },
-          {
-            path: 'community',
-            element: <Community />,
-          },
-          {
-            path: 'community/tip/:tipId',
-            element: <TipDetail />,
-          },
-          {
-            path: 'community/boast/:boastId',
-            element: <BoastDetail />,
-          },
-          {
-            path: 'mypage',
-            element: <MyPage />,
-          },
-          {
-            path: 'partyCollect',
-            element: <PartyCollect />,
-          },
-          {
-            path: 'party/:partyId',
-            element: <PartyDetail />,
-          },
-          {
-            path: 'search',
-            element: <SearchPage />,
-          },
-          {
-            path: 'search/:keyword',
-            element: <SearchResultPage />,
-          },
-        ],
+        path: 'notifications',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Notifications />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'chatHome',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ChatHome />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'writepost',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <WritePost />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'community',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Community />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'community/tip/:tipId',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <TipDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'community/boast/:boastId',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <BoastDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'mypage',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <MyPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'setting',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Setting />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'partyCollect',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <PartyCollect />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'party/:partyId',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <PartyDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'search',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SearchPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'search/:keyword',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SearchResultPage />
+          </Suspense>
+        ),
       },
     ],
   },
