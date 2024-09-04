@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   plugins: ['prettier-plugin-tailwindcss'],
   // 화살표 함수 식 매개변수 () 생략 여부 (ex: (a) => a)
   arrowParens: 'always',
