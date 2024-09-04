@@ -1,16 +1,16 @@
 // zustand import
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { validateId } from '@/utils/validate';
 
 interface propsType {
-  labelFor: string;
-  inputId: string;
   inputName: string;
 }
 
-const IdInput = ({ labelFor, inputId, inputName }: propsType) => {
+const IdInput = ({ inputName }: propsType) => {
   const [isValidation, setIsValidation] = useState(true);
-  let validateMessage = '올바른 아이디 형식이 아닙니다.';
+  const inputId = useId();
+  
+  const validateMessage = !isValidation ? '사용할 수 없는 아이디입니다.':'사용가능한 아이디 입니다.'
   // 이미 존재하는 아이디임을 확인도 해야함.
 
   const validateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,20 +25,22 @@ const IdInput = ({ labelFor, inputId, inputName }: propsType) => {
   };
 
   return (
-    <>
-      <label htmlFor={labelFor}>아이디</label>
+    <div role='group'>
+      <label htmlFor={inputId}>아이디</label>
       <input
         id={inputId}
         type="text"
         defaultValue=""
         placeholder="아이디를 입력해 주세요."
+        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
+        className={isValidation?"":""}
         name={inputName}
         onKeyDown={handlePressEnter}
         onChange={validateInputVal}
       />
 
-      {!isValidation && <p>{validateMessage}</p>}
-    </>
+      <p>{validateMessage}</p>
+    </div>
   );
 };
 
