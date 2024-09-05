@@ -16,6 +16,12 @@ const PwdInput = ({ inputName }: propsType) => {
   
   const confirmedPwdMessage = !isConfirmed ? '비밀번호가 일치하지 않습니다.' : '비밀번호가 일치 합니다.'
 
+  console.log(isValidation)
+  
+  const inputStyle = (state:boolean) => {
+    const style = state ? 'px-5 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-mainblue' : 'px-5 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-errorred'
+    return style;
+  }
   
   const handleValidateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
@@ -45,22 +51,21 @@ const PwdInput = ({ inputName }: propsType) => {
   };
 
   return (
-    <div role='group'>
-      <label htmlFor={inputId}>비밀번호</label>
+    <div role='group' aria-label="비밀번호 입력 필드" className=" flex flex-col gap-y-1">
+      <label htmlFor={inputId} >비밀번호</label>
       <input
         ref={pwdInputRef}
         id={inputId}
         type="password"
         defaultValue=""
         placeholder="비밀번호를 입력해 주세요."
-        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
-        className={isValidation?"":""}
+        className={inputStyle(isValidation)}
         name={inputName}
         onKeyDown={handlePressEnter}
         onChange={handleValidateInputVal}
       />
-      <button onClick={() => handleShowPwd(pwdInputRef)}>비밀번호 표시</button>
-      {!isValidation && <p>올바른 비밀번호가 아닙니다.</p>}
+      <button className='absolute' onClick={() => handleShowPwd(pwdInputRef)}>비밀번호 표시</button>
+      {!isValidation && <p className='text-errorred font-normal text-xs'>올바른 비밀번호가 아닙니다.</p>}
 
       <label htmlFor={inputId}>비밀번호 확인</label>
       <input
@@ -69,8 +74,7 @@ const PwdInput = ({ inputName }: propsType) => {
         type="password"
         defaultValue=""
         placeholder="비밀번호를 입력해 주세요."
-        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
-        className={isConfirmed?"":""}
+        className={inputStyle(isConfirmed)}
         name={inputName}
         onKeyDown={handlePressEnter}
         onChange={handleConfirmPwd}
@@ -78,7 +82,7 @@ const PwdInput = ({ inputName }: propsType) => {
       <button onClick={() => handleShowPwd(confirmedPwdRef)}>
         비밀번호 표시
       </button>
-      <p>{confirmedPwdMessage}</p>
+      <p className='text-errored font-normal text-xs'>{confirmedPwdMessage}</p>
     </div>
   );
 };
