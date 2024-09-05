@@ -22,7 +22,7 @@ const NavigationBar = memo(() => {
       >
         <span className="sr-only">홈</span>
         <svg className="h-[1.5625rem] w-[1.5625rem] fill-current">
-          <use href="/assets/sprite-sheet.svg#3dot  " />
+          <use href="/assets/sprite-sheet.svg#home  " />
         </svg>
         <Tooltip id="homeTooltip" place="top" content="홈" />
       </NavLink>
