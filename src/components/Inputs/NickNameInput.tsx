@@ -1,5 +1,5 @@
 // zustand import
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { validateNickname } from '@/utils/validate';
 
 interface propsType {
@@ -8,9 +8,11 @@ interface propsType {
   inputName: string;
 }
 
-const NicknameInput = ({ labelFor, inputId, inputName }: propsType) => {
+const NicknameInput = ({ inputName }: propsType) => {
   const [isValidation, setIsValidation] = useState(true);
-  let validateMessage = '이미 존재하는 닉네임 입니다.';
+  const inputId = useId();
+  
+  const validateMessage = !isValidation ? '이미 존재하는 닉네임 입니다.':'사용할 수 있는 닉네임 입니다.';
 
   const validateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
@@ -24,20 +26,22 @@ const NicknameInput = ({ labelFor, inputId, inputName }: propsType) => {
   };
 
   return (
-    <>
-      <label htmlFor={labelFor}>닉네임</label>
+    <div role='group'>
+      <label htmlFor={inputId}>닉네임</label>
       <input
         id={inputId}
         type="text"
         defaultValue=""
         placeholder="닉네임을 입력해 주세요."
+        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
+        className={isValidation?"":""}
         name={inputName}
         onKeyDown={handlePressEnter}
         onChange={validateInputVal}
       />
       {/* 이미 있는 닉네임일 경우 안내 문구 뜨게 */}
-      {!isValidation && <p>{validateMessage}</p>}
-    </>
+      <p>{validateMessage}</p>
+    </div>
   );
 };
 
