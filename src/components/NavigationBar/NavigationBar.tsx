@@ -12,6 +12,7 @@ const NavigationBar = memo(() => {
       {/* 홈 */}
       <NavLink
         to="/home"
+        end
         className={({ isActive }) =>
           `flex flex-1 items-center justify-center ${
             isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
@@ -21,7 +22,7 @@ const NavigationBar = memo(() => {
       >
         <span className="sr-only">홈</span>
         <svg className="h-[1.5625rem] w-[1.5625rem] fill-current">
-          <use href="/assets/sprite-sheet.svg#home" />
+          <use href="/assets/sprite-sheet.svg#home  " />
         </svg>
         <Tooltip id="homeTooltip" place="top" content="홈" />
       </NavLink>
