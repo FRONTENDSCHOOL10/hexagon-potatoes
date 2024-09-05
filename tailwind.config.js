@@ -9,7 +9,7 @@ module.exports = {
       colors: {
         black: 'var(--black)',
         'collection-1-color': 'var(--collection-1-color)',
-        errorred: 'var(--errorred)',
+        errored: 'var(--errored)',
         'gray-100': 'var(--gray-100)',
         'gray-200': 'var(--gray-200)',
         'gray-300': 'var(--gray-300)',
