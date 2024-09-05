@@ -1,7 +1,8 @@
+@import '@/styles/tailwind.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .container {
-  @apply font-pretendard max-w-screen-xs mx-auto;
+  @apply mx-auto max-w-screen-xs font-pretendard;
 }
