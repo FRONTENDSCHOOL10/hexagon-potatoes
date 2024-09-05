@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChatHome: React.FC = () => {
+const ChatHome= () => {
   return (
     <div>
       <h1>채팅 페이지</h1>
