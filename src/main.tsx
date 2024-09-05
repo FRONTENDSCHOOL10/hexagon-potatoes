@@ -1,4 +1,5 @@
-// import '@/styles/main.css';
+import '@/styles/global.css';
+import 'react-tooltip/dist/react-tooltip.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';

@@ -1,4 +1,4 @@
-import formatCurrency from '@/utils/useCurrencyFormat';
+import formatCurrency from '@/utils/currencyFormat';
 import PaymentListItem from './PaymentListItem';
 
 interface paymentProp {
@@ -16,8 +16,8 @@ const Payment = ({
   customsDuties,
 }: paymentProp): JSX.Element => {
   return (
-    <section className="w-full flex flex-col  text-[#000] text-base not-italic font-bold leading-[24px]">
-      <h2 className="border-b-2 border-[#020715] font-normal px-[0] py-[10px] justify-center items-start">
+    <section className="flex w-full flex-col text-base font-bold not-italic leading-[1.5rem] text-[#000]">
+      <h2 className="items-start justify-center border-b-2 border-[#020715] px-[0] py-[0.625rem] font-normal">
         결제내용
       </h2>
       <ul>
@@ -26,7 +26,7 @@ const Payment = ({
         <PaymentListItem price={customsDuties}>관세</PaymentListItem>
         <PaymentListItem price={COMMISSION}>수수료</PaymentListItem>
       </ul>
-      <div className="border-b-2 border-[#020715] px-[0] py-[10px] flex justify-between items-start">
+      <div className="flex items-start justify-between border-b-2 border-[#020715] px-[0] py-[0.625rem]">
         <span>결제 금액</span>
         <strong>
           {formatCurrency(

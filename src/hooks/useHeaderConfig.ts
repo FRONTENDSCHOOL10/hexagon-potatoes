@@ -15,9 +15,12 @@ const headerConfigs: Record<string, HeaderConfig> = {
   '/signup': { type: 'back', title: '회원가입' },
   '/partyCollect': { type: 'back', title: '파티 모집' },
   '/home': { type: 'bell', title: '홈' },
+  '/home/notifications': { type: 'back', title: '알림' },
   '/home/chatHome': { type: 'bell', title: '채팅' },
+  '/home/writepost': { type: 'back', title: '포스트 작성' },
   '/home/community': { type: 'bell', title: '커뮤니티' },
   '/home/mypage': { type: 'setting', title: '마이 페이지' },
+  '/home/setting': { type: 'back', title: '설정' },
 };
 
 export const useHeaderConfig = (pathname: string) => {

@@ -3,7 +3,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"clean": "rm -rf dist"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.9.1",
@@ -37,11 +38,10 @@
 		"react-helmet-async": "^2.0.5",
 		"react-hot-toast": "^2.4.1",
 		"react-router-dom": "^6.26.1",
-
-		"use-immer": "^0.10.0",
-
 		"react-stars": "^2.2.5",
-
+		"react-tooltip": "^5.28.0",
+		"swiper": "^11.1.12",
+		"use-immer": "^0.10.0",
 		"zustand": "^4.5.5"
 	}
 }

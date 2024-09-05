@@ -1,5 +1,5 @@
 // zustand import
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { validatePhoneNumber } from '@/utils/validate';
 
 interface propsType {
@@ -8,9 +8,11 @@ interface propsType {
   inputName: string;
 }
 
-const PhoneNumberInput = ({ labelFor, inputId, inputName }: propsType) => {
+const PhoneNumberInput = ({ inputName }: propsType) => {
   const [isValidation, setIsValidation] = useState(true);
-  let validateMessage = '휴대폰 번호를 올바르게 입력해 주세요.';
+  const inputId = useId();
+  
+  const validateMessage = '휴대폰 번호를 올바르게 입력해 주세요.';
 
   const handleValidateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
@@ -24,20 +26,21 @@ const PhoneNumberInput = ({ labelFor, inputId, inputName }: propsType) => {
   };
 
   return (
-    <>
-      <label htmlFor={labelFor}>휴대폰 번호</label>
+    <div role='group'>
+      <label htmlFor={inputId}>휴대폰 번호</label>
       <input
         id={inputId}
         type="tel"
         defaultValue=""
         placeholder="휴대폰 번호를 입력해 주세요."
+        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
+        className={isValidation?"":""}
         name={inputName}
         onKeyDown={handlePressEnter}
         onChange={handleValidateInputVal}
       />
-
       {!isValidation && <p>{validateMessage}</p>}
-    </>
+    </div>
   );
 };
 
