@@ -1,19 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useId } from 'react';
 import { validatePwd } from '@/utils/validate';
 
 interface propsType {
-  labelFor: string;
-  inputId: string;
   inputName: string;
 }
 
-const PwdInput = ({ labelFor, inputId, inputName }: propsType) => {
+const PwdInput = ({ inputName }: propsType) => {
   const [isValidation, setIsValidation] = useState(true);
   const [isConfirmed, setIsConfirmed] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const pwdInputRef = useRef<HTMLInputElement>(null);
   const confirmedPwdRef = useRef<HTMLInputElement>(null);
+  
+  const inputId = useId();
+  
+  const confirmedPwdMessage = !isConfirmed ? '비밀번호가 일치하지 않습니다.' : '비밀번호가 일치 합니다.'
 
+  
   const handleValidateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
     setIsValidation(validatePwd(inputVal));
@@ -42,14 +45,16 @@ const PwdInput = ({ labelFor, inputId, inputName }: propsType) => {
   };
 
   return (
-    <>
-      <label htmlFor={labelFor}>비밀번호</label>
+    <div role='group'>
+      <label htmlFor={inputId}>비밀번호</label>
       <input
         ref={pwdInputRef}
         id={inputId}
         type="password"
         defaultValue=""
         placeholder="비밀번호를 입력해 주세요."
+        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
+        className={isValidation?"":""}
         name={inputName}
         onKeyDown={handlePressEnter}
         onChange={handleValidateInputVal}
@@ -57,13 +62,15 @@ const PwdInput = ({ labelFor, inputId, inputName }: propsType) => {
       <button onClick={() => handleShowPwd(pwdInputRef)}>비밀번호 표시</button>
       {!isValidation && <p>올바른 비밀번호가 아닙니다.</p>}
 
-      <label htmlFor={labelFor}>비밀번호 확인</label>
+      <label htmlFor={inputId}>비밀번호 확인</label>
       <input
         ref={confirmedPwdRef}
         id={inputId}
         type="password"
         defaultValue=""
         placeholder="비밀번호를 입력해 주세요."
+        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
+        className={isConfirmed?"":""}
         name={inputName}
         onKeyDown={handlePressEnter}
         onChange={handleConfirmPwd}
@@ -71,8 +78,8 @@ const PwdInput = ({ labelFor, inputId, inputName }: propsType) => {
       <button onClick={() => handleShowPwd(confirmedPwdRef)}>
         비밀번호 표시
       </button>
-      {!isConfirmed && <p>비밀번호가 일치하지 않습니다.</p>}
-    </>
+      <p>{confirmedPwdMessage}</p>
+    </div>
   );
 };
 
