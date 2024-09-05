@@ -33,6 +33,15 @@ module.exports = {
         'heading-1': 'var(--heading-1-font-family)',
         'sub-1': 'var(--sub-1-font-family)',
         'sub-2': 'var(--sub-2-font-family)',
+      }, 
+      fontSize: {
+        h1: ['var(--h1-font-size)', { lineHeight: 'var(--h1-line-height)', fontWeight: 'var(--h1-font-weight)' }],
+        h2: ['var(--h2-font-size)', { lineHeight: 'var(--h2-line-height)', fontWeight: 'var(--h2-font-weight)' }],
+        h3: ['var(--h3-font-size)', { lineHeight: 'var(--h3-line-height)', fontWeight: 'var(--h3-font-weight)' }],
+        'body-1': ['var(--body-1-font-size)', { lineHeight: 'var(--body-1-line-height)', fontWeight: 'var(--body-1-font-weight)' }],
+        'body-2': ['var(--body-2-font-size)', { lineHeight: 'var(--body-2-line-height)', fontWeight: 'var(--body-2-font-weight)' }],
+        button: ['var(--button-font-size)', { lineHeight: 'var(--button-line-height)', fontWeight: 'var(--button-font-weight)' }],
+        caption: ['var(--caption-font-size)', { lineHeight: 'var(--caption-line-height)', fontWeight: 'var(--caption-font-weight)' }],
       },
       boxShadow: {
         'shadow-blue': 'var(--shadow-blue)',
