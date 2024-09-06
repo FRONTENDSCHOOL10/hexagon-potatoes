@@ -4,18 +4,39 @@ import { validateName } from '@/utils/validate';
 
 interface propsType {
   inputName: string;
+  defaultValue: string;
+  onUserNameChange: (val: string) => void;
 }
 
-const UserNameInput = ({ inputName }: propsType) => {
-  const [isValidation, setIsValidation] = useState(true);
+const UserNameInput = ({
+  inputName,
+  defaultValue,
+  onUserNameChange,
+}: propsType) => {
+  const [isValid, setIsValid] = useState(true);
+  const [isEnteredVal, setIsEnteredVal] = useState(false);
+  const [inputVal, setInputVal] = useState('');
   const inputId = useId();
-  
-  const validateMessage =  '올바른 이름이 아닙니다.' 
-  const inputStyle = isValidation ? 'px-5 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-mainblue' : 'px-5 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-errorred'
 
-  const validateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const inputStyle = (isValid: boolean) =>
+    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored'}`;
+
+  const validateMessage = '올바른 이름이 아닙니다.';
+
+  const validateInputVal = (val: string) => {
+    setIsValid(validateName(val));
+  };
+
+  const checkInputFilled = (val: string) => {
+    val.trim() !== '' ? setIsEnteredVal(true) : setIsEnteredVal(false);
+  };
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
-    setIsValidation(validateName(inputVal));
+    setInputVal(inputVal);
+    validateInputVal(inputVal);
+    checkInputFilled(inputVal);
+    onUserNameChange(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -25,22 +46,34 @@ const UserNameInput = ({ inputName }: propsType) => {
   };
 
   return (
-    <div role='group' className="flex flex-col gap-y-1" >
-      <label htmlFor={inputId} className="mt-2 font-pretendard">이름*</label>
+    <div
+      role="group"
+      aria-label="이름 입력 필드"
+      className="flex flex-col gap-y-1"
+    >
+      <label htmlFor={inputId} className="text-sub-2">
+        이름*
+      </label>
       <input
         id={inputId}
+        value={inputVal}
         type="text"
-        defaultValue=""
+        defaultValue={defaultValue}
         placeholder="이름을 입력해 주세요."
         name={inputName}
-        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
-        className={inputStyle}
+        className={inputStyle(isValid)}
         onKeyDown={handlePressEnter}
-        onChange={validateInputVal}
+        onChange={handleChangeInput}
         required
       />
 
-      {!isValidation && <p className='text-errorred font-normal text-xs'>{validateMessage}</p>}
+      {isEnteredVal && (
+        <p
+          className={`text-xs font-normal ${isValid ? 'text-mainblue' : 'text-errored'}`}
+        >
+          {validateMessage}
+        </p>
+      )}
     </div>
   );
 };

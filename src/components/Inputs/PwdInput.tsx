@@ -9,32 +9,38 @@ const PwdInput = ({ inputName }: propsType) => {
   const [isValidation, setIsValidation] = useState(true);
   const [isConfirmed, setIsConfirmed] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
-  const [pwdVal, setPwdVal] = useState('');
-  const [confirmedPwdVal, setConfirmedPwdVal] = useState('');
+  const [isShowConfirmedPwd, setIsShowConfirmedPwd] = useState(false);
+  const [isEnteredPwd, setIsEnteredPwd] = useState(false);
+  const [isEnteredConfirmedPwd, setIsEnteredConfirmedPwd] = useState(false);
   const pwdInputRef = useRef<HTMLInputElement>(null);
   const confirmedPwdRef = useRef<HTMLInputElement>(null);
 
-  const inputId = useId();
+  const pwdInputId = useId();
+  const pwdConfirmInputId = useId();
 
   const confirmedPwdMessage = !isConfirmed
     ? '비밀번호가 일치하지 않습니다.'
     : '비밀번호가 일치 합니다.';
 
-  const inputStyle = (state: boolean) => {
-    const style = state
-      ? 'text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-mainblue'
-      : 'text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-errorred';
-    return style;
-  };
+  const inputStyle = (isValid: boolean) =>
+    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid ? 'outline-mainblue' : 'outline-errored'}`;
 
   const handleValidateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
-    setPwdVal((i) => i);
-    setIsValidation(validatePwd(inputVal));
+
+    if (inputVal) {
+      setIsEnteredPwd(true);
+      setIsValidation(validatePwd(inputVal));
+    } else {
+      setIsEnteredPwd(false);
+    }
   };
 
   const handleConfirmPwd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
+
+    inputVal ? setIsEnteredConfirmedPwd(true) : setIsEnteredConfirmedPwd(false);
+
     pwdInputRef.current && pwdInputRef.current.value === inputVal
       ? setIsConfirmed(true)
       : setIsConfirmed(false);
@@ -46,13 +52,37 @@ const PwdInput = ({ inputName }: propsType) => {
     }
   };
 
-  const handleShowPwd = (ref: React.RefObject<HTMLInputElement>) => {
-    setIsShowPwd((prev) => {
-      if (ref.current) {
-        prev ? (ref.current.type = 'text') : (ref.current.type = 'password');
-      }
-      return !prev;
-    });
+  const handleShowPwd = (
+    ref: React.RefObject<HTMLInputElement>,
+    type: string
+  ) => {
+    if (type === 'pwd') {
+      setIsShowPwd((prev) => {
+        if (ref.current?.value) {
+          !prev ? (ref.current.type = 'text') : (ref.current.type = 'password');
+        }
+        return !prev;
+      });
+    } else if (type === 'confirmedPwd') {
+      setIsShowConfirmedPwd((prev) => {
+        if (ref.current?.value) {
+          !prev ? (ref.current.type = 'text') : (ref.current.type = 'password');
+        }
+        return !prev;
+      });
+    }
+  };
+
+  const handleDeleteInputVal = (type: string) => {
+    if (type === 'pwd') {
+      pwdInputRef.current!.value = '';
+      setIsEnteredPwd(false);
+      setIsValidation(true);
+    } else if (type === 'confirmedPwd') {
+      confirmedPwdRef.current!.value = '';
+      setIsEnteredConfirmedPwd(false);
+      setIsValidation(true);
+    }
   };
 
   return (
@@ -62,12 +92,12 @@ const PwdInput = ({ inputName }: propsType) => {
         aria-label="비밀번호 입력 필드"
         className="relative flex flex-col gap-y-1"
       >
-        <label className="text-sub-2" htmlFor={inputId}>
+        <label className="text-sub-2" htmlFor={pwdInputId}>
           비밀번호
         </label>
         <input
           ref={pwdInputRef}
-          id={inputId}
+          id={pwdInputId}
           type="password"
           defaultValue=""
           placeholder="비밀번호를 입력해 주세요."
@@ -77,11 +107,11 @@ const PwdInput = ({ inputName }: propsType) => {
           onChange={handleValidateInputVal}
         />
 
-        {pwdInputRef.current?.value && (
+        {isEnteredPwd && (
           <>
             <button
               className="absolute right-0 top-[48px] mr-10 text-sub-2"
-              onClick={() => handleShowPwd(pwdInputRef)}
+              onClick={() => handleShowPwd(pwdInputRef, 'pwd')}
             >
               <svg className="size-3.5 fill-current text-gray-200">
                 <use
@@ -95,7 +125,7 @@ const PwdInput = ({ inputName }: propsType) => {
             </button>
             <button
               className="absolute right-0 top-[49px] mr-5 text-sub-2"
-              onClick={() => handleShowPwd(pwdInputRef)}
+              onClick={() => handleDeleteInputVal('pwd')}
             >
               <svg className="size-3 fill-current text-gray-200">
                 <use href="/assets/sprite-sheet.svg#x" />
@@ -103,7 +133,7 @@ const PwdInput = ({ inputName }: propsType) => {
             </button>
           </>
         )}
-        {!isValidation && (
+        {!isValidation && isEnteredPwd && (
           <p className="text-xs font-normal text-errored">
             올바른 비밀번호가 아닙니다.
           </p>
@@ -115,12 +145,12 @@ const PwdInput = ({ inputName }: propsType) => {
         aria-label="비밀번호 재입력 필드"
         className="relative flex flex-col gap-y-1"
       >
-        <label htmlFor={inputId} className="text-sub-2">
+        <label htmlFor={pwdConfirmInputId} className="mt-2 text-sub-2">
           비밀번호 확인
         </label>
         <input
           ref={confirmedPwdRef}
-          id={inputId}
+          id={pwdConfirmInputId}
           type="password"
           defaultValue=""
           placeholder="비밀번호를 입력해 주세요."
@@ -129,32 +159,46 @@ const PwdInput = ({ inputName }: propsType) => {
           onKeyDown={handlePressEnter}
           onChange={handleConfirmPwd}
         />
-        <button
-          className="absolute right-0 top-[48px] mr-10 text-sub-2"
-          onClick={() => handleShowPwd(confirmedPwdRef)}
-        >
-          <svg className="size-3.5 fill-current text-gray-200">
-            <use
-              href={
-                isShowPwd
-                  ? '/assets/sprite-sheet.svg#eye'
-                  : '/assets/sprite-sheet.svg#eyecrossed'
-              }
-            />
-          </svg>
-        </button>
+        {isEnteredConfirmedPwd && (
+          <>
+            <button
+              className="absolute right-0 top-[48px] mr-10 text-sub-2"
+              onClick={() => handleShowPwd(confirmedPwdRef, 'confirmedPwd')}
+            >
+              <svg className="size-3.5 fill-current text-gray-200">
+                <use
+                  href={
+                    isShowConfirmedPwd
+                      ? '/assets/sprite-sheet.svg#eye'
+                      : '/assets/sprite-sheet.svg#eyecrossed'
+                  }
+                />
+              </svg>
+            </button>
 
-        <button
-          className="absolute right-0 top-[49px] mr-5 text-sub-2"
-          onClick={() => handleShowPwd(pwdInputRef)}
-        >
-          <svg className="size-3 fill-current text-gray-200">
-            <use
-              href={pwdInputRef.current ? '/assets/sprite-sheet.svg#x' : ''}
-            />
-          </svg>
-        </button>
-        <p className="text-caption text-errored">{confirmedPwdMessage}</p>
+            <button
+              className="absolute right-0 top-[49px] mr-5 text-sub-2"
+              onClick={() => handleDeleteInputVal('confirmedPwd')}
+            >
+              <svg className="size-3 fill-current text-gray-200">
+                <use
+                  href={pwdInputRef.current ? '/assets/sprite-sheet.svg#x' : ''}
+                />
+              </svg>
+            </button>
+          </>
+        )}
+        {isEnteredConfirmedPwd && (
+          <p
+            className={
+              isConfirmed
+                ? 'text-caption text-mainblue'
+                : 'text-caption text-errored'
+            }
+          >
+            {confirmedPwdMessage}
+          </p>
+        )}
       </div>
     </>
   );
