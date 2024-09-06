@@ -1,8 +1,6 @@
 interface propsType {
   buttonContent: string;
   isActive: boolean;
-  btnSize: string;
-  buttonColor: string;
   onClick: () => void;
 }
 const Button = ({ onClick, buttonContent, isActive = true }: propsType) => {

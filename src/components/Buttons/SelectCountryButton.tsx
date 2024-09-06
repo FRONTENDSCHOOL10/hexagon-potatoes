@@ -19,6 +19,8 @@ const SelectCountryButton = ({
     navigate(`/${pageUrl}`);
   };
 
+  // imgAlt 를 상위 컴포넌트에서 전달받을지 파일명을 잘라서 사용할지 고민.
+  // 파일명에서 잘라쓰는 로직
   // const imgAlt = (imgSrc: string): string => {
   //   const fileName = imgSrc.split('.')[0];
   //   return fileName;
