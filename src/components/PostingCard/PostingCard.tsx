@@ -1,9 +1,9 @@
 interface PostingCard {
-  profileImg: string | null;
+  profileImg?: string | null;
   user: string;
-  postingImg: string;
+  postingImg?: string;
   content: string;
-  label: string[];
+  label?: string[];
 }
 interface DefaultProfileSVGProp {
   user: string;
@@ -26,11 +26,11 @@ const PostingCard = ({
   label,
 }: PostingCard) => {
   return (
-    <article className="h-auto w-[21rem] justify-between rounded-[0.9375rem] bg-[#FFF] [box-shadow:0px_0px_15px_0px_rgba(10,_115,_249,_0.15)]">
+    <article className="h-auto w-[21rem] justify-between rounded-[0.9375rem] bg-[#FFF] shadow-shadow-blue">
       <header className="flex h-12 flex-row items-center justify-between p-3">
         <span
           aria-label="닉네임"
-          className="flex h-[1.5rem] items-center overflow-ellipsis text-center font-[Pretendard] text-xs font-normal not-italic text-[#020715]"
+          className="flex h-[1.5rem] items-center overflow-ellipsis text-center font-[Pretendard] text-xs font-normal not-italic text-black"
         >
           {/* 프로필 사진 있는지 없는지에 따라 기본프로필 띄울지 조건 처리 */}
           {profileImg ? (
@@ -51,7 +51,7 @@ const PostingCard = ({
         <button type="button" className="flex w-4 justify-end">
           <svg
             role="img"
-            className="h-[1rem] w-[0.16669rem] text-[#CAD4E7]"
+            className="h-[1rem] w-[0.16669rem] text-gray-200"
             aria-label="더보기"
           >
             <use href="/assets/sprite-sheet.svg#3dot" />
@@ -59,25 +59,23 @@ const PostingCard = ({
         </button>
       </header>
 
-      <figure className="h-[20.99rem] bg-[#CAD4E7]">
+      <figure className="h-[20.99rem]">
         <img src="" alt="포스팅 이미지" />
       </figure>
 
       <footer className="flex h-auto flex-col justify-between gap-3 p-3">
-        <p className="font-[Pretendard] text-[1rem] font-normal not-italic leading-[1.1875rem] text-[#020715]">
-          {content}
-        </p>
+        <p className="text-body-1 text-black">{content}</p>
 
         {/* 아래는 나중에 레이블 만들어지면 컴포넌트 갖다가 쓰기..? */}
         <ul className="flex h-[1.38rem] items-center font-[Pretendard] text-[0.75rem] font-normal not-italic text-[#626871]">
-          {label.map((tag, index) => (
+          {/* {label.map((tag, index) => (
             <li
               key="index"
               className="flex h-[1.375rem] items-center justify-center gap-0.5 rounded bg-[#EDF1F6] px-1 py-0.5"
             >
               {tag}
             </li>
-          ))}
+          ))} */}
         </ul>
       </footer>
     </article>
