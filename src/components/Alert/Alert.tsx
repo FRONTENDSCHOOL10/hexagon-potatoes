@@ -41,12 +41,15 @@ const Alert: React.FC<AlertProps> = memo(
   ({ type = 'notice', title, subtext, onClose }) => {
     return (
       <div
-        className="relative flex h-[215px] w-[330px] flex-col items-center justify-center gap-3 rounded-[15px] bg-gray-100 p-6"
+        className="relative flex h-[13.4375rem] w-[20.625rem] flex-col items-center justify-center gap-3 rounded-[.9375rem] bg-gray-100 p-6"
         role="alert"
         aria-live="assertive"
       >
         {/* 아이콘 영역 */}
-        <div className="h-[45px] w-[45px] rounded-full" aria-hidden="true">
+        <div
+          className="h-[2.8125rem] w-[2.8125rem] rounded-full"
+          aria-hidden="true"
+        >
           {renderIcon(type)}
         </div>
         {/* 제목과 부제목 영역 */}
