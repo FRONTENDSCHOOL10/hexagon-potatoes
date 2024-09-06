@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 interface propsType {
   party_name: string;
@@ -21,22 +20,18 @@ const Articles = ({
   leaderImgAlt,
 }: propsType) => {
   const {party_id}  = useParams()
-  const navigate = useNavigate()
-  
-  const handleClickList = () => {
-    // 해당 모집글로 이동하는 코드
-    navigate(`/${party_id}`)
-  }
-  
+    
   return (
-    <li onClick={handleClickList}>
-      <h3>{party_name}</h3>
-      {/* 파티글 대표 이미지 */}
-      <img src={partyImg} alt={partyImgAlt} />
-      <p>{party_about}</p>
-      {/* 라벨은 컴포넌트로 만들면 어떤가 */}
-      {/* <Label /> */}
-      <img src={profile_photo} alt={leaderImgAlt} />
+    <li>
+        <Link to={`/${party_id}`}>
+          <span>{party_name}</span>
+          {/* 파티글 대표 이미지 */}
+          <img src={partyImg} alt={partyImgAlt} />
+          <p>{party_about}</p>
+          {/* 라벨은 컴포넌트로 만들면 어떤가 */}
+          {/* <Label /> */}
+          <img src={profile_photo} alt={leaderImgAlt} />
+        </Link>
     </li>
   );
 };

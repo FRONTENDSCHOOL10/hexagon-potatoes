@@ -42,6 +42,9 @@ module.exports = {
         'body-2': ['var(--body-2-font-size)', { lineHeight: 'var(--body-2-line-height)', fontWeight: 'var(--body-2-font-weight)' }],
         button: ['var(--button-font-size)', { lineHeight: 'var(--button-line-height)', fontWeight: 'var(--button-font-weight)' }],
         caption: ['var(--caption-font-size)', { lineHeight: 'var(--caption-line-height)', fontWeight: 'var(--caption-font-weight)' }],
+        'heading-1': 'var(--heading-1-font-size)',
+        'sub-1': 'var(--sub-1-font-size)',
+        'sub-2': 'var(--sub-2-font-size)',
       },
       boxShadow: {
         'shadow-blue': 'var(--shadow-blue)',
