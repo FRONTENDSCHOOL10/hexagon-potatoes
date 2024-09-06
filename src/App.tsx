@@ -1,15 +1,14 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SavingMoneyCard from './components/SavingMoneyCard/SavingMoneyCard';
+import router from './router';
+import { RouterProvider } from 'react-router-dom';
+import HeaderBar from './components/HeaderBar/HeaderBar';
+import NavigationBar from './components/NavigationBar/NavigationBar';
 
-const App: React.FC = () => {
+function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/tutorial" element={<SavingMoneyCard />} />
-      </Routes>
-    </Router>
+    <div className="container text-lg font-medium">
+      <RouterProvider router={router} />
+    </div>
   );
-};
+}
 
 export default App;
