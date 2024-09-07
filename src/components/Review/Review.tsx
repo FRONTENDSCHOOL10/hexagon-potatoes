@@ -36,11 +36,7 @@ const Review = ({
           className="flex h-[1.5rem] items-center overflow-ellipsis text-center font-[Pretendard] text-xs font-normal not-italic text-[#020715]"
         >
           {profileImg ? (
-            <img
-              className="mr-1.5 h-6 w-6"
-              src={profileImg}
-              alt="프로필이미지"
-            />
+            <img className="mr-1.5 h-6 w-6" src={profileImg} alt="프로필" />
           ) : (
             <span className="mr-1.5 h-6 w-6">
               <DefaultProfileSVG />
