@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-
+import LabelList from '@/components/Label/LabelList';
 interface propsType {
   party_name: string;
   // blob 객체가 될지 잘 모르겠다..
@@ -42,11 +42,7 @@ const Article = ({
           {/* 파티글 대표 이미지 */}
           <p className="text-sub-2 text-gray-300">{party_about}</p>
           {/* 라벨은 컴포넌트로 만들면 어떤가 */}
-          <ul className="my-2.5 flex flex-row text-caption">
-            <li className="mr-1 rounded bg-gray-100 p-1">미국</li>
-            <li className="mr-1 rounded bg-gray-100 p-1">간식</li>
-            <li className="mr-1 rounded bg-gray-100 p-1">초콜릿</li>
-          </ul>
+          <LabelList />
           <img
             className="mr-2 inline-block size-5"
             src={profile_photo}

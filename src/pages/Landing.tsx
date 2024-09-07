@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PwdInput from '@/components/Inputs/PwdInput';
 
 const Landing = () => {
   return (
@@ -16,6 +17,7 @@ const Landing = () => {
           <Link to="/home">임시로 홈으로 가자</Link>
         </button>
       </div>
+      <PwdInput/>
     </div>
   );
 };
