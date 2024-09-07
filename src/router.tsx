@@ -5,12 +5,18 @@ import Tutorial from '@/pages/Tutorial';
 import Landing from '@/pages/Landing';
 import Login from '@/pages/Login';
 import SignUp from '@/pages/SignUp';
+import CommunityHome from '@/pages/Community/CommunityHome';
+import RecommendFeed from '@/pages/Community/RecommendFeed';
+import Magazine from '@/pages/Community/Magazine';
+import Following from '@/pages/Community/Following';
+import UserTip from '@/pages/Community/UserTip';
+import PopularPost from '@/pages/Community/PopularPost';
 
 // 동적 로딩할 컴포넌트 설정
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
 const PartyDetail = lazy(() => import('@/pages/PartyDetail'));
 const ChatHome = lazy(() => import('@/pages/ChatHome'));
-const Community = lazy(() => import('@/pages/Community'));
+const Community = lazy(() => import('@/pages/Community/Community'));
 const TipDetail = lazy(() => import('@/pages/TipDetail'));
 const BoastDetail = lazy(() => import('@/pages/BoastDetail'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
@@ -100,6 +106,32 @@ const routes = [
             <Community />
           </Suspense>
         ),
+        children: [
+          {
+            index: true,
+            element: <CommunityHome />,
+          },
+          {
+            path: 'recommendFeed',
+            element: <RecommendFeed />,
+          },
+          {
+            path: 'following',
+            element: <Following />,
+          },
+          {
+            path: 'userTip',
+            element: <UserTip />,
+          },
+          {
+            path: 'popularPost',
+            element: <PopularPost />,
+          },
+          {
+            path: 'magazine',
+            element: <Magazine />,
+          },
+        ],
       },
       {
         path: 'community/tip/:tipId',

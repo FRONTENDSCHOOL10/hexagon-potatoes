@@ -11,7 +11,6 @@ interface propsType {
   member_grade: string;
   member_description: string;
   user_id: number;
-  // 개최한 파티 개수를 어떻게 가져오지 ..
 }
 
 const PartyLeader = ({
