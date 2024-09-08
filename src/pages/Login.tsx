@@ -35,11 +35,7 @@ const Login = () => {
         }}
       />
       <SimpleLogin />
-      <LoginNavi
-        onClick={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
+      <LoginNavi />
     </div>
   );
 };
