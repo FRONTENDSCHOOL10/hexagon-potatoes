@@ -23,7 +23,7 @@ interface InstaPostingProp {
   item: InstaPostingItem;
 }
 
-function InstaPosting({ item }: InstaPostingProp) {
+const InstaPosting = ({ item }: InstaPostingProp) => {
   const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
   if (!item) return null;
 
@@ -43,7 +43,7 @@ function InstaPosting({ item }: InstaPostingProp) {
   };
 
   return (
-    <article className="flex flex-col gap-3 p-3">
+    <article className="mb-[2.56rem] flex flex-col gap-3 p-3">
       {/* 프로필 부분 여기는 나중에 주비님이 작업하신 내용 참고해서 바꿀 예정 */}
       <div className="h-[2.5rem] w-[21rem]"></div>
       {item.photo && (
@@ -57,12 +57,7 @@ function InstaPosting({ item }: InstaPostingProp) {
       <ul className="flex h-[1.38rem] w-[21rem] items-start gap-3 self-stretch">
         {/* 여기도 라벨 컴포넌트 가져다가 쓰면됌 */}
       </ul>
-      <div className="font-[Pretendard] text-[0.75rem] font-normal not-italic leading-[1.0625rem] text-[#626871]">
-        <time dateTime="{}"> </time>
-        {/* 좋아요, 조회수는 하드코딩으로 넣기 */}
-        <span>좋아요 3 </span>
-        <span> 조회 1,000</span>
-      </div>
+
       <PostActionBar
         postId={item.id}
         onLike={handleLike}
@@ -71,6 +66,6 @@ function InstaPosting({ item }: InstaPostingProp) {
       />
     </article>
   );
-}
+};
 
 export default InstaPosting;
