@@ -22,7 +22,11 @@ const SimpleLogin = () => {
       </div>
       <div className="flex w-[9.125rem] gap-[.8125rem]">
         {/* 구글 */}
-        <button data-tooltip-id="googleTooltip" onClick={handleSimpleLogin}>
+        <button
+          data-tooltip-id="googleTooltip"
+          onClick={handleSimpleLogin}
+          aria-label="구글로 로그인"
+        >
           <svg className="h-10 w-10">
             <use href="/assets/google.svg#google" />
           </svg>
@@ -34,7 +38,11 @@ const SimpleLogin = () => {
         />
 
         {/* 카카오 */}
-        <button data-tooltip-id="kakaoTooltip" onClick={handleSimpleLogin}>
+        <button
+          data-tooltip-id="kakaoTooltip"
+          onClick={handleSimpleLogin}
+          aria-label="카카오로 로그인"
+        >
           <svg className="h-10 w-10">
             <use href="/assets/kakao.svg#kakao" />
           </svg>
@@ -42,7 +50,11 @@ const SimpleLogin = () => {
         <Tooltip id="kakaoTooltip" content="카카오로 로그인" place="bottom" />
 
         {/* 애플 */}
-        <button data-tooltip-id="appleTooltip" onClick={handleSimpleLogin}>
+        <button
+          data-tooltip-id="appleTooltip"
+          onClick={handleSimpleLogin}
+          aria-label="애플로 로그인"
+        >
           <svg className="h-10 w-10">
             <use href="/assets/apple.svg#apple" />
           </svg>
