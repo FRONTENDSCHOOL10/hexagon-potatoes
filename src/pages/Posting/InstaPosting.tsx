@@ -1,4 +1,4 @@
-import { Tooltip } from 'react-tooltip';
+import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import getPbImageURL from '@/utils/getPbImageURL';
 
 interface PocketBaseRecord {
@@ -26,6 +26,22 @@ interface InstaPostingProp {
 function InstaPosting({ item }: InstaPostingProp) {
   const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
   if (!item) return null;
+
+  const handleLike = () => {
+    // 좋아요 처리 로직
+    console.log('좋아요 클릭');
+  };
+
+  const handleBookmark = () => {
+    // 북마크 처리 로직
+    console.log('북마크 클릭');
+  };
+
+  const handleShare = () => {
+    // 공유 처리 로직
+    console.log('공유 클릭');
+  };
+
   return (
     <article className="flex flex-col gap-3 p-3">
       {/* 프로필 부분 여기는 나중에 주비님이 작업하신 내용 참고해서 바꿀 예정 */}
@@ -47,81 +63,12 @@ function InstaPosting({ item }: InstaPostingProp) {
         <span>좋아요 3 </span>
         <span> 조회 1,000</span>
       </div>
-
-      {/* 여기도 컴포넌트로 분리예정 */}
-      <div className="mb-[2.56rem] flex h-[1.5625rem] items-center gap-4">
-        <button
-          data-tooltip-id="my-tooltip"
-          data-tooltip-content="좋아요"
-          type="button"
-          aria-label="좋아요"
-        >
-          <svg width="16" height="15" role="img" className="text-gray-200">
-            <use width="16" height="15" href="/assets/sprite-sheet.svg#heart" />
-          </svg>
-        </button>
-        <button
-          data-tooltip-id="my-tooltip"
-          data-tooltip-content="댓글"
-          type="button"
-          aria-label="댓글 보기"
-        >
-          <svg
-            width="16"
-            height="17"
-            viewBox="0 0 16 17"
-            role="img"
-            className="text-gray-200"
-          >
-            <use
-              width="16"
-              height="17"
-              href="/assets/sprite-sheet.svg#comment"
-            />
-          </svg>
-        </button>
-        <button
-          data-tooltip-id="my-tooltip"
-          data-tooltip-content="북마크"
-          type="button"
-          aria-label="북마크"
-        >
-          <svg
-            width="15"
-            height="17"
-            viewBox="0 0 15 17"
-            role="img"
-            className="text-gray-200"
-          >
-            <use
-              width="15"
-              height="17"
-              href="/assets/sprite-sheet.svg#bookmark"
-            />
-          </svg>
-        </button>
-        <button
-          data-tooltip-id="my-tooltip"
-          data-tooltip-content="공유"
-          type="button"
-          aria-label="공유"
-        >
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 17 17"
-            role="img"
-            className="text-gray-200"
-          >
-            <use
-              width="17"
-              height="17"
-              href="/assets/sprite-sheet.svg#share2"
-            />
-          </svg>{' '}
-        </button>
-      </div>
-      <Tooltip id="my-tooltip" />
+      <PostActionBar
+        postId={item.id}
+        onLike={handleLike}
+        onBookmark={handleBookmark}
+        onShare={handleShare}
+      />
     </article>
   );
 }
