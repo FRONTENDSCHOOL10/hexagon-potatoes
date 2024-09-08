@@ -16,7 +16,7 @@ const SimpleLogin = () => {
   };
   const handleCloseAlert = () => setAlert(null);
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <div className="text-gray300 mb-3 text-center text-xs font-normal leading-5">
         SNS 계정으로 간편 로그인하기
       </div>
