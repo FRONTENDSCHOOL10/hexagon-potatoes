@@ -26,7 +26,7 @@ const PostingCard = ({
   label,
 }: PostingCard) => {
   return (
-    <article className="h-auto w-[21rem] justify-between rounded-[0.9375rem] bg-[#FFF] shadow-shadow-blue">
+    <article className="mx-auto h-auto w-[21rem] justify-between rounded-[0.9375rem] bg-[#FFF] shadow-shadow-blue">
       <header className="flex h-12 flex-row items-center justify-between p-3">
         <span
           aria-label="닉네임"
