@@ -1,4 +1,5 @@
 import LabelList from '@/components/Label/LabelList';
+import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import getPbImageURL from '@/utils/getPbImageURL';
 
@@ -15,8 +16,14 @@ interface PocketBaseRecord {
 interface InstaPostingItem extends PocketBaseRecord {
   photo: string;
   content: string;
-  // 필요한 경우 여기에 추가 필드를 정의할 수 있습니다.
-  // 예: author_id: string;
+  expand: {
+    author_id: {
+      id: string;
+      profile_photo: string;
+      nickname: string;
+      collectionId: string;
+    };
+  };
 }
 
 // 컴포넌트 props 타입 정의
@@ -27,6 +34,7 @@ interface InstaPostingProp {
 const InstaPosting = ({ item }: InstaPostingProp) => {
   const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
   if (!item) return null;
+  const authorId = item.expand?.author_id;
 
   const handleLike = () => {
     // 좋아요 처리 로직
@@ -45,8 +53,17 @@ const InstaPosting = ({ item }: InstaPostingProp) => {
 
   return (
     <article className="mb-[2.56rem] flex flex-col gap-3 p-3">
-      {/* 프로필 부분 여기는 나중에 주비님이 작업하신 내용 참고해서 바꿀 예정 */}
-      <div className="h-[2.5rem] w-[21rem]"></div>
+      {authorId && (
+        <NameCard
+          name={authorId.nickname}
+          profileImg={
+            authorId.profile_photo
+              ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
+              : null
+          }
+          type="viewParty"
+        />
+      )}
       {item.photo && (
         <img
           className="h-[20.9rem] w-[21rem] bg-[#F2F2F2] object-cover"
