@@ -1,3 +1,4 @@
+import LabelList from '@/components/Label/LabelList';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import getPbImageURL from '@/utils/getPbImageURL';
 
@@ -54,15 +55,16 @@ const InstaPosting = ({ item }: InstaPostingProp) => {
         />
       )}
       <p className="w-[21rem] text-body-2">{item.content}</p>
-      <ul className="flex h-[1.38rem] w-[21rem] items-start gap-3 self-stretch">
-        {/* 여기도 라벨 컴포넌트 가져다가 쓰면됌 */}
-      </ul>
+      {Array.isArray(item.tag) && item.tag.length > 0 && (
+        <LabelList data={item.tag} />
+      )}
 
       <PostActionBar
         postId={item.id}
         onLike={handleLike}
         onBookmark={handleBookmark}
         onShare={handleShare}
+        date={item.created}
       />
     </article>
   );
