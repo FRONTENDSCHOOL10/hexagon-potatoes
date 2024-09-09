@@ -1,4 +1,4 @@
-import { formatDateShort, formatForDateTime } from '@/utils/dateFormatter';
+import { formatDateShort, formatDateString } from '@/utils/dateFormatter';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
@@ -20,7 +20,7 @@ const PostActionBar = ({
   return (
     <>
       <div className="font-[Pretendard] text-[0.75rem] font-normal not-italic leading-[1.0625rem] text-[#626871]">
-        <time dateTime={formatForDateTime(date)}>
+        <time dateTime={formatDateString(date)}>
           {formatDateShort(date)}
           {'\u00A0'}
         </time>
