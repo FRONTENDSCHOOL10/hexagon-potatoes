@@ -1,24 +1,29 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import PwdInput from '@/components/Inputs/PwdInput';
+
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from '@/components/Buttons/Button';
+import SimpleLogin from '../components/SimpleLogin/SimpleLogin';
+
 
 const Landing = () => {
+  const navigate = useNavigate();
+
+  const handleGoLogin = () => navigate('/login');
+  const handleGoSignup = () => navigate('/login/signup');
+
   return (
-    <div>
-      <h1>랜딩 페이지</h1>
-      <div>
-        <button>
-          <Link to="/login">로그인</Link>
-        </button>
-        <button>
-          <Link to="/login/signup">회원가입</Link>
-        </button>
-        <button>
-          <Link to="/home">임시로 홈으로 가자</Link>
-        </button>
-      </div>
-      <PwdInput/>
-    </div>
+
+    <main className="flex h-screen flex-col items-center justify-start gap-3 bg-white p-3">
+      <img
+        className="h-[33.5625rem] w-[21.375rem] rounded-[1.875rem]"
+        src="/assets/landinglogo.png"
+        alt="SHIPMATE 메인 이미지"
+      />
+      <Button buttonContent="로그인" isActive onClick={handleGoLogin} />
+      <Button buttonContent="회원가입" isActive onClick={handleGoSignup} />
+      <SimpleLogin />
+    </main>
+
   );
 };
 

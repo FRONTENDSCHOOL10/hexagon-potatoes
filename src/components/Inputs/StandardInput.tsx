@@ -1,6 +1,8 @@
 interface PropsType {
   inputName: string;
   defaultValue: string;
+  inputLabel: string;
+  placeholder: string;
   onInputChange: (val: string) => void;
 }
 
@@ -10,6 +12,8 @@ const StandardInput = ({
   inputName,
   defaultValue,
   onInputChange,
+  inputLabel,
+  placeholder,
 }: PropsType) => {
   const [inputVal, setInputVal] = useState('');
   const inputId = useId();
@@ -32,17 +36,17 @@ const StandardInput = ({
   return (
     <div
       role="group"
-      aria-label="휴대폰 번호 입력 필드"
+      aria-label={`${inputLabel} 입력 필드`}
       className="flex flex-col gap-y-1"
     >
       <label className="text-sub-2" htmlFor={inputId}>
-        휴대폰 번호
+        {inputLabel}
       </label>
       <input
         id={inputId}
         type="tel"
         value={inputVal}
-        placeholder="휴대폰 번호를 입력해 주세요."
+        placeholder={placeholder}
         defaultValue={defaultValue}
         className={inputStyle}
         name={inputName}
