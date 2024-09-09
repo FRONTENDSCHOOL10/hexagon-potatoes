@@ -8,7 +8,7 @@ const PartyListPage = () => {
   return (
     <section className="flex flex-col gap-y-3">
       <h1 className="sr-only">파티 리스트 페이지</h1>
-      <p className="mt-4 text-heading-1">파티원을 모집 중이예요!</p>
+      <p className="mt-4 text-heading-1">파티원을 모집 중이에요!</p>
       <ArticleList />
     </section>
   );
