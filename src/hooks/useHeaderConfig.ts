@@ -12,7 +12,7 @@ const defaultConfig: HeaderConfig = {
 
 const headerConfigs: Record<string, HeaderConfig> = {
   '/login': { type: 'back', title: '로그인' },
-  '/signup': { type: 'back', title: '회원가입' },
+  '/login/signup': { type: 'back', title: '회원가입' },
   '/home': { type: 'bell', title: '홈' },
   '/home/partyCollect': { type: 'back', title: '파티 모집' },
   '/home/notifications': { type: 'back', title: '알림' },
