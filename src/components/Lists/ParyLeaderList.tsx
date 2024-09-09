@@ -1,4 +1,5 @@
 // 데이터 가져오기
+
 import PartyLeader from './PartyLeader';
 const PartyLeaderList = () => {
   return (
