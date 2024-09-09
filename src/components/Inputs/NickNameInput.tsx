@@ -5,13 +5,15 @@ import { validateNickname } from '@/utils/validate';
 interface propsType {
   inputName: string;
   defaultValue: string;
-  onNickNameChange: (val: string) => void;
+  onNickNameChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
 }
 
 const NicknameInput = ({
   inputName,
   defaultValue,
   onNickNameChange,
+  onValidChange,
 }: propsType) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
@@ -27,6 +29,7 @@ const NicknameInput = ({
 
   const validateInputVal = (val: string) => {
     setIsValid(validateNickname(val));
+    onValidChange(validateNickname(val));
   };
 
   const checkInputFilled = (val: string) => {
@@ -38,7 +41,7 @@ const NicknameInput = ({
     setInputVal(inputVal);
     validateInputVal(inputVal);
     checkInputFilled(inputVal);
-    onNickNameChange(inputVal);
+    onNickNameChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {

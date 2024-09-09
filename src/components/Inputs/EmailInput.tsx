@@ -1,13 +1,19 @@
 interface propsType {
   inputName: string;
   defaultValue: string;
-  onEmailChange: (val: string) => void;
+  onEmailChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
 }
 
 import { useState, useId } from 'react';
 import { validateEmail } from '@/utils/validate';
 
-const EmailInput = ({ inputName, defaultValue, onEmailChange }: propsType) => {
+const EmailInput = ({
+  onEmailChange,
+  onValidChange,
+  inputName,
+  defaultValue,
+}: propsType) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
@@ -24,6 +30,7 @@ const EmailInput = ({ inputName, defaultValue, onEmailChange }: propsType) => {
 
   const validateInputVal = (val: string) => {
     setIsValid(validateEmail(val));
+    onValidChange(validateEmail(val));
   };
 
   const checkInputFilled = (val: string) => {
@@ -35,7 +42,7 @@ const EmailInput = ({ inputName, defaultValue, onEmailChange }: propsType) => {
     setInputVal(inputVal);
     validateInputVal(inputVal);
     checkInputFilled(inputVal);
-    onEmailChange(inputVal);
+    onEmailChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
