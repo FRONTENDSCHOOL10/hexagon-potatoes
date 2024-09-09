@@ -11,6 +11,8 @@ import Magazine from '@/pages/Community/Magazine';
 import Following from '@/pages/Community/Following';
 import UserTip from '@/pages/Community/UserTip';
 import PopularPost from '@/pages/Community/PopularPost';
+import JoinPartyPage from './pages/JoinParty';
+import OrderDetailPage from './pages/OrderDetail';
 
 // 동적 로딩할 컴포넌트 설정
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
@@ -170,6 +172,22 @@ const routes = [
         element: (
           <Suspense fallback={<Loading />}>
             <PartyCollect />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'joinParty',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <JoinPartyPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'orderDetail',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <OrderDetailPage />
           </Suspense>
         ),
       },
