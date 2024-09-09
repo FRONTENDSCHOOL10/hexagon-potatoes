@@ -26,7 +26,7 @@ const Article = ({
   return (
     <li className="list-none border-b border-b-gray-100 p-2">
       <Link
-        to={`/${party_id}`}
+        to={`/home/party/${party_id}`}
         className="flex flex-row items-center gap-3 leading-tight"
       >
         <img
