@@ -1,3 +1,4 @@
+import { formatDateShort, formatForDateTime } from '@/utils/dateFormatter';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
@@ -6,6 +7,7 @@ interface PostActionBarProps {
   onLike: () => void;
   onBookmark: () => void;
   onShare: () => void;
+  date: string;
 }
 
 const PostActionBar = ({
@@ -13,13 +15,17 @@ const PostActionBar = ({
   onLike,
   onBookmark,
   onShare,
+  date,
 }: PostActionBarProps) => {
   return (
     <>
       <div className="font-[Pretendard] text-[0.75rem] font-normal not-italic leading-[1.0625rem] text-[#626871]">
-        <time dateTime="{}"> </time>
+        <time dateTime={formatForDateTime(date)}>
+          {formatDateShort(date)}
+          {'\u00A0'}
+        </time>
         {/* 좋아요, 조회수는 하드코딩으로 넣기 */}
-        <span>좋아요 3 </span>
+        <span> 좋아요 3 </span>
         <span> 조회 1,000</span>
       </div>
       <div className="flex h-[1.5625rem] items-center gap-4">
