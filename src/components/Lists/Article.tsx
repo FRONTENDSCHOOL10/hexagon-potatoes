@@ -1,18 +1,19 @@
 import { Link, useParams } from 'react-router-dom';
 import LabelList from '@/components/Label/LabelList';
-interface propsType {
+
+interface ArticleProps {
+  type?: 'party' | 'tip'; // 'party' 또는 'tip' 타입 구분
   party_name: string;
-  // blob 객체가 될지 잘 모르겠다..
   partyImg: string;
   partyImgAlt: string;
   party_about: string;
-  // blob 객체가 될지 잘 모르겠다..
   profile_photo: string;
   leaderImgAlt: string;
   nickname: string;
 }
 
 const Article = ({
+  type = 'party',
   party_name,
   partyImg,
   partyImgAlt,
@@ -20,18 +21,26 @@ const Article = ({
   profile_photo,
   leaderImgAlt,
   nickname,
-}: propsType) => {
-  const { party_id } = useParams();
+}: ArticleProps) => {
+  const { party_id, tipId } = useParams();
+
+  const getLink = () => {
+    if (type === 'party') {
+      return `/home/party/${party_id}`;
+    } else if (type === 'tip') {
+      return `/community/tip/${tipId}`;
+    }
+    return `/home/party/${party_id}`;
+  };
 
   return (
     <li className="list-none border-b border-b-gray-100 p-2">
       <Link
-        to={`/home/party/${party_id}`}
+        to={getLink()}
         className="flex flex-row items-center gap-3 leading-tight"
       >
         <img
           src={partyImg}
-          // 파일명을 사용하면 좋을 것 같은데 db에 어떻게 저장될지 모르겠다.
           alt={partyImgAlt}
           className="h-28 w-20 object-cover"
         />
@@ -39,10 +48,8 @@ const Article = ({
           <span aria-label="파티 제목" className="text-sub-1">
             {party_name}
           </span>
-          {/* 파티글 대표 이미지 */}
           <p className="text-sub-2 text-gray-300">{party_about}</p>
-          {/* 라벨은 컴포넌트로 만들면 어떤가 */}
-          <LabelList />
+          <LabelList data={[]} />
           <img
             className="mr-2 inline-block size-5"
             src={profile_photo}

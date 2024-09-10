@@ -1,23 +1,35 @@
-import ArticleList from '@/components/Lists/ArticleList';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import ArticleList from '@/components/Lists/ArticleList'; // ArticleList의 경로는 실제 경로로 수정하세요
+import getPartyByKeyword from '@/api/getPartyByKeyword'; // getPartyByKeyword의 경로는 실제 경로로 수정하세요
 
 const SearchResult = () => {
-  const data = [
-    {
-      party_name: '파티 이름',
-      partyImg: '/path/to/image.jpg',
-      partyImgAlt: '파티의 이미지 설명',
-      party_about: '파티 소개',
-      profile_photo: '/path/to/profile.jpg',
-      leaderImgAlt: '파티장 프로필 이미지',
-      nickname: '파티장',
-    },
-    // 더 많은 데이터
-  ];
+  const [partyList, setPartyList] = useState<any[]>([]); // 타입을 실제 데이터에 맞게 수정하세요
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const keyword = '파티'; // 이 키워드는 실제 검색 키워드로 대체해야 합니다
+
+  useEffect(() => {
+    const fetchParties = async () => {
+      try {
+        const data = await getPartyByKeyword(keyword);
+        setPartyList(data.items); // data.items는 실제 데이터 형식에 맞게 수정해야 합니다
+      } catch (err) {
+        setError('파티 정보를 가져오는 데 실패했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchParties();
+  }, [keyword]);
+
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <ArticleList data={data} headingId="search-results-heading" />
+      <h1>{keyword} 검색 결과</h1>
+      <ArticleList data={partyList} headingId="search-results-heading" />
     </div>
   );
 };
@@ -27,6 +39,7 @@ export default SearchResult;
 //아티클 리스트 이렇게 바꿔야됨
 // import React from 'react';
 // import Article from './Article';
+// import { ArticleList } from '@/components/Lists/ArticleList';
 
 // const ArticleList = ({ data, headingId }) => {
 //   return (
