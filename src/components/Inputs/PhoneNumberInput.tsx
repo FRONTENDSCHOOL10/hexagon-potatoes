@@ -1,7 +1,8 @@
 interface propsType {
   inputName: string;
   defaultValue: string;
-  onPhoneNumberChange: (val: string) => void;
+  onPhoneNumberChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
 }
 
 // zustand import
@@ -12,6 +13,7 @@ const PhoneNumberInput = ({
   inputName,
   defaultValue,
   onPhoneNumberChange,
+  onValidChange,
 }: propsType) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
@@ -25,6 +27,7 @@ const PhoneNumberInput = ({
 
   const validateInputVal = (val: string) => {
     setIsValid(validatePhoneNumber(val));
+    onValidChange(validatePhoneNumber(val));
   };
 
   const checkInputFilled = (val: string) => {
@@ -36,7 +39,7 @@ const PhoneNumberInput = ({
     setInputVal(inputVal);
     validateInputVal(inputVal);
     checkInputFilled(inputVal);
-    onPhoneNumberChange(inputVal);
+    onPhoneNumberChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {

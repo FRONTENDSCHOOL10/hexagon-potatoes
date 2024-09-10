@@ -1,11 +1,12 @@
 interface propsType {
   inputName: string;
-  onPwdChange: (val: string) => void;
+  onPwdChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
 }
 import { useRef, useState, useId } from 'react';
 import { validatePwd } from '@/utils/validate';
 
-const PwdInput = ({ inputName, onPwdChange }: propsType) => {
+const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
   const [isValid, setIsValid] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
@@ -19,6 +20,7 @@ const PwdInput = ({ inputName, onPwdChange }: propsType) => {
 
   const validateInputVal = (val: string) => {
     setIsValid(validatePwd(val));
+    onValidChange(validatePwd(val));
   };
 
   const checkInputFilled = (val: string) => {
@@ -30,7 +32,7 @@ const PwdInput = ({ inputName, onPwdChange }: propsType) => {
     setInputVal(inputVal);
     validateInputVal(inputVal);
     checkInputFilled(inputVal);
-    onPwdChange(inputVal);
+    onPwdChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
