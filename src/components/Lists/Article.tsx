@@ -7,7 +7,7 @@ interface ArticleProps {
   content_title: string; // 아티클 제목
   content_img: string; // 아티클 이미지 URL
   subtitle: string; // 아티클의 부제목
-  profile_photo: string; // 작성자의 프로필 사진 URL
+  profile_photo: string | React.ComponentType<{ size: number }>; // 프로필 사진 URL 또는 컴포넌트
   nickname: string; // 작성자의 닉네임
   id?: string; // 'party' 또는 'tip' 아티클의 식별자
 }
@@ -19,7 +19,7 @@ interface ArticleProps {
  * @param content_title - 아티클의 제목.
  * @param content_img - 아티클에 표시될 이미지의 URL.
  * @param subtitle - 아티클의 부제목.
- * @param profile_photo - 작성자의 프로필 사진 URL.
+ * @param profile_photo - 작성자의 프로필 사진 URL 또는 컴포넌트.
  * @param nickname - 작성자의 닉네임.
  * @param id - 아티클의 식별자. 링크를 생성하는 데 사용됩니다.
  *
@@ -30,7 +30,7 @@ const Article = ({
   content_title = '',
   content_img = '',
   subtitle = '',
-  profile_photo = '',
+  profile_photo,
   nickname = '',
   id,
 }: ArticleProps) => {
@@ -61,17 +61,24 @@ const Article = ({
         />
         <div role="group">
           <span aria-label="제목" className="text-sub-1">
-            {content_title} // 아티클 제목
+            {content_title}
           </span>
-          <p className="text-sub-2 text-gray-300">{subtitle}</p> // 아티클
-          부제목
+          <p className="text-sub-2 text-gray-300">{subtitle}</p>
           <LabelList data={[]} /> {/* 라벨 리스트 컴포넌트. 현재는 빈 데이터 */}
-          <img
-            className="mr-2 inline-block size-5"
-            src={profile_photo} // 작성자의 프로필 사진
-            alt="사용자 프로필 사진" // 이미지에 대한 대체 텍스트
-          />
-          <span className="align-middle text-caption">{nickname}</span>{' '}
+          <div className="flex items-center">
+            <div className="mr-2 inline-block h-5 w-5">
+              {typeof profile_photo === 'string' ? (
+                <img
+                  className="h-full w-full object-cover" // 이미지 스타일 설정
+                  src={profile_photo} // 작성자의 프로필 사진
+                  alt="사용자 프로필 사진" // 이미지에 대한 대체 텍스트
+                />
+              ) : (
+                React.createElement(profile_photo, { size: 20 }) // 프로필 사진이 컴포넌트일 경우 렌더링
+              )}
+            </div>
+            <span className="align-middle text-caption">{nickname}</span>
+          </div>
           {/* 작성자의 닉네임 */}
         </div>
       </Link>
