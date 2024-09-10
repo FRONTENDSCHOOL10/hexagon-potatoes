@@ -17,17 +17,24 @@ const Login = () => {
       <IdInput
         inputName={''}
         defaultValue={''}
-        onIdChange={function (val: string): void {
+        onIdChange={function (name: string): (value: string | number) => void {
+          throw new Error('Function not implemented.');
+        }}
+        onValidChange={function (validation: boolean): void {
           throw new Error('Function not implemented.');
         }}
       />
       <PwdInput
         inputName={''}
-        onPwdChange={function (val: string): void {
+        onPwdChange={function (name: string): (value: string | number) => void {
+          throw new Error('Function not implemented.');
+        }}
+        onValidChange={function (validation: boolean): void {
           throw new Error('Function not implemented.');
         }}
       />
       <Button
+        type={'button'}
         buttonContent={'로그인'}
         isActive
         onClick={function (): void {

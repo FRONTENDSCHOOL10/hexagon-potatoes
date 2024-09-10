@@ -1,13 +1,19 @@
 interface propsType {
   inputName: string;
   defaultValue: string;
-  onIdChange: (val: string) => void;
+  onIdChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
 }
 // zustand import
 import React, { useState, useId } from 'react';
 import { validateId } from '@/utils/validate';
 
-const IdInput = ({ inputName, defaultValue, onIdChange }: propsType) => {
+const IdInput = ({
+  onValidChange,
+  inputName,
+  defaultValue,
+  onIdChange,
+}: propsType) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
@@ -24,6 +30,7 @@ const IdInput = ({ inputName, defaultValue, onIdChange }: propsType) => {
 
   const validateInputVal = (val: string) => {
     setIsValid(validateId(val));
+    onValidChange(validateId(val));
   };
 
   const checkInputFilled = (val: string) => {
@@ -35,7 +42,7 @@ const IdInput = ({ inputName, defaultValue, onIdChange }: propsType) => {
     setInputVal(inputVal);
     validateInputVal(inputVal);
     checkInputFilled(inputVal);
-    onIdChange(inputVal);
+    onIdChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
