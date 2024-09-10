@@ -15,6 +15,7 @@ const Button = ({
       type={type}
       disabled={!isActive}
       className={`inline-block w-full rounded-full ${isActive ? 'hover:bg-mainblue bg-white hover:text-white' : 'bg-gray-200'} text-button shadow-shadow-blue px-3 py-2.5 text-black`}
+
       onClick={onClick}
     >
       {buttonContent}

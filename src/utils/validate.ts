@@ -8,7 +8,7 @@ export function validateName(val: string): boolean {
 // 닉네임
 // 두자 이상 열자 이하, 공백 제외 모든 기호 포함
 export function validateNickname(val: string): boolean {
-  const result = /^[^\s]{1,10}$/.test(val);
+  const result = /^[^\s]{2,10}$/.test(val);
   return result;
 }
 
