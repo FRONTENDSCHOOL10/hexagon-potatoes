@@ -1,6 +1,9 @@
 // SearchPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SearchBar from '@/components/SearchBar/SearchBar';
+
+// 검색하는 페이지
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,16 +18,13 @@ const Search = () => {
 
   return (
     <div>
-      <h1>파티 검색</h1>
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="검색할 파티에 대해 적어주세용"
-        />
-        <button type="submit">검색</button>
-      </form>
+      <SearchBar />
+      <section className="mt-3 h-28">
+        <h2>최근 검색어</h2>
+      </section>
+      <section className="mt-3 h-56">
+        <h2>실시간 인기 검색어</h2>
+      </section>
     </div>
   );
 };

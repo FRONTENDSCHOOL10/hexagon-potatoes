@@ -35,7 +35,12 @@ const renderIcons = (
           <svg className="h-4 w-4">
             <use href="/assets/sprite-sheet.svg#angleleft" />
           </svg>
-          <Tooltip id="backTooltip" place="bottom" content="뒤로 가기" />
+          <Tooltip
+            id="backTooltip"
+            place="bottom"
+            content="뒤로 가기"
+            className="z-50"
+          />
         </button>
       );
 
@@ -50,7 +55,12 @@ const renderIcons = (
           <svg className="h-4 w-4">
             <use href="/assets/sprite-sheet.svg#bell" />
           </svg>
-          <Tooltip id="bellTooltip" place="bottom" content="알림 페이지" />
+          <Tooltip
+            id="bellTooltip"
+            place="bottom"
+            content="알림 페이지"
+            className="z-50"
+          />
         </button>
       );
     case 'setting':
@@ -65,7 +75,12 @@ const renderIcons = (
             <svg className="h-4 w-4">
               <use href="/assets/sprite-sheet.svg#bell" />
             </svg>{' '}
-            <Tooltip id="bellTooltip" place="bottom" content="알림 페이지" />
+            <Tooltip
+              id="bellTooltip"
+              place="bottom"
+              content="알림 페이지"
+              className="z-50"
+            />
           </button>
           <button
             className="text-black"
@@ -76,7 +91,12 @@ const renderIcons = (
             <svg className="h-4 w-4">
               <use href="/assets/sprite-sheet.svg#setting" />
             </svg>
-            <Tooltip id="settingTooltip" place="bottom" content="설정 페이지" />
+            <Tooltip
+              id="settingTooltip"
+              place="bottom"
+              content="설정 페이지"
+              className="z-50"
+            />
           </button>
         </div>
       );
