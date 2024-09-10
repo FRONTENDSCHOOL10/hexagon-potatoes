@@ -1,4 +1,5 @@
 import RatingStar from '@/components/RatingStar/RatingStar';
+import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 
 interface ReviewProp {
   user: string;
@@ -7,15 +8,6 @@ interface ReviewProp {
   profileImg?: string | null;
   starRate: number;
 }
-
-// profileImg가 없을 경우 기본 프로필 컴포넌트
-const DefaultProfileSVG = (): JSX.Element => {
-  return (
-    <svg role="img" viewBox="0 0 24 24" aria-label="기본 프로필 사진">
-      <use href="/assets/sprite-sheet.svg#defaultprofile" />
-    </svg>
-  );
-};
 
 //리뷰 DB에서 유저 닉네임, 프로필 이미지, 후기내용, 작성날짜, 평점 가져오면될듯
 const Review = ({
