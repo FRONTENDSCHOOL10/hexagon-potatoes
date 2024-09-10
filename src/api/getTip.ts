@@ -2,16 +2,16 @@ import axios from 'axios';
 import getPbImageURL from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import getUserById from './getUserById';
+import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
 const baseTipUrl = `${pb.baseUrl}/api/collections/tip/records`;
-const defaultTipImage = '/assets/shipmatelogo.png';
 
 // getUserById로 팁 레코드에 있는 userid를 가지고 유저 컬렉션에 가서 닉네임 가져와서 넣어줌
 // getPbImageURL 써서 이미지 링크 전달 + 팁에 이미지 없으면 기본 이미지 반영하도록 해둠
 // 아티클에 쓰일 정보들 가져다주는 함수
 
 const getTipImageUrl = (tip: any): string => {
-  return tip.photo ? getPbImageURL(pb.baseUrl, tip, 'photo') : defaultTipImage;
+  return tip.photo ? getPbImageURL(pb.baseUrl, tip, 'photo') : '';
 };
 
 const fetchAuthorData = async (authorId: string) => {
@@ -47,7 +47,7 @@ export const getTip = async () => {
           photo: tipImg,
           content: tip.content,
           author_nickname: authorData?.nickname || '',
-          author_photo: authorData?.profile_photo || '',
+          author_photo: authorData?.profile_photo || DefaultProfileSVG,
           type: 'tip',
         };
       })
