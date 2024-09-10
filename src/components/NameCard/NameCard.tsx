@@ -27,7 +27,6 @@ const NameCard = ({ name, subtext, profileImg, type, id }: NameCardProps) => {
           <MiniButton
             link={`/home/profile/edit/${id}`}
             buttonContent={'프로필 수정'}
-            isActive
           />
         );
       case 'viewProfile':
@@ -35,16 +34,11 @@ const NameCard = ({ name, subtext, profileImg, type, id }: NameCardProps) => {
           <MiniButton
             link={`/home/profile/${id}`}
             buttonContent={'프로필 보기'}
-            isActive
           />
         );
       case 'followingBtn':
         return (
-          <MiniButton
-            onClick={handleFollowing}
-            buttonContent={'팔로우'}
-            isActive
-          />
+          <MiniButton onClick={handleFollowing} buttonContent={'팔로우'} />
         );
       case 'followingText':
         return (
