@@ -20,9 +20,9 @@ interface ArticleListProps {
 const ArticleList = ({ data, headingId }: ArticleListProps) => {
   return (
     <div>
-      <h2 id={headingId} className="mb-4 text-xl font-bold">
+      {/* <h2 id={headingId} className="mb-4 text-xl font-bold">
         목록 제목
-      </h2>
+      </h2> */}
       <ul aria-labelledby={headingId} className="flex flex-col gap-y-3">
         {data.map((item, index) => (
           <Article
