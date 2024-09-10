@@ -1,5 +1,6 @@
 import React from 'react';
 import Article from './Article';
+import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 
 interface PartyArticleListProps {
   data: {
@@ -16,7 +17,7 @@ interface PartyArticleListProps {
 
 const PartyArticleList = ({ data }: PartyArticleListProps) => {
   const defaultPartyImage = '/assets/shipmatelogo.png';
-  const defaultProfileImage = '/assets/shipmatelogo.png';
+  const defaultProfileImage = DefaultProfileSVG;
 
   const processedData = data.map((item) => ({
     ...item,

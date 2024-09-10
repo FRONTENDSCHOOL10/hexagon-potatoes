@@ -1,5 +1,6 @@
 import React from 'react';
 import Article from './Article';
+import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 
 interface TipArticleListProps {
   data: {
@@ -22,7 +23,7 @@ interface TipArticleListProps {
  */
 const TipArticleList = ({ data }: TipArticleListProps) => {
   const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
-  const defaultProfileImage = '/assets/shipmatelogo.png'; // 기본 프로필 이미지 URL
+  const defaultProfileImage = DefaultProfileSVG; // 기본 프로필 이미지 URL
 
   /**
    * 팁 데이터 배열을 처리하여, 이미지가 없는 경우 기본 이미지를 사용하도록 설정합니다.
