@@ -38,22 +38,20 @@ const TipArticleList = ({ data }: TipArticleListProps) => {
   }));
 
   return (
-    <div>
-      <ul className="flex flex-col gap-y-3" aria-label="팁 목록">
-        {processedData.map((item, index) => (
-          <Article
-            key={index} // 리스트 항목에 대한 고유 키
-            type={item.type} // 'tip'으로 고정
-            content_title={item.title} // 팁 제목
-            content_img={item.photo} // 팁 이미지
-            subtitle={item.content} // 팁 내용
-            profile_photo={item.author_photo} // 작성자 프로필 사진
-            nickname={item.author_nickname} // 작성자 닉네임
-            id={item.id} // 팁 식별자
-          />
-        ))}
-      </ul>
-    </div>
+    <ul className="flex w-full flex-col gap-y-3" aria-label="팁 목록">
+      {processedData.map((item, index) => (
+        <Article
+          key={index} // 리스트 항목에 대한 고유 키
+          type={item.type} // 'tip'으로 고정
+          content_title={item.title} // 팁 제목
+          content_img={item.photo} // 팁 이미지
+          subtitle={item.content} // 팁 내용
+          profile_photo={item.author_photo} // 작성자 프로필 사진
+          nickname={item.author_nickname} // 작성자 닉네임
+          id={item.id} // 팁 식별자
+        />
+      ))}
+    </ul>
   );
 };
 
