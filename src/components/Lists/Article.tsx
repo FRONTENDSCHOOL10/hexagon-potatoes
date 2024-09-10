@@ -33,7 +33,7 @@ const Article = ({
           src={partyImg}
           // 파일명을 사용하면 좋을 것 같은데 db에 어떻게 저장될지 모르겠다.
           alt={partyImgAlt}
-          className="h-28 w-20 object-cover"
+          className="h-28 w-20 rounded-lg object-cover"
         />
         <div aria-label="파티 정보" role="group">
           <span aria-label="파티 제목" className="text-sub-1">
