@@ -45,7 +45,7 @@ const NameCard = ({ name, subtext, profileImg, type, id }: NameCardProps) => {
           <button
             type="button"
             onClick={handleFollowing}
-            className="absolute right-[0.44rem] top-2/4 -translate-y-1/2 transform text-body-1 text-mainblue"
+            className="mr-[0.44rem] flex h-full items-center justify-center whitespace-nowrap text-body-1 text-mainblue"
           >
             팔로우
           </button>
@@ -54,7 +54,7 @@ const NameCard = ({ name, subtext, profileImg, type, id }: NameCardProps) => {
         return (
           <Link
             to={`/home/party/${id}`}
-            className="absolute right-[0.44rem] top-2/4 -translate-y-1/2 transform text-body-1 text-mainblue"
+            className="mr-[0.44rem] flex h-full items-center justify-center whitespace-nowrap text-body-1 text-mainblue"
           >
             파티보기
           </Link>
@@ -65,15 +65,15 @@ const NameCard = ({ name, subtext, profileImg, type, id }: NameCardProps) => {
   };
 
   return (
-    <div className="relative flex h-[2.5rem] w-[21rem] items-start justify-center gap-3">
+    <div className="flex h-[2.5rem] w-[21rem] items-start justify-center gap-3">
       {profileImg ? (
         <img
-          className="mr-1.5 h-[2.5rem] w-[2.5rem] rounded-full object-cover"
+          className="h-[2.5rem] w-[2.5rem] rounded-full object-cover"
           src={profileImg}
           alt="프로필"
         />
       ) : (
-        <span className="mr-1.5 h-[2.5rem] w-[2.5rem]">
+        <span className="h-[2.5rem] w-[2.5rem]">
           <DefaultProfileSVG size={40} />
         </span>
       )}
