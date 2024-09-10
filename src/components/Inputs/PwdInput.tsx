@@ -71,17 +71,19 @@ const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
           value={inputVal}
           id={pwdInputId}
           type="password"
-          defaultValue=""
+          // defaultValue=""
           placeholder="비밀번호를 입력해 주세요."
           className={inputStyle(isValid)}
           name={inputName}
           onKeyDown={handlePressEnter}
           onChange={handleChangeInput}
+          autoComplete="new-password"
         />
 
         {isEnteredVal && (
           <>
             <button
+              type="button"
               className="absolute right-0 top-[48px] mr-10 text-sub-2"
               onClick={() => handleShowPwd(inputRef)}
             >
@@ -96,6 +98,7 @@ const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
               </svg>
             </button>
             <button
+              type="button"
               className="absolute right-0 top-[49px] mr-5 text-sub-2"
               onClick={handleDeleteInputVal}
             >

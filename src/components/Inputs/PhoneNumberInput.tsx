@@ -1,6 +1,6 @@
 interface propsType {
   inputName: string;
-  defaultValue: string;
+  defaultValue?: string;
   onPhoneNumberChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
 }
