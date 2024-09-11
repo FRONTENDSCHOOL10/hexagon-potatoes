@@ -1,13 +1,21 @@
 interface propsType {
+  type: 'button' | 'submit';
   buttonContent: string;
   isActive: boolean;
   onClick: () => void;
 }
-const Button = ({ onClick, buttonContent, isActive = true }: propsType) => {
+const Button = ({
+  type = 'button',
+  onClick,
+  buttonContent,
+  isActive = true,
+}: propsType) => {
   return (
     <button
+      type={type}
       disabled={!isActive}
-      className={`inline-block w-full rounded-full ${isActive ? 'bg-white' : 'bg-gray-200'} px-3 py-2.5 text-button text-black shadow-shadow-blue hover:bg-mainblue hover:text-white focus:bg-mainblue focus:text-white`}
+      className={`inline-block w-full rounded-full ${isActive ? 'hover:bg-mainblue bg-white hover:text-white' : 'bg-gray-200'} text-button shadow-shadow-blue px-3 py-2.5 text-black`}
+
       onClick={onClick}
     >
       {buttonContent}

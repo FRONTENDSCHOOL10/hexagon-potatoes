@@ -28,7 +28,8 @@ const SelectCountryButton = ({
 
   return (
     <button
-      className={`inline-block w-40 rounded-full bg-white p-3 text-start text-button text-black shadow-shadow-blue hover:bg-mainblue hover:text-white`}
+      type="button"
+      className={`text-button shadow-shadow-blue hover:bg-mainblue inline-block w-40 rounded-full bg-white p-3 text-start text-black hover:text-white`}
       onClick={handleClick}
     >
       <img

@@ -20,40 +20,64 @@ const SignUp = () => {
       <UserNameInput
         inputName={''}
         defaultValue={''}
-        onUserNameChange={function (val: string): void {
+        onUserNameChange={function (
+          name: string
+        ): (value: string | number) => void {
+          throw new Error('Function not implemented.');
+        }}
+        onValidChange={function (validation: boolean): void {
           throw new Error('Function not implemented.');
         }}
       />
       <IdInput
         inputName={''}
         defaultValue={''}
-        onIdChange={function (val: string): void {
+        onIdChange={function (name: string): (value: string | number) => void {
+          throw new Error('Function not implemented.');
+        }}
+        onValidChange={function (validation: boolean): void {
           throw new Error('Function not implemented.');
         }}
       />
       <EmailInput
         inputName={''}
         defaultValue={''}
-        onEmailChange={function (val: string): void {
+        onEmailChange={function (
+          name: string
+        ): (value: string | number) => void {
+          throw new Error('Function not implemented.');
+        }}
+        onValidChange={function (validation: boolean): void {
           throw new Error('Function not implemented.');
         }}
       />
       <NicknameInput
         inputName={''}
         defaultValue={''}
-        onNickNameChange={function (val: string): void {
+        onNickNameChange={function (
+          name: string
+        ): (value: string | number) => void {
+          throw new Error('Function not implemented.');
+        }}
+        onValidChange={function (validation: boolean): void {
           throw new Error('Function not implemented.');
         }}
       />
       <PhoneNumberInput
         inputName={''}
         defaultValue={''}
-        onPhoneNumberChange={function (val: string): void {
+        onPhoneNumberChange={function (
+          name: string
+        ): (value: string | number) => void {
+          throw new Error('Function not implemented.');
+        }}
+        onValidChange={function (validation: boolean): void {
           throw new Error('Function not implemented.');
         }}
       />
       <Button
-        buttonContent={'인증번호 발송'}
+        type={'button'}
+        buttonContent={''}
         isActive={false}
         onClick={function (): void {
           throw new Error('Function not implemented.');
@@ -61,10 +85,14 @@ const SignUp = () => {
       />
       <PwdInput
         inputName={''}
-        onPwdChange={function (val: string): void {
+        onPwdChange={function (name: string): (value: string | number) => void {
+          throw new Error('Function not implemented.');
+        }}
+        onValidChange={function (validation: boolean): void {
           throw new Error('Function not implemented.');
         }}
       />
+
       <PwdConfirmInput
         inputName={''}
         pwdInputVal={''}

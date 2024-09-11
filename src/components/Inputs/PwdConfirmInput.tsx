@@ -3,13 +3,15 @@ import React, { useState, useRef, useId } from 'react';
 interface PropsType {
   inputName: string;
   pwdInputVal: string;
-  onConfirmedPwdChange: (val: string) => void;
+  onConfirmedPwdChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
 }
 
 const PwdConfirmInput = ({
   inputName,
   pwdInputVal,
   onConfirmedPwdChange,
+  onValidChange,
 }: PropsType) => {
   const [isConfirmed, setIsConfirmed] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
@@ -29,7 +31,10 @@ const PwdConfirmInput = ({
       isValid ? 'outline-mainblue' : 'outline-errored'
     }`;
 
-  const checkConfirmPwd = (val: string) => setIsConfirmed(pwdInputVal === val);
+  const checkConfirmPwd = (val: string) => {
+    setIsConfirmed(pwdInputVal === val);
+    onValidChange(pwdInputVal === val);
+  };
 
   const checkInputFilled = (val: string) => setIsEnteredVal(val.trim() !== '');
 
@@ -38,7 +43,7 @@ const PwdConfirmInput = ({
     setInputVal(value);
     checkConfirmPwd(value);
     checkInputFilled(value);
-    onConfirmedPwdChange(value);
+    onConfirmedPwdChange(inputName)(value);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
