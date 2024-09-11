@@ -1,12 +1,19 @@
+import { useRef, useState, useId } from 'react';
+import { validatePwd } from '@/utils/validate';
+
 interface propsType {
   inputName: string;
   onPwdChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
+  validateOnChange?: boolean;
 }
-import { useRef, useState, useId } from 'react';
-import { validatePwd } from '@/utils/validate';
 
-const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
+const PwdInput = ({
+  onValidChange,
+  inputName,
+  onPwdChange,
+  validateOnChange = true,
+}: propsType) => {
   const [isValid, setIsValid] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
@@ -30,7 +37,9 @@ const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
     setInputVal(inputVal);
-    validateInputVal(inputVal);
+    if (validateOnChange) {
+      validateInputVal(inputVal);
+    }
     checkInputFilled(inputVal);
     onPwdChange(inputName)(inputVal);
   };
