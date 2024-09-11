@@ -1,5 +1,5 @@
 // profileImg가 없을 경우 기본 프로필 컴포넌트
-const DefaultProfileSVG = ({ size }: { size: number }): JSX.Element => {
+const DefaultProfileSVG = ({ size }: { size: number }) => {
   return (
     <svg
       role="img"

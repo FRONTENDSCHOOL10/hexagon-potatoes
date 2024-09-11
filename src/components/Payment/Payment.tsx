@@ -1,7 +1,7 @@
 import formatCurrency from '@/utils/currencyFormat';
 import PaymentListItem from './PaymentListItem';
 
-interface paymentProp {
+interface PropTypes {
   productPrice: number;
   shippingFee: number;
   customsDuties: number;
@@ -10,11 +10,7 @@ interface paymentProp {
 //
 const COMMISSION = 1000;
 
-const Payment = ({
-  productPrice,
-  shippingFee,
-  customsDuties,
-}: paymentProp): JSX.Element => {
+const Payment = ({ productPrice, shippingFee, customsDuties }: PropTypes) => {
   return (
     <section className="flex w-full flex-col text-base font-bold not-italic leading-[1.5rem] text-[#000]">
       <h2 className="items-start justify-center border-b-2 border-[#020715] px-[0] py-[0.625rem] font-normal">

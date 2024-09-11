@@ -27,11 +27,11 @@ interface InstaPostingItem extends PocketBaseRecord {
 }
 
 // 컴포넌트 props 타입 정의
-interface InstaPostingProp {
+interface PropTypes {
   item: InstaPostingItem;
 }
 
-const InstaPosting = ({ item }: InstaPostingProp) => {
+const InstaPosting = ({ item }: PropTypes) => {
   const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
   if (!item) return null;
   const authorId = item.expand?.author_id;

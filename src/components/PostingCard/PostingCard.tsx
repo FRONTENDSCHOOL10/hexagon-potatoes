@@ -1,16 +1,12 @@
-import getPbImageURL from '@/utils/getPbImageURL';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 import LabelList from '../Label/LabelList';
 
-interface PostingCard {
-  profileImg?: string | null;
+interface PropTypes {
+  profileImg?: string;
   user: string;
-  postingImg?: string | null;
+  postingImg?: string;
   content: string;
   label?: string[];
-}
-interface DefaultProfileSVGProp {
-  user: string;
 }
 
 const PostingCard = ({
@@ -19,7 +15,7 @@ const PostingCard = ({
   postingImg,
   content,
   label,
-}: PostingCard) => {
+}: PropTypes) => {
   const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
   return (
     <article className="mx-auto h-auto w-[21rem] justify-between rounded-[0.9375rem] bg-[#FFF] shadow-shadow-blue">

@@ -2,7 +2,7 @@ import PostingCard from '@/components/PostingCard/PostingCard';
 import useFetch from '@/hooks/useFetch';
 import getPbImageURL from '@/utils/getPbImageURL';
 
-function PopularPost() {
+const PopularPost = () => {
   const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
   const ENDPOINT = `https://hexagon-potatoes.pockethost.io`;
   const postingUrl = `https://hexagon-potatoes.pockethost.io/api/collections/posting/records`;
@@ -13,22 +13,21 @@ function PopularPost() {
 
   return (
     <section className="mt-3 flex flex-col gap-3">
-      {PostData?.map((d) => (
+      {PostData?.map((d: any) => (
         <PostingCard
           key={d.id}
           profileImg={
-            d?.expand?.author_id?.profile_photo
-              ? getPbImageURL(ENDPOINT, d?.expand?.author_id, 'profile_photo')
-              : null
+            d?.expand?.author_id?.profile_photo ??
+            getPbImageURL(ENDPOINT, d?.expand?.author_id, 'profile_photo')
           }
           user={d.expand.author_id.nickname}
-          postingImg={d.photo ? getPbImageURL(ENDPOINT, d) : null}
+          postingImg={d.photo ?? getPbImageURL(ENDPOINT, d)}
           content={d.content}
           label={d.tag}
         />
       ))}
     </section>
   );
-}
+};
 
 export default PopularPost;
