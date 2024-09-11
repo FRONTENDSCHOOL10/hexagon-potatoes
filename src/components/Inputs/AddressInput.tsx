@@ -1,3 +1,5 @@
+import { useState, useId } from 'react';
+
 interface propsType {
   inputName: string;
   defaultAddressVal: string;
@@ -5,7 +7,8 @@ interface propsType {
   onAddressChange: (name: string) => (val: string | number) => void;
 }
 
-import { useState, useId } from 'react';
+
+// import { useState, useId } from 'react';
 
 // const AddressInput = ({
 //   inputName,

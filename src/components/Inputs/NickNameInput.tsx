@@ -4,7 +4,7 @@ import { validateNickname } from '@/utils/validate';
 
 interface propsType {
   inputName: string;
-  defaultValue: string;
+  defaultValue?: string;
   onNickNameChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
 }
