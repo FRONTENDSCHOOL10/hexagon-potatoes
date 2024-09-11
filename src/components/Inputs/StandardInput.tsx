@@ -1,4 +1,7 @@
-interface PropsType {
+import { useState, useId } from 'react';
+
+// date, file, number, text
+interface propsType {
   inputName: string;
   defaultValue: string;
   inputLabel: string;
@@ -7,10 +10,6 @@ interface PropsType {
   onInputChange: (name: string) => (value: string | number) => void;
 }
 
-import { useState, useId } from 'react';
-
-// date, file, number, text
-
 const StandardInput = ({
   type,
   inputName,
@@ -18,7 +17,7 @@ const StandardInput = ({
   onInputChange,
   inputLabel,
   placeholder,
-}: PropsType) => {
+}: propsType) => {
   const [inputVal, setInputVal] = useState<string | number>('');
 
   const today = new Date();

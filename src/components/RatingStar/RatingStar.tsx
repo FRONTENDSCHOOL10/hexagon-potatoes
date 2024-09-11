@@ -2,14 +2,14 @@ interface RatingStarProps {
   value: number;
   filledColor?: string;
   emptyColor?: string;
+  size?: string; //size prop 추가
 }
 
-// value로 받은 숫자 반올림해서 별점으로 표시
-// 사이즈는 피그마에 나온사이즈로 고정(w-11 h-12)
 const RatingStar = ({
   value,
   filledColor = 'text-[#FAEB48]',
   emptyColor = 'text-[#CAD4E7]',
+  size = 'h-[0.75rem] w-[0.6875rem]', // 기본 크기 지정
 }: RatingStarProps) => {
   const roundedValue = Math.round(value);
 
@@ -19,7 +19,7 @@ const RatingStar = ({
 
   const StarIcon = ({ filled }: StarIconProp) => (
     <svg
-      className={`h-[0.75rem] w-[0.6875rem] ${filled ? filledColor : emptyColor}`}
+      className={`${size} ${filled ? filledColor : emptyColor}`} // size 적용
       viewBox="0 0 11 12"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@ const RatingStar = ({
   );
 
   return (
-    <div className="flex gap-1 p-0" aria-label={`5점만점에 ${roundedValue}점`}>
+    <div className="flex gap-1 p-0" aria-label={`5점 만점에 ${roundedValue}점`}>
       {[...Array(5)].map((_, index) => (
         <StarIcon key={index} filled={index < roundedValue} />
       ))}
