@@ -1,12 +1,12 @@
+import { useState, useId } from 'react';
+import { validateEmail } from '@/utils/validate';
+
 interface propsType {
   inputName: string;
   defaultValue?: string;
   onEmailChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
 }
-
-import { useState, useId } from 'react';
-import { validateEmail } from '@/utils/validate';
 
 const EmailInput = ({
   onEmailChange,

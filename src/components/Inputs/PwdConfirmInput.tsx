@@ -1,6 +1,6 @@
 import React, { useState, useRef, useId } from 'react';
 
-interface PropsType {
+interface propsType {
   inputName: string;
   pwdInputVal: string;
   onConfirmedPwdChange: (name: string) => (value: string | number) => void;
@@ -12,7 +12,7 @@ const PwdConfirmInput = ({
   pwdInputVal,
   onConfirmedPwdChange,
   onValidChange,
-}: PropsType) => {
+}: propsType) => {
   const [isConfirmed, setIsConfirmed] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
