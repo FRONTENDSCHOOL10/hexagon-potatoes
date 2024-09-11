@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import MiniButton from '@/components/Buttons/MiniButton';
 import MyprofileFollwer from '@/components/MyprofileFollower/MyprofileFollower';
+import MypageNoticeList from '@/components/MypageNoticeList/MypageNoticeList';
+import SavingMoneyCard from '@/components/SavingMoneyCard/SavingMoneyCard';
 
 const MyPage = () => {
   const [activeButton, setActiveButton] = useState('파티장');
@@ -12,7 +14,7 @@ const MyPage = () => {
   return (
     <div className="flex flex-col items-center">
       <h1 className="mb-4 text-2xl font-bold">마이페이지</h1>
-
+      <SavingMoneyCard nickname={'닉네임'}/>
       <div className="flex gap-4">
         <MiniButton
           buttonContent="파티장"
@@ -30,12 +32,14 @@ const MyPage = () => {
         {activeButton === '파티장' && (
           <div>
             <MyprofileFollwer/>
+            <MypageNoticeList/>
           </div>
         )}
 
         {activeButton === '파티원' && (
           <div>
-            <h2>파티원 페이지 내용</h2>
+            <h2>파티원 페이지 내용</h2> 
+            <MypageNoticeList/>
           </div>
         )}
       </div>
