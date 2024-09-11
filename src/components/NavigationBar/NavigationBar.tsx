@@ -6,7 +6,7 @@ import { Tooltip } from 'react-tooltip';
 const NavigationBar = memo(() => {
   return (
     <nav
-      className="relative flex h-[50px] w-[360px] items-center bg-white shadow-[0px_0px_15px_0px_#0A73F926]"
+      className="fixed bottom-0 z-50 flex h-[50px] w-[360px] items-center bg-white shadow-[0px_0px_15px_0px_#0A73F926]"
       aria-label="내비게이션 메뉴"
     >
       {/* 홈 */}
