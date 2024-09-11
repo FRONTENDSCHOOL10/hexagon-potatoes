@@ -42,6 +42,7 @@ const Login = () => {
             setUsername(value as string);
           }}
           onValidChange={() => {}}
+          validateOnChange={false}
         />
         <PwdInput
           inputName="password"
@@ -49,6 +50,7 @@ const Login = () => {
             setPassword(value as string);
           }}
           onValidChange={() => {}}
+          validateOnChange={false}
         />
         <Button
           type="submit"
@@ -56,7 +58,7 @@ const Login = () => {
           isActive
           onClick={() => {}}
         />
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-errored">{error}</p>}
         <SimpleLogin />
         <LoginNavi />
         {alertVisible && (
