@@ -1,14 +1,13 @@
-interface propsType {
-  inputName: string;
-  defaultValue: string;
-  onPhoneNumberChange: (name: string) => (value: string | number) => void;
-  onValidChange: (validation: boolean) => void;
-}
-
 // zustand import
 import React, { useState, useId } from 'react';
 import { validatePhoneNumber } from '@/utils/validate';
 
+interface propsType {
+  inputName: string;
+  defaultValue?: string;
+  onPhoneNumberChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
+}
 const PhoneNumberInput = ({
   inputName,
   defaultValue,
@@ -69,12 +68,8 @@ const PhoneNumberInput = ({
         onChange={handleChangeInput}
       />
 
-      {isEnteredVal && (
-        <p
-          className={`text-xs font-normal ${isValid ? 'text-mainblue' : 'text-errored'}`}
-        >
-          {validateMessage}
-        </p>
+      {isEnteredVal && !isValid && (
+        <p className={`text-xs font-normal text-errored`}>{validateMessage}</p>
       )}
     </div>
   );

@@ -10,11 +10,10 @@ import RecommendFeed from '@/pages/Community/RecommendFeed';
 import Magazine from '@/pages/Community/Magazine';
 import Following from '@/pages/Community/Following';
 import PopularPost from '@/pages/Community/PopularPost';
+import UserTip from '@/pages/Community/UserTip';
+import PartyListPage from './pages/PartyList';
 import JoinPartyPage from './pages/JoinParty';
 import OrderDetailPage from './pages/OrderDetail';
-import UserTip from './pages/Community/UserTip';
-import PartyListPage from './pages/PartyList';
-
 
 // 동적 로딩할 컴포넌트 설정
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
@@ -32,17 +31,16 @@ const Notifications = lazy(() => import('@/pages/Notifications'));
 const WritePost = lazy(() => import('@/pages/WritePost'));
 
 // 튜토리얼 완료 상태 확인
-const isTutorialCompleted = () => {
-  return localStorage.getItem('tutorialCompleted') === 'true';
-};
-
-// 튜토리얼 완료 여부에 따른 라우트 보호
-const requireTutorial = (element: JSX.Element) => {
-  return isTutorialCompleted() ? element : <Navigate to="/tutorial" />;
-};
+const isTutorialCompleted = () =>
+  sessionStorage.getItem('tutorialCompleted') === 'true';
 
 // 로딩 중 표시할 컴포넌트
 const Loading = () => <div>로딩 중...</div>;
+
+// 공통 로딩 컴포넌트
+const SuspenseWrapper: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => <Suspense fallback={<Loading />}>{children}</Suspense>;
 
 const routes = [
   {
@@ -59,11 +57,19 @@ const routes = [
     children: [
       {
         index: true,
-        element: requireTutorial(<Login />),
+        element: (
+          <SuspenseWrapper>
+            <Login />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: 'signup',
-        element: requireTutorial(<SignUp />),
+        element: (
+          <SuspenseWrapper>
+            <SignUp />
+          </SuspenseWrapper>
+        ),
       },
     ],
   },
@@ -73,42 +79,42 @@ const routes = [
     children: [
       {
         index: true,
-        element: requireTutorial(
-          <Suspense fallback={<Loading />}>
+        element: (
+          <SuspenseWrapper>
             <HomePage />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'notifications',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <Notifications />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'chatHome',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <ChatHome />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'writepost',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <WritePost />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'community',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <Community />
-          </Suspense>
+          </SuspenseWrapper>
         ),
         children: [
           {
@@ -140,89 +146,89 @@ const routes = [
       {
         path: 'community/tip/:tipId',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <TipDetail />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'community/boast/:boastId',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <BoastDetail />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'mypage',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <MyPage />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'setting',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <Setting />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'partyCollect',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <PartyCollect />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'joinParty',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <JoinPartyPage />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'partyList',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <PartyListPage />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'orderDetail',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <OrderDetailPage />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'party/:partyId',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <PartyDetail />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'search',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <SearchPage />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
       {
         path: 'search/:keyword',
         element: (
-          <Suspense fallback={<Loading />}>
+          <SuspenseWrapper>
             <SearchResultPage />
-          </Suspense>
+          </SuspenseWrapper>
         ),
       },
     ],

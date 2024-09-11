@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CheckList from './CheckList';
 
-const AgreeTo = () => {
-  const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
+interface AgreeToProps {
+  isAllChecked: boolean;
+  onAllCheckedChange: (allChecked: boolean) => void;
+}
 
-  const handleAllCheckedChange = (isChecked: boolean) => {
-    setIsAllChecked(isChecked);
-  };
-
+const AgreeTo: React.FC<AgreeToProps> = ({
+  isAllChecked,
+  onAllCheckedChange,
+}) => {
   const terms = [
     { id: 'term1', text: '만 14세 이상입니다. (필수)' },
     { id: 'term2', text: '이용약관 (필수)' },
@@ -16,10 +18,18 @@ const AgreeTo = () => {
   ];
 
   return (
-    <div className="gap-1">
-      <h1 className="text-[.875rem] text-sm">약관 동의</h1>
-      <CheckList items={terms} onAllCheckedChange={handleAllCheckedChange} />
-      {/* <p>전체 동의 여부: {isAllChecked ? '동의 완료' : '미동의'}</p> */}
+    <div className="flex flex-col gap-2 border-t border-gray-200 p-4">
+      <h1 className="mb-2 text-lg font-semibold">약관 동의</h1>
+      <CheckList
+        items={terms}
+        onCheckChange={(checkedItems) => {
+          const allRequiredChecked = terms
+            .filter((term) => term.text.includes('(필수)'))
+            .every((term) => checkedItems.includes(term.id));
+          onAllCheckedChange(allRequiredChecked);
+        }}
+        onAllCheckedChange={onAllCheckedChange}
+      />
     </div>
   );
 };

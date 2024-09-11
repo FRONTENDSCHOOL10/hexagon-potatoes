@@ -1,6 +1,6 @@
 import React, { useState, useRef, useId } from 'react';
 
-interface PropsType {
+interface propsType {
   inputName: string;
   pwdInputVal: string;
   onConfirmedPwdChange: (name: string) => (value: string | number) => void;
@@ -12,7 +12,7 @@ const PwdConfirmInput = ({
   pwdInputVal,
   onConfirmedPwdChange,
   onValidChange,
-}: PropsType) => {
+}: propsType) => {
   const [isConfirmed, setIsConfirmed] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
@@ -21,7 +21,6 @@ const PwdConfirmInput = ({
 
   const inputId = useId();
 
-  // 비밀번호 일치 여부 확인 메시지
   const confirmedPwdMessage = isConfirmed
     ? '비밀번호가 일치 합니다.'
     : '비밀번호가 일치하지 않습니다.';
@@ -32,8 +31,9 @@ const PwdConfirmInput = ({
     }`;
 
   const checkConfirmPwd = (val: string) => {
-    setIsConfirmed(pwdInputVal === val);
-    onValidChange(pwdInputVal === val);
+    const isValid = pwdInputVal === val;
+    setIsConfirmed(isValid);
+    onValidChange(isValid);
   };
 
   const checkInputFilled = (val: string) => setIsEnteredVal(val.trim() !== '');
@@ -41,9 +41,15 @@ const PwdConfirmInput = ({
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputVal(value);
-    checkConfirmPwd(value);
     checkInputFilled(value);
-    onConfirmedPwdChange(inputName)(value);
+    // 여기서 onConfirmedPwdChange가 제대로 호출되도록 수정
+    if (onConfirmedPwdChange) {
+      onConfirmedPwdChange(inputName)(value);
+    }
+  };
+
+  const handleBlurInput = () => {
+    checkConfirmPwd(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -81,17 +87,19 @@ const PwdConfirmInput = ({
         value={inputVal}
         ref={inputRef}
         id={inputId}
-        type="password"
+        type={isShowPwd ? 'text' : 'password'}
         placeholder="비밀번호를 한번 더 입력해 주세요."
         className={inputStyle(isConfirmed)}
         name={inputName}
         onKeyDown={handlePressEnter}
         onChange={handleChangeInput}
+        onBlur={handleBlurInput}
       />
 
       {isEnteredVal && (
         <>
           <button
+            type="button"
             className="absolute right-0 top-[48px] mr-10 text-sub-2"
             onClick={toggleShowPwd}
           >
@@ -107,6 +115,7 @@ const PwdConfirmInput = ({
           </button>
 
           <button
+            type="button"
             className="absolute right-0 top-[49px] mr-5 text-sub-2"
             onClick={handleClearInput}
           >
