@@ -51,6 +51,7 @@ const TipArticleList = ({ data }: TipArticleListProps) => {
           nickname={item.expand?.author_id?.nickname} // 작성자 닉네임
           id={item.id} // 팁 식별자
           label={item.tag}
+          level={3}
         />
       ))}
     </ul>
