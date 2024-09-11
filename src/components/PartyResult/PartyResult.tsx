@@ -1,4 +1,4 @@
-import RatingStar from '../RatingStar/RatingStar';
+import RatingStar from '@/components/RatingStar/RatingStar';
 import React from "react";
 
 const PartyResult = () => {
@@ -15,8 +15,8 @@ const PartyResult = () => {
         <div className="flex flex-col items-left bg-white rounded-lg p-4 w-[10.25rem] h-[6.125rem] shadow-shadow-blue">
           <span className="text-sub1 text-gray-300">평점</span>
           <div className="flex flex-col items-left">
-            <RatingStar value={4.0} size="h-[1.2rem]" /> {/* 크기 조정 */}
-            <span className="mt-1 text-gray-700 text-lg">4.0</span>
+            <RatingStar value={4.0} size="h-[1.2rem]" />
+            <span className="mt-1 text-gray-600 text-lg">4.0</span>
           </div>
         </div>
 
