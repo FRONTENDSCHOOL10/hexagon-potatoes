@@ -9,7 +9,6 @@ const AccountDeletionPage: React.FC = () => {
       <p className="text-sub2 text-black mb-6">계정을 삭제하시는 이유를 말씀해주세요. 서비스 개선을 위한 자료로 활용하겠습니다.</p>
 
       <form className="space-y-4">
-        {/* 탈퇴 사유 */}
         <StandardInput
           type="text"
           inputName="reason"
