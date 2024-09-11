@@ -7,8 +7,11 @@ const NavigationBar = memo(() => {
   return (
     <nav
       className="fixed bottom-0 z-50 flex h-[50px] w-[360px] items-center bg-white shadow-[0px_0px_15px_0px_#0A73F926]"
-      aria-label="내비게이션 메뉴"
+      aria-labelledby="navTitle"
     >
+      <h2 id="navTitle" className="sr-only">
+        메뉴 내비게이션
+      </h2>
       {/* 홈 */}
       <NavLink
         to="/home"
@@ -18,6 +21,7 @@ const NavigationBar = memo(() => {
             isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
           }`
         }
+        aria-label="홈 페이지로 이동"
         data-tooltip-id="homeTooltip"
       >
         <span className="sr-only">홈</span>
@@ -35,6 +39,7 @@ const NavigationBar = memo(() => {
             isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
           }`
         }
+        aria-label="채팅 홈 페이지로 이동"
         data-tooltip-id="chatTooltip"
       >
         <span className="sr-only">채팅</span>
@@ -52,6 +57,7 @@ const NavigationBar = memo(() => {
             isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
           }`
         }
+        aria-label="커뮤니티 페이지로 이동"
         data-tooltip-id="communityTooltip"
       >
         <span className="sr-only">커뮤니티</span>
@@ -69,6 +75,7 @@ const NavigationBar = memo(() => {
             isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
           }`
         }
+        aria-label="마이페이지로 이동"
         data-tooltip-id="mypageTooltip"
       >
         <span className="sr-only">마이페이지</span>
