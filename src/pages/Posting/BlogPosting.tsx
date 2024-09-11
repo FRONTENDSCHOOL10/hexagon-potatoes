@@ -56,7 +56,7 @@ const BlogPosting = ({ item }: PropTypes) => {
   return (
     <article className="mb-[2.56rem] flex flex-col pb-[0.75rem]">
       <header className="flex min-h-[11.38rem] flex-col bg-[#D9D9D9] px-[0.75rem] pb-[0.62rem] pt-[2.81rem] [box-shadow:0px_0px_6px_0px_rgba(0,_0,_0,_0.12)]">
-        <h1 className="mb-[0.38rem] text-h1 text-black">{item.title}</h1>
+        <h2 className="mb-[0.38rem] text-h1 text-black">{item.title}</h2>
         {/* 아래 날짜 들어와야됌 */}
         <time
           aria-label="작성날짜"
