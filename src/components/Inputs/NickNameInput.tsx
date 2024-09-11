@@ -3,20 +3,45 @@ import React, { useState, useId } from 'react';
 import { validateNickname } from '@/utils/validate';
 
 interface propsType {
-  labelFor: string;
-  inputId: string;
   inputName: string;
+  defaultValue: string;
+  onNickNameChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
 }
 
-const NicknameInput = ({ inputName }: propsType) => {
-  const [isValidation, setIsValidation] = useState(true);
+const NicknameInput = ({
+  inputName,
+  defaultValue,
+  onNickNameChange,
+  onValidChange,
+}: propsType) => {
+  const [isValid, setIsValid] = useState(true);
+  const [isEnteredVal, setIsEnteredVal] = useState(false);
+  const [inputVal, setInputVal] = useState('');
   const inputId = useId();
-  
-  const validateMessage = !isValidation ? '이미 존재하는 닉네임 입니다.':'사용할 수 있는 닉네임 입니다.';
 
-  const validateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const inputStyle = (isValid: boolean) =>
+    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored'}`;
+
+  const validateMessage = !isValid
+    ? '사용할 수 없는 닉네임 입니다.'
+    : '사용할 수 있는 닉네임 입니다.';
+
+  const validateInputVal = (val: string) => {
+    setIsValid(validateNickname(val));
+    onValidChange(validateNickname(val));
+  };
+
+  const checkInputFilled = (val: string) => {
+    val.trim() !== '' ? setIsEnteredVal(true) : setIsEnteredVal(false);
+  };
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
-    setIsValidation(validateNickname(inputVal));
+    setInputVal(inputVal);
+    validateInputVal(inputVal);
+    checkInputFilled(inputVal);
+    onNickNameChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -26,21 +51,34 @@ const NicknameInput = ({ inputName }: propsType) => {
   };
 
   return (
-    <div role='group'>
-      <label htmlFor={inputId}>닉네임</label>
+    <div
+      role="group"
+      aria-label="닉네임 입력 필드"
+      className="flex flex-col gap-y-1"
+    >
+      <label className="text-sub-2" htmlFor={inputId}>
+        닉네임
+      </label>
       <input
         id={inputId}
         type="text"
-        defaultValue=""
+        value={inputVal}
+        defaultValue={defaultValue}
+        className={inputStyle(isValid)}
         placeholder="닉네임을 입력해 주세요."
-        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
-        className={isValidation?"":""}
         name={inputName}
         onKeyDown={handlePressEnter}
-        onChange={validateInputVal}
+        onChange={handleChangeInput}
       />
       {/* 이미 있는 닉네임일 경우 안내 문구 뜨게 */}
-      <p>{validateMessage}</p>
+
+      {isEnteredVal && (
+        <p
+          className={`text-xs font-normal ${isValid ? 'text-mainblue' : 'text-errored'}`}
+        >
+          {validateMessage}
+        </p>
+      )}
     </div>
   );
 };

@@ -1,22 +1,45 @@
+interface propsType {
+  inputName: string;
+  defaultValue: string;
+  onPhoneNumberChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
+}
+
 // zustand import
 import React, { useState, useId } from 'react';
 import { validatePhoneNumber } from '@/utils/validate';
 
-interface propsType {
-  labelFor: string;
-  inputId: string;
-  inputName: string;
-}
-
-const PhoneNumberInput = ({ inputName }: propsType) => {
-  const [isValidation, setIsValidation] = useState(true);
+const PhoneNumberInput = ({
+  inputName,
+  defaultValue,
+  onPhoneNumberChange,
+  onValidChange,
+}: propsType) => {
+  const [isValid, setIsValid] = useState(true);
+  const [isEnteredVal, setIsEnteredVal] = useState(false);
+  const [inputVal, setInputVal] = useState('');
   const inputId = useId();
-  
+
+  const inputStyle = (isValid: boolean) =>
+    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored'}`;
+
   const validateMessage = '휴대폰 번호를 올바르게 입력해 주세요.';
 
-  const handleValidateInputVal = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const validateInputVal = (val: string) => {
+    setIsValid(validatePhoneNumber(val));
+    onValidChange(validatePhoneNumber(val));
+  };
+
+  const checkInputFilled = (val: string) => {
+    val.trim() !== '' ? setIsEnteredVal(true) : setIsEnteredVal(false);
+  };
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
-    setIsValidation(validatePhoneNumber(inputVal));
+    setInputVal(inputVal);
+    validateInputVal(inputVal);
+    checkInputFilled(inputVal);
+    onPhoneNumberChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -26,20 +49,33 @@ const PhoneNumberInput = ({ inputName }: propsType) => {
   };
 
   return (
-    <div role='group'>
-      <label htmlFor={inputId}>휴대폰 번호</label>
+    <div
+      role="group"
+      aria-label="휴대폰 번호 입력 필드"
+      className="flex flex-col gap-y-1"
+    >
+      <label className="text-sub-2" htmlFor={inputId}>
+        휴대폰 번호
+      </label>
       <input
         id={inputId}
         type="tel"
-        defaultValue=""
+        value={inputVal}
         placeholder="휴대폰 번호를 입력해 주세요."
-        // 혹은 style을 따로 빼서 지정해도 될 것 같다.
-        className={isValidation?"":""}
+        defaultValue={defaultValue}
+        className={inputStyle(isValid)}
         name={inputName}
         onKeyDown={handlePressEnter}
-        onChange={handleValidateInputVal}
+        onChange={handleChangeInput}
       />
-      {!isValidation && <p>{validateMessage}</p>}
+
+      {isEnteredVal && (
+        <p
+          className={`text-xs font-normal ${isValid ? 'text-mainblue' : 'text-errored'}`}
+        >
+          {validateMessage}
+        </p>
+      )}
     </div>
   );
 };
