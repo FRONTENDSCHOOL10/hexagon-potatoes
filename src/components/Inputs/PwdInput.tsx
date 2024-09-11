@@ -1,12 +1,19 @@
+import { useRef, useState, useId } from 'react';
+import { validatePwd } from '@/utils/validate';
+
 interface propsType {
   inputName: string;
   onPwdChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
+  validateOnChange?: boolean;
 }
-import { useRef, useState, useId } from 'react';
-import { validatePwd } from '@/utils/validate';
 
-const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
+const PwdInput = ({
+  onValidChange,
+  inputName,
+  onPwdChange,
+  validateOnChange = true,
+}: propsType) => {
   const [isValid, setIsValid] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
@@ -30,7 +37,9 @@ const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
     setInputVal(inputVal);
-    validateInputVal(inputVal);
+    if (validateOnChange) {
+      validateInputVal(inputVal);
+    }
     checkInputFilled(inputVal);
     onPwdChange(inputName)(inputVal);
   };
@@ -71,17 +80,19 @@ const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
           value={inputVal}
           id={pwdInputId}
           type="password"
-          defaultValue=""
+          // defaultValue=""
           placeholder="비밀번호를 입력해 주세요."
           className={inputStyle(isValid)}
           name={inputName}
           onKeyDown={handlePressEnter}
           onChange={handleChangeInput}
+          autoComplete="new-password"
         />
 
         {isEnteredVal && (
           <>
             <button
+              type="button"
               className="absolute right-0 top-[48px] mr-10 text-sub-2"
               onClick={() => handleShowPwd(inputRef)}
             >
@@ -96,6 +107,7 @@ const PwdInput = ({ onValidChange, inputName, onPwdChange }: propsType) => {
               </svg>
             </button>
             <button
+              type="button"
               className="absolute right-0 top-[49px] mr-5 text-sub-2"
               onClick={handleDeleteInputVal}
             >

@@ -1,48 +1,54 @@
-interface propsType {
-  inputName: string;
-  defaultValue: string;
-  onIdChange: (name: string) => (value: string | number) => void;
-  onValidChange: (validation: boolean) => void;
-}
-// zustand import
 import React, { useState, useId } from 'react';
 import { validateId } from '@/utils/validate';
 
-const IdInput = ({
-  onValidChange,
+interface propsType {
+  inputName: string;
+  defaultValue?: string;
+  onIdChange: (name: string) => (value: string | number) => void;
+  onValidChange: (validation: boolean) => void;
+  validateOnChange?: boolean; // 추가: 실시간 검증 여부를 결정
+}
+
+const IdInput: React.FC<propsType> = ({
   inputName,
   defaultValue,
   onIdChange,
-}: propsType) => {
+  onValidChange,
+  validateOnChange = true, // 기본값: true
+}) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
-  const [inputVal, setInputVal] = useState('');
+  const [inputVal, setInputVal] = useState(defaultValue || '');
   const inputId = useId();
 
   const inputStyle = (isValid: boolean) =>
     `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored'}`;
 
+  // Validation message based on validity
   const validateMessage = !isValid
     ? '사용할 수 없는 아이디입니다.'
-    : '사용가능한 아이디 입니다.';
-
-  // 이미 존재하는 아이디임을 확인도 해야함.
+    : '사용가능한 아이디입니다.';
 
   const validateInputVal = (val: string) => {
-    setIsValid(validateId(val));
-    onValidChange(validateId(val));
+    const isValidInput = validateId(val);
+    setIsValid(isValidInput);
+    onValidChange(isValidInput);
   };
 
   const checkInputFilled = (val: string) => {
-    val.trim() !== '' ? setIsEnteredVal(true) : setIsEnteredVal(false);
+    setIsEnteredVal(val.trim() !== '');
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputVal = e.target.value;
-    setInputVal(inputVal);
-    validateInputVal(inputVal);
-    checkInputFilled(inputVal);
-    onIdChange(inputName)(inputVal);
+    const value = e.target.value;
+    setInputVal(value);
+    checkInputFilled(value);
+
+    if (validateOnChange) {
+      validateInputVal(value);
+    }
+
+    onIdChange(inputName)(value);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -71,13 +77,8 @@ const IdInput = ({
         onKeyDown={handlePressEnter}
         onChange={handleChangeInput}
       />
-
-      {isEnteredVal && (
-        <p
-          className={`text-xs font-normal ${isValid ? 'text-mainblue' : 'text-errored'}`}
-        >
-          {validateMessage}
-        </p>
+      {validateOnChange && isEnteredVal && !isValid && (
+        <p className="text-xs font-normal text-errored">{validateMessage}</p>
       )}
     </div>
   );

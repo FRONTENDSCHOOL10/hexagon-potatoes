@@ -11,9 +11,6 @@ const getPbImageURL = (
   item: PocketBaseItem,
   fileName: string = 'photo'
 ): string => {
-  if (!item[fileName]) {
-    throw new Error(`Item does not have a '${fileName}' field`);
-  }
   return `${url}/api/files/${item.collectionId}/${item.id}/${item[fileName]}`;
 };
 

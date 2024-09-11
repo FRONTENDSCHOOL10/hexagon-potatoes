@@ -61,7 +61,7 @@ const InstaPosting = ({ item }: InstaPostingProp) => {
               ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
               : null
           }
-          type="viewParty"
+          type="followingText"
         />
       )}
       {item.photo && (

@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import {
   Pagination,
   Navigation,
-  Swiper as SwiperType,
   Keyboard,
+  Swiper as SwiperType,
 } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Button from '@/components/Buttons/Button';
 
-// 튜토리얼 슬라이드 정의
+// 튜토리얼 슬라이드 데이터
 const TUTORIAL_SLIDES = [
   {
     image: '/assets/landing-1.webp',
@@ -51,22 +51,20 @@ const TUTORIAL_SLIDES = [
   },
 ];
 
-// 나중에 조건처리해서 튜토리얼 보여주는 조건을 만들면 좋을 것 같아서 넣어봄
+// 세션 스토리지에 튜토리얼 완료 상태 저장
 const saveTutorialCompletion = () => {
   try {
-    localStorage.setItem('tutorialCompleted', 'true');
+    sessionStorage.setItem('tutorialCompleted', 'true');
   } catch (error) {
     console.error('Failed to save tutorial completion status:', error);
   }
 };
 
-// 마지막 슬라이드, 첫번째 슬라이드 구분
-const isFirstSlide = (swiper: SwiperType): boolean => swiper.activeIndex === 0;
-const isLastSlide = (swiper: SwiperType): boolean =>
-  swiper.activeIndex === swiper.slides.length - 1;
+// 세션 스토리지에서 튜토리얼 완료 상태 확인
+const isTutorialCompleted = () =>
+  sessionStorage.getItem('tutorialCompleted') === 'true';
 
-// 두번째 (튜토리얼 1페이지) 부터 건너뛰기 보이게
-// 마지막 페이지에서는 시작하기 버튼 보이게 + 페이지네이션 안 보이게
+// 슬라이드 변경 시 상태 업데이트 훅
 const useSlideChangeEffect = (
   swiperRef: React.RefObject<SwiperType>,
   setShowStartButton: React.Dispatch<React.SetStateAction<boolean>>,
@@ -76,8 +74,9 @@ const useSlideChangeEffect = (
   const handleSlideChange = useCallback(() => {
     if (swiperRef.current) {
       const swiper = swiperRef.current.swiper;
-      const firstSlide = isFirstSlide(swiper);
-      const lastSlide = isLastSlide(swiper);
+      const firstSlide = swiper.activeIndex === 0;
+      const lastSlide = swiper.activeIndex === swiper.slides.length - 1;
+
       setShowStartButton(lastSlide);
       setShowSkipButton(!lastSlide && !firstSlide);
       setShowPagination(!lastSlide);
@@ -94,7 +93,7 @@ const useSlideChangeEffect = (
   }, [swiperRef, handleSlideChange]);
 };
 
-// TutorialSlide 컴포넌트
+// 튜토리얼 슬라이드 컴포넌트
 const TutorialSlide: React.FC<{
   image: string;
   alt: string;
@@ -117,13 +116,18 @@ const TutorialSlide: React.FC<{
   </div>
 );
 
-// Tutorial 컴포넌트
 const Tutorial = () => {
   const navigate = useNavigate();
   const swiperRef = useRef<SwiperType | null>(null);
   const [showSkipButton, setShowSkipButton] = useState(false);
   const [showStartButton, setShowStartButton] = useState(false);
   const [showPagination, setShowPagination] = useState(true);
+
+  useEffect(() => {
+    if (isTutorialCompleted()) {
+      navigate('/', { replace: true });
+    }
+  }, [navigate]);
 
   useSlideChangeEffect(
     swiperRef,
@@ -132,10 +136,10 @@ const Tutorial = () => {
     setShowPagination
   );
 
-  const handleCompleteTutorial = () => {
+  const handleCompleteTutorial = useCallback(() => {
     saveTutorialCompletion();
     navigate('/');
-  };
+  }, [navigate]);
 
   return (
     <div className="relative flex justify-center">
@@ -167,6 +171,7 @@ const Tutorial = () => {
             buttonContent="시작하기"
             isActive={true}
             onClick={handleCompleteTutorial}
+            type={'button'}
           />
         </div>
       )}

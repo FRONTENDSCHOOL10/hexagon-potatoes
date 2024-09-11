@@ -57,7 +57,7 @@ const Article = ({
         <img
           src={content_img} // 아티클의 이미지
           alt={type === 'party' ? '파티 이미지' : '팁 이미지'} // 이미지에 대한 대체 텍스트
-          className="h-28 w-20 object-cover"
+          className="h-28 w-20 rounded-lg object-cover"
         />
         <div role="group">
           <span aria-label="제목" className="text-sub-1">

@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SwiperSlide, Swiper } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination'; // Ensure you import pagination CSS
 
 import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
-import SelectCountryButton from '../components/Buttons/SelectCountryButton';
-import PartyLeaderList from '../components/Lists/ParyLeaderList';
-import PartyLeader from '../components/Lists/PartyLeader';
-import PostingCard from '../components/PostingCard/PostingCard';
+import SelectCountryButton from '@/components/Buttons/SelectCountryButton';
+import PartyLeader from '@/components/Lists/PartyLeader';
+import PostingCard from '@/components/PostingCard/PostingCard';
 import Article from '@/components/Lists/Article';
-import GoSearch from '../components/SearchBar/GoSearch';
+import GoSearch from '@/components/SearchBar/GoSearch';
 import NameCard from '@/components/NameCard/NameCard';
+import getTipRandom from '@/api/getTipRandom';
 
 const HomePage = () => {
+  const [randomTip, setRandomTip] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchRandomTip = async () => {
+      try {
+        const tip = await getTipRandom();
+        setRandomTip(tip);
+      } catch (error) {
+        console.error('Failed to fetch random tip:', error);
+      }
+    };
+
+    fetchRandomTip();
+  }, []);
+
   return (
     <div className="space-y-[12px] px-3">
       <GoSearch />
@@ -22,7 +36,6 @@ const HomePage = () => {
         <h1 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           매거진
         </h1>
-        {/* 매거진 관련 내용 */}
         <Swiper
           className="mySwiper"
           modules={[Navigation]}
@@ -98,7 +111,6 @@ const HomePage = () => {
         </div>
       </section>
       <section>
-        {/* 우수 파티장 별점 높은 애들 중 랜덤으로 한명만 보이게 할까 */}
         <h1 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           이달의 우수 파티장
         </h1>
@@ -141,15 +153,19 @@ const HomePage = () => {
           유저들의 팁
         </h1>
         <div>
-          <Article
-            party_name={''}
-            partyImg={'/assets/shipmatelogo.png'}
-            partyImgAlt={''}
-            party_about={''}
-            profile_photo={'/assets/shipmatelogo.png'}
-            leaderImgAlt={''}
-            nickname={''}
-          />
+          {randomTip ? (
+            <Article
+              type={randomTip.type}
+              content_title={randomTip.title}
+              content_img={randomTip.photo}
+              subtitle={randomTip.content}
+              profile_photo={randomTip.author_photo}
+              nickname={randomTip.author_nickname}
+              id={randomTip.id}
+            />
+          ) : (
+            ''
+          )}
         </div>
       </section>
     </div>
