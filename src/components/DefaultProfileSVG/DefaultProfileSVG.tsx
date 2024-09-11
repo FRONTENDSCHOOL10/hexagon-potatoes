@@ -3,10 +3,11 @@ const DefaultProfileSVG = ({ size }: { size: number }): JSX.Element => {
   return (
     <svg
       role="img"
+      className="flex-shrink-0"
       width={size}
       height={size}
       viewBox={`0 0 ${size} ${size}`}
-      aria-label="기본 프로필 사진"
+      aria-label="기본 프로필"
     >
       <use
         width={size}

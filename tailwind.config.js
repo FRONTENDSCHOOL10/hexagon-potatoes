@@ -84,9 +84,27 @@ module.exports = {
             fontWeight: 'var(--caption-font-weight)',
           },
         ],
-        'heading-1': 'var(--heading-1-font-size)',
-        'sub-1': 'var(--sub-1-font-size)',
-        'sub-2': 'var(--sub-2-font-size)',
+        'heading-1': [
+          'var(--heading-1-font-size)',
+          {
+            lineHeight: 'var(--heading-1-line-height)',
+            fontWeight: 'var(--heading-1-font-weight)',
+          },
+        ],
+        'sub-1': [
+          'var(--sub-1-font-size)',
+          {
+            lineHeight: 'var(--sub-1-line-height)',
+            fontWeight: 'var(--sub-1-font-weight)',
+          },
+        ],
+        'sub-2': [
+          'var(--sub-2-font-size)',
+          {
+            lineHeight: 'var(--sub-2-line-height)',
+            fontWeight: 'var(--sub-2-font-weight)',
+          },
+        ],
       },
       boxShadow: {
         'shadow-blue': 'var(--shadow-blue)',

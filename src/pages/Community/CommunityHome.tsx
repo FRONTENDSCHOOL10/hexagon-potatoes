@@ -1,4 +1,3 @@
-import { getTip } from '@/api/getTip';
 import TipArticleList from '@/components/Lists/TipArticleList';
 import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 import useFetch from '@/hooks/useFetch';
@@ -21,27 +20,27 @@ const CommunityHome = () => {
     error: boastError,
     data: boastData,
   } = useFetch(boastUrl, 'author_id');
-  console.log(tipData?.items);
+  // console.log(tipData?.items);
 
   const tipDatas = tipData?.items;
   const boastDatas = boastData?.items;
-  console.log(boastDatas);
+  // console.log(boastDatas);
   return (
     <>
-      <section className="mb-3 flex flex-col items-center justify-center gap-2 self-stretch px-3 py-[0rem]">
-        <h1 className="text-heading-1 self-stretch pt-3 text-[black]">
+      <section className="mb-3 flex w-[22.5rem] flex-col items-center justify-center gap-2 self-stretch px-3 py-[0rem]">
+        <h2 className="self-stretch pt-3 text-heading-1 text-[black]">
           유저들의 팁
-        </h1>
+        </h2>
         <TipArticleList data={tipDatas} />
       </section>
       <section className="flex w-[22.5rem] flex-col items-center justify-center gap-2 p-3">
-        <h1 className="text-heading-1 self-stretch pt-3 text-[black]">
+        <h2 className="self-stretch pt-3 text-heading-1 text-[black]">
           유저들의 자랑
-        </h1>
+        </h2>
         <div className="flex h-[14.8125rem] w-[22.5rem] items-center justify-center gap-3">
           {boastDatas
             ?.slice(0, 2)
-            .map((d) => (
+            .map((d: any) => (
               <MiniPostingCard
                 key={d?.id}
                 id={d?.id}

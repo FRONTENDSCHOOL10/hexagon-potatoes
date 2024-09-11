@@ -1,6 +1,44 @@
+import LabelList from '@/components/Label/LabelList';
+import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
+import { formatDateLong, formatDateString } from '@/utils/dateFormatter';
+import getPbImageURL from '@/utils/getPbImageURL';
 
-const BlogPosting = ({ item }) => {
+interface PocketBaseRecord {
+  id: string;
+  created: string;
+  updated: string;
+  collectionId: string;
+  collectionName: string;
+  [key: string]: any;
+}
+
+// InstaPosting 아이템의 타입 정의
+interface InstaPostingItem extends PocketBaseRecord {
+  photo: string;
+  content: string;
+  expand: {
+    author_id: {
+      id: string;
+      profile_photo: string;
+      nickname: string;
+      collectionId: string;
+      user_email: string;
+    };
+  };
+}
+
+// 컴포넌트 props 타입 정의
+interface PropTypes {
+  item: InstaPostingItem;
+}
+
+const BlogPosting = ({ item }: PropTypes) => {
+  const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
+  if (!item) return null;
+  const authorId = item.expand?.author_id;
+  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+
   const handleLike = () => {
     // 좋아요 처리 로직
     console.log('좋아요 클릭');
@@ -18,37 +56,45 @@ const BlogPosting = ({ item }) => {
   return (
     <article className="mb-[2.56rem] flex flex-col pb-[0.75rem]">
       <header className="flex min-h-[11.38rem] flex-col bg-[#D9D9D9] px-[0.75rem] pb-[0.62rem] pt-[2.81rem] [box-shadow:0px_0px_6px_0px_rgba(0,_0,_0,_0.12)]">
-        <h1 className="mb-[0.38rem] text-h1 text-black">title</h1>
+        <h2 className="mb-[0.38rem] text-h1 text-black">{item.title}</h2>
         {/* 아래 날짜 들어와야됌 */}
         <time
           aria-label="작성날짜"
-          className="text-sub-2 mb-[1.31rem] h-[1.0625rem] font-light leading-[1.0625rem] text-gray-300"
-          dateTime=""
+          className="mb-[1.31rem] h-[1.0625rem] text-sub-2 font-light leading-[1.0625rem] text-gray-300"
+          dateTime={formatDateString(item.created)}
         >
-          year. mm. nn 00:00
+          {formatDateLong(item.created)}
         </time>
-        {/* 아래 네임카드 들어와야됌 */}
-        <div className="h-[2.5rem] w-[21rem] px-[0.75rem]"></div>
+        <NameCard
+          name={authorId.nickname}
+          subtext={authorId.user_email}
+          profileImg={
+            authorId.profile_photo
+              ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
+              : null
+          }
+          type={'followingText'}
+          id={''}
+        />
       </header>
+
       <div className="flex flex-col gap-3 px-[0.75rem]">
-        <ul className="flex h-[1.38rem] w-[21rem] items-start gap-3 self-stretch">
-          {/* 여기도 라벨 컴포넌트 가져다가 쓰면됌 */}
-        </ul>
-        {/* 텍스트 컨텐츠 어떻게 만들지 유진님이랑 상의 */}
-        <p className="text-body-2">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita ea
-          quo sit, blanditiis placeat qui animi porro ipsa autem hic modi optio
-          aspernatur, suscipit, deleniti distinctio nihil consequuntur vitae
-          exercitationem! Lorem ipsum dolor sit amet consectetur adipisicing
-          elit. Expedita ea quo sit, blanditiis placeat qui animi porro ipsa
-          autem hic modi optio aspernatur, suscipit, deleniti distinctio nihil
-          consequuntur vitae exercitationem!
-        </p>
+        <LabelList data={item.tag} />
+        {item.photo && (
+          <img
+            className="w-[21rem] object-cover object-center"
+            // 이미지 높이값 따로 안정함
+            src={getPbImageURL(ENDPOINT, item)}
+            alt="게시물" //적절한 alt 속성값을 찾지 못함
+          />
+        )}
+        <p className="text-body-2">{item.content}</p>
         <PostActionBar
           postId={item.id}
           onLike={handleLike}
           onBookmark={handleBookmark}
           onShare={handleShare}
+          date={item.created}
         />
       </div>
     </article>

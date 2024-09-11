@@ -2,7 +2,7 @@
 interface PocketBaseItem {
   collectionId: string;
   id: string;
-  [key: string]: string; // 추가 필드를 위한 인덱스 시그니처
+  [key: string]: any; // 추가 필드를 위한 인덱스 시그니처
 }
 
 // 매개변수는 포켓호스트 URL, 처리해줄 record id, fileName(기본값 photo)
