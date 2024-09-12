@@ -12,7 +12,7 @@ const NavigationBar = memo(() => {
 
   return (
     <nav
-      className="full relative bottom-0 z-50 flex h-[50px] w-[360px] items-center bg-white shadow-[0px_0px_15px_0px_#0A73F926]"
+      className="full fixed bottom-0 z-50 flex h-[50px] w-[360px] items-center bg-white shadow-[0px_0px_15px_0px_#0A73F926]"
       aria-labelledby="navTitle"
     >
       <h2 id="navTitle" className="sr-only">
