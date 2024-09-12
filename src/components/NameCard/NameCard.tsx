@@ -68,14 +68,14 @@ const NameCard = ({ name, subtext, profileImg, type, id }: NameCardProps) => {
     <div className="flex h-[2.5rem] w-[21rem] items-start justify-center gap-3">
       {profileImg ? (
         <img
-          className="h-[2.5rem] w-[2.5rem] rounded-full object-cover"
+          className="h-[2.5rem] w-[2.5rem] flex-shrink-0 overflow-hidden rounded-full object-cover"
           src={profileImg}
           alt="프로필"
         />
       ) : (
-        <span className="h-[2.5rem] w-[2.5rem]">
+        <>
           <DefaultProfileSVG size={40} />
-        </span>
+        </>
       )}
       <div className="flex w-[17.75rem] flex-col gap-1">
         <span className="text-body-1" aria-label="사용자 닉네임">

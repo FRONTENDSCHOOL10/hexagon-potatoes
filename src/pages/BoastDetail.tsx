@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import InstaPosting from '@/pages/Posting/InstaPosting';
 import useFetch from '@/hooks/useFetch';
