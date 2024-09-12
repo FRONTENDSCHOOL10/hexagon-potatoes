@@ -1,14 +1,11 @@
 import { NavLink } from 'react-router-dom';
 
-interface CommunityNavListProp {
+interface PropTypes {
   children: string;
   path: string;
 }
 
-const CommunityNavList = ({
-  path,
-  children,
-}: CommunityNavListProp): JSX.Element => {
+const CommunityNavList = ({ path, children }: PropTypes) => {
   return (
     <li className="text-body-1 text-gray-600">
       <NavLink

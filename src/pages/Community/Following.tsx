@@ -1,10 +1,10 @@
 import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 
-function Following() {
+const Following = () => {
   return (
     <>
       <section className="mb-3 flex flex-col items-center justify-center gap-2 self-stretch px-3 py-[0rem]">
-        <h1 className="text-heading-1 self-stretch pt-3 text-[black]">
+        <h1 className="self-stretch pt-3 text-heading-1 text-[black]">
           유저들의 팁
         </h1>
         <div className="flex h-[8.3125rem] w-[21rem] items-start justify-center gap-3 border-b border-solid border-gray-200 px-[0rem] py-2"></div>
@@ -12,7 +12,7 @@ function Following() {
         <div className="flex h-[8.3125rem] w-[21rem] items-start justify-center gap-3 border-b border-solid border-gray-200 px-[0rem] py-2"></div>
       </section>
       <section className="flex w-[22.5rem] flex-col items-center justify-center gap-2 p-3">
-        <h1 className="text-heading-1 self-stretch pt-3 text-[black]">
+        <h1 className="self-stretch pt-3 text-heading-1 text-[black]">
           유저들의 자랑
         </h1>
         <div className="flex h-[14.8125rem] w-[22.5rem] items-center justify-center gap-3">
@@ -32,6 +32,6 @@ function Following() {
       </section>
     </>
   );
-}
+};
 
 export default Following;

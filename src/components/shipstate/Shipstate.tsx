@@ -1,10 +1,30 @@
-interface ShipstatPropsType {
+interface PropTypes {
   step: 0 | 1 | 2 | 3 | 4;
 }
 
-const Shipstate = ({ step }: ShipstatPropsType) => {
+const Shipstate = ({ step }: PropTypes) => {
+  const getAriaLabel = (step: number) => {
+    switch (step) {
+      case 0:
+        return '발송완료';
+      case 1:
+        return '통관중';
+      case 2:
+        return '국내 도착';
+      case 3:
+        return '배송 중';
+      case 4:
+        return '배송 완료';
+      default:
+        return '배송 상태';
+    }
+  };
+
   return (
-    <div className="flex h-[3.0625rem] w-full flex-col gap-[0.625rem]">
+    <div
+      aria-label={`현재 배송상태는 ${getAriaLabel(step)} 입니다`}
+      className="flex h-[3.0625rem] w-full flex-col gap-[0.625rem]"
+    >
       <div
         role="progressbar"
         aria-valuemin={0}

@@ -2,7 +2,7 @@ import { formatDateShort, formatDateString } from '@/utils/dateFormatter';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
-interface PostActionBarProps {
+interface PropTypes {
   postId: string | number;
   onLike: () => void;
   onBookmark: () => void;
@@ -16,7 +16,7 @@ const PostActionBar = ({
   onBookmark,
   onShare,
   date,
-}: PostActionBarProps) => {
+}: PropTypes) => {
   return (
     <>
       <div className="font-[Pretendard] text-[0.75rem] font-normal not-italic leading-[1.0625rem] text-[#626871]">
@@ -113,7 +113,15 @@ const PostActionBar = ({
             />
           </svg>{' '}
         </button>
-        <Tooltip id="my-tooltip" />
+        <Tooltip
+          id="my-tooltip"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
+        />
       </div>
     </>
   );

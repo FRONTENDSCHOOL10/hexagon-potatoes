@@ -40,7 +40,7 @@ const RecommendFeed = () => {
 
   return (
     <ul className="flex flex-row flex-wrap gap-x-2 gap-y-3 px-[0.69rem] pb-[1.94rem] pt-[0.75rem]">
-      {data.map((item) => (
+      {data.map((item: any) => (
         <SquarePostingCard key={item.id} data={item} />
       ))}
     </ul>

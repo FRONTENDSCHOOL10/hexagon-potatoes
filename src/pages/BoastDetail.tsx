@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import InstaPosting from '@/pages/Posting/InstaPosting';
 import useFetch from '@/hooks/useFetch';
 
-const BoastDetail = (): JSX.Element => {
+const BoastDetail = () => {
   const { boastId } = useParams();
   const ENDPOINT = `https://hexagon-potatoes.pockethost.io/api/collections/posting/records/${boastId}`;
 

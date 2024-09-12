@@ -1,19 +1,14 @@
 import { Link } from 'react-router-dom';
 import defaultTipImageSrc from '/assets/shipmatelogo.png';
 
-interface MiniPostingCardProp {
+interface PropTypes {
   nickname: string;
   content: string;
   id: string;
   photo: string;
 }
 
-const MiniPostingCard = ({
-  nickname,
-  content,
-  id,
-  photo,
-}: MiniPostingCardProp) => {
+const MiniPostingCard = ({ nickname, content, id, photo }: PropTypes) => {
   const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
 
   return (
@@ -32,7 +27,7 @@ const MiniPostingCard = ({
           <p className="text-caption text-gray-300">{nickname}</p>
           <h3
             id={`post-title-${id}`}
-            className="text-sub-1 w-full overflow-hidden text-ellipsis whitespace-nowrap leading-[1.18rem] text-black"
+            className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-sub-1 leading-[1.18rem] text-black"
           >
             {content}
           </h3>

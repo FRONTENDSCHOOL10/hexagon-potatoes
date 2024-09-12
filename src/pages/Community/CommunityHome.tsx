@@ -2,7 +2,6 @@ import TipArticleList from '@/components/Lists/TipArticleList';
 import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 import useFetch from '@/hooks/useFetch';
 import getPbImageURL from '@/utils/getPbImageURL';
-import { useEffect } from 'react';
 
 const CommunityHome = () => {
   const ENDPOINT = `https://hexagon-potatoes.pockethost.io`;

@@ -1,16 +1,11 @@
-interface MagazineProp {
+interface PropTypes {
   title?: string;
   label: string;
   content: string;
   img?: string;
 }
 
-const Magazine = ({
-  title,
-  label,
-  content,
-  img,
-}: MagazineProp): JSX.Element => {
+const Magazine = ({ title, label, content, img }: PropTypes) => {
   return (
     <article
       style={{ background: `url(${img}) lightgray 50% / cover no-repeat` }}

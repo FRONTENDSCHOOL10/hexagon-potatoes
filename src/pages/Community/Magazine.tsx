@@ -1,7 +1,7 @@
 import useFetch from '@/hooks/useFetch';
 import BlogPosting from '../Posting/BlogPosting';
 
-function Magazine() {
+const Magazine = () => {
   const ENDPOINT = `https://hexagon-potatoes.pockethost.io/api/collections/tip/records`;
 
   const { error, status, data } = useFetch(ENDPOINT, 'author_id');
@@ -16,7 +16,7 @@ function Magazine() {
     return <div>No data available</div>;
   }
 
-  return <>{tipData?.map((d) => <BlogPosting key={d.id} item={d} />)}</>;
-}
+  return <>{tipData?.map((d: any) => <BlogPosting key={d.id} item={d} />)}</>;
+};
 
 export default Magazine;

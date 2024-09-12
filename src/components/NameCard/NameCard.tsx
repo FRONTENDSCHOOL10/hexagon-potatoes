@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 import MiniButton from '../Buttons/MiniButton';
 
-interface NameCardProps {
+interface PropTypes {
   name: string;
   subtext?: string;
   profileImg?: string | null;
@@ -15,7 +15,7 @@ interface NameCardProps {
   id?: string;
 }
 
-const NameCard = ({ name, subtext, profileImg, type, id }: NameCardProps) => {
+const NameCard = ({ name, subtext, profileImg, type, id }: PropTypes) => {
   const handleFollowing = () => {
     console.log('팔로우');
     // 팔로우 눌렀을 때 로직 설정

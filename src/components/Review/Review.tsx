@@ -1,7 +1,7 @@
 import RatingStar from '@/components/RatingStar/RatingStar';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 
-interface ReviewProp {
+interface PropTypes {
   user: string;
   content: string;
   date: string;
@@ -10,13 +10,7 @@ interface ReviewProp {
 }
 
 //리뷰 DB에서 유저 닉네임, 프로필 이미지, 후기내용, 작성날짜, 평점 가져오면될듯
-const Review = ({
-  user,
-  profileImg,
-  content,
-  date,
-  starRate,
-}: ReviewProp): JSX.Element => {
+const Review = ({ user, profileImg, content, date, starRate }: PropTypes) => {
   return (
     <article
       aria-label="사용자후기"
@@ -31,7 +25,7 @@ const Review = ({
             <img className="mr-1.5 h-6 w-6" src={profileImg} alt="프로필" />
           ) : (
             <span className="mr-1.5 h-6 w-6">
-              <DefaultProfileSVG />
+              <DefaultProfileSVG size={24} />
             </span>
           )}{' '}
           {user}

@@ -2,7 +2,7 @@ import Article from './Article';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 import getPbImageURL from '@/utils/getPbImageURL';
 
-interface TipArticleListProps {
+interface PropTypes {
   data: {
     type: 'tip'; // 항상 'tip'으로 설정
     title: string; // 팁 제목
@@ -25,7 +25,7 @@ interface TipArticleListProps {
   }[];
 }
 
-const TipArticleList = ({ data }: TipArticleListProps) => {
+const TipArticleList = ({ data }: PropTypes) => {
   const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
   const defaultProfileImage = DefaultProfileSVG; // 기본 프로필 이미지 URL
 
