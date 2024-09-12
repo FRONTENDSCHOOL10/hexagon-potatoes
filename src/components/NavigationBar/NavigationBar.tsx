@@ -30,7 +30,18 @@ const NavigationBar = memo(() => {
         <svg className="h-[1.5625rem] w-[1.5625rem] fill-current">
           <use href="/assets/sprite-sheet.svg#home  " />
         </svg>
-        <Tooltip id="homeTooltip" place="top" content="홈" />
+        <Tooltip
+          id="homeTooltip"
+          place="top"
+          content="홈"
+          className="z-50"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
+        />
       </NavLink>
 
       {/* 채팅홈 */}
@@ -44,7 +55,18 @@ const NavigationBar = memo(() => {
         <svg className="h-[1.5625rem] w-[1.5625rem] fill-current">
           <use href="/assets/sprite-sheet.svg#chat" />
         </svg>
-        <Tooltip id="chatTooltip" place="top" content="채팅" />
+        <Tooltip
+          id="chatTooltip"
+          place="top"
+          content="채팅"
+          className="z-50"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
+        />
       </NavLink>
 
       {/* 커뮤니티 */}
@@ -58,7 +80,18 @@ const NavigationBar = memo(() => {
         <svg className="h-[1.5625rem] w-[1.5625rem] fill-current">
           <use href="/assets/sprite-sheet.svg#comment" />
         </svg>
-        <Tooltip id="communityTooltip" place="top" content="커뮤니티" />
+        <Tooltip
+          id="communityTooltip"
+          place="top"
+          content="커뮤니티"
+          className="z-50"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
+        />
       </NavLink>
 
       {/* 마이페이지 */}
@@ -77,6 +110,12 @@ const NavigationBar = memo(() => {
           place="top"
           content="마이페이지"
           className="z-50"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
         />
       </NavLink>
 

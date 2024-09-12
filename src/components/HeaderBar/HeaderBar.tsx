@@ -42,6 +42,12 @@ const renderIcons = ({ type, navigate }: IconsPropTypes) => {
             place="bottom"
             content="뒤로 가기"
             className="z-50"
+            globalCloseEvents={{
+              escape: true,
+              scroll: false,
+              resize: false,
+              clickOutsideAnchor: false,
+            }}
           />
         </button>
       );
@@ -62,6 +68,12 @@ const renderIcons = ({ type, navigate }: IconsPropTypes) => {
             place="bottom"
             content="알림 페이지"
             className="z-50"
+            globalCloseEvents={{
+              escape: true,
+              scroll: false,
+              resize: false,
+              clickOutsideAnchor: false,
+            }}
           />
         </button>
       );
@@ -83,6 +95,12 @@ const renderIcons = ({ type, navigate }: IconsPropTypes) => {
               place="bottom"
               content="알림 페이지"
               className="z-50"
+              globalCloseEvents={{
+                escape: true,
+                scroll: false,
+                resize: false,
+                clickOutsideAnchor: false,
+              }}
             />
           </button>
           <button
@@ -99,6 +117,12 @@ const renderIcons = ({ type, navigate }: IconsPropTypes) => {
               place="bottom"
               content="설정 페이지"
               className="z-50"
+              globalCloseEvents={{
+                escape: true,
+                scroll: false,
+                resize: false,
+                clickOutsideAnchor: false,
+              }}
             />
           </button>
         </div>
