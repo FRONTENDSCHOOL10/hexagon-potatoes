@@ -1,16 +1,12 @@
 import React, { ChangeEvent, useState } from 'react';
 
-interface CheckListProps {
+interface PropTypes {
   items: { id: string; text: string }[];
   onCheckChange: (checkedItems: string[]) => void;
   onAllCheckedChange: (allChecked: boolean) => void;
 }
 
-const CheckList: React.FC<CheckListProps> = ({
-  items,
-  onCheckChange,
-  onAllCheckedChange,
-}) => {
+const CheckList = ({ items, onCheckChange, onAllCheckedChange }: PropTypes) => {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
 

@@ -11,9 +11,9 @@ import Magazine from '@/pages/Community/Magazine';
 import Following from '@/pages/Community/Following';
 import PopularPost from '@/pages/Community/PopularPost';
 import UserTip from '@/pages/Community/UserTip';
-import PartyListPage from './pages/PartyList';
-import JoinPartyPage from './pages/JoinParty';
-import OrderDetailPage from './pages/OrderDetail';
+import PartyListPage from '@/pages/PartyList';
+import JoinPartyPage from '@/pages/JoinParty';
+import OrderDetailPage from '@/pages/OrderDetail';
 
 // 동적 로딩할 컴포넌트 설정
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
@@ -31,8 +31,10 @@ const Notifications = lazy(() => import('@/pages/Notifications'));
 const WritePost = lazy(() => import('@/pages/WritePost'));
 
 // 튜토리얼 완료 상태 확인
-const isTutorialCompleted = () =>
-  sessionStorage.getItem('tutorialCompleted') === 'true';
+const isTutorialCompleted = () => {
+  const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
+  return tutorialCompleted ? JSON.parse(tutorialCompleted) : false;
+};
 
 // 로딩 중 표시할 컴포넌트
 const Loading = () => <div>로딩 중...</div>;
@@ -45,11 +47,34 @@ const SuspenseWrapper: React.FC<{ children: React.ReactNode }> = ({
 const routes = [
   {
     path: '/tutorial',
-    element: <Tutorial />,
+    Component: () => {
+      const isComplete = isTutorialCompleted();
+
+      if (isComplete) {
+        return <Navigate to="/" replace />;
+      }
+      return (
+        <SuspenseWrapper>
+          <Tutorial />
+        </SuspenseWrapper>
+      );
+    },
   },
   {
     path: '/',
-    element: isTutorialCompleted() ? <Landing /> : <Navigate to="/tutorial" />,
+    Component: () => {
+      const isComplete = isTutorialCompleted();
+
+      if (!isComplete) {
+        return <Navigate to="/tutorial" replace />;
+      }
+
+      return (
+        <SuspenseWrapper>
+          <Landing />
+        </SuspenseWrapper>
+      );
+    },
   },
   {
     path: '/login',

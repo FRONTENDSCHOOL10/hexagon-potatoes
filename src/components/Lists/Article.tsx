@@ -35,7 +35,6 @@ const Article = ({
     }
     return '/'; // 링크가 정의되지 않았을 경우 기본값 설정
   };
-
   return (
     <li className="list-none border-b border-b-gray-100 p-2">
       <Link
@@ -44,8 +43,8 @@ const Article = ({
       >
         <img
           src={content_img} // 아티클의 이미지
-          alt={type === 'party' ? '파티 이미지' : '팁 이미지'} // 이미지에 대한 대체 텍스트
-          className="h-28 w-20 flex-shrink-0 rounded-lg object-cover"
+          alt={type === 'party' ? '파티' : '팁'} // 이미지에 대한 대체 텍스트
+          className="h-28 w-20 rounded-lg object-cover"
         />
         <div role="group" className="flex min-w-0 flex-col">
           <Heading className="mb-[0.19rem] w-full overflow-hidden text-ellipsis whitespace-nowrap text-sub-1">
