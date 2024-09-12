@@ -26,6 +26,7 @@ const SimpleLogin = () => {
           data-tooltip-id="googleTooltip"
           onClick={handleSimpleLogin}
           aria-label="구글로 로그인"
+          type="button"
         >
           <svg className="h-10 w-10">
             <use href="/assets/google.svg#google" />
@@ -35,6 +36,12 @@ const SimpleLogin = () => {
           id="googleTooltip"
           content="구글로 로그인"
           place="bottom-end"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
         />
 
         {/* 카카오 */}
@@ -42,18 +49,30 @@ const SimpleLogin = () => {
           data-tooltip-id="kakaoTooltip"
           onClick={handleSimpleLogin}
           aria-label="카카오로 로그인"
+          type="button"
         >
           <svg className="h-10 w-10">
             <use href="/assets/kakao.svg#kakao" />
           </svg>
         </button>
-        <Tooltip id="kakaoTooltip" content="카카오로 로그인" place="bottom" />
+        <Tooltip
+          id="kakaoTooltip"
+          content="카카오로 로그인"
+          place="bottom"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
+        />
 
         {/* 애플 */}
         <button
           data-tooltip-id="appleTooltip"
           onClick={handleSimpleLogin}
           aria-label="애플로 로그인"
+          type="button"
         >
           <svg className="h-10 w-10">
             <use href="/assets/apple.svg#apple" />
@@ -63,6 +82,12 @@ const SimpleLogin = () => {
           id="appleTooltip"
           content="애플로 로그인"
           place="bottom-start"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
         />
       </div>
 

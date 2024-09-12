@@ -4,9 +4,15 @@ import FloatingMenu from './FloatingMenu';
 import { Tooltip } from 'react-tooltip';
 
 const NavigationBar = memo(() => {
+  const defaultStyle = (isActive: boolean) => {
+    return `flex flex-1 items-center justify-center ${
+      isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
+    }`;
+  };
+
   return (
     <nav
-      className="fixed bottom-0 z-50 flex h-[50px] w-[360px] items-center bg-white shadow-[0px_0px_15px_0px_#0A73F926]"
+      className="full relative bottom-0 z-50 flex h-[50px] w-[360px] items-center bg-white shadow-[0px_0px_15px_0px_#0A73F926]"
       aria-labelledby="navTitle"
     >
       <h2 id="navTitle" className="sr-only">
@@ -16,11 +22,7 @@ const NavigationBar = memo(() => {
       <NavLink
         to="/home"
         end
-        className={({ isActive }) =>
-          `flex flex-1 items-center justify-center ${
-            isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
-          }`
-        }
+        className={({ isActive }) => defaultStyle(isActive)}
         aria-label="홈 페이지로 이동"
         data-tooltip-id="homeTooltip"
       >
@@ -34,11 +36,7 @@ const NavigationBar = memo(() => {
       {/* 채팅홈 */}
       <NavLink
         to="/home/chatHome"
-        className={({ isActive }) =>
-          `flex flex-1 items-center justify-center ${
-            isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
-          }`
-        }
+        className={({ isActive }) => defaultStyle(isActive)}
         aria-label="채팅 홈 페이지로 이동"
         data-tooltip-id="chatTooltip"
       >
@@ -52,11 +50,7 @@ const NavigationBar = memo(() => {
       {/* 커뮤니티 */}
       <NavLink
         to="/home/community"
-        className={({ isActive }) =>
-          `flex flex-1 items-center justify-center ${
-            isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
-          }`
-        }
+        className={({ isActive }) => defaultStyle(isActive)}
         aria-label="커뮤니티 페이지로 이동"
         data-tooltip-id="communityTooltip"
       >
@@ -70,11 +64,7 @@ const NavigationBar = memo(() => {
       {/* 마이페이지 */}
       <NavLink
         to="/home/mypage"
-        className={({ isActive }) =>
-          `flex flex-1 items-center justify-center ${
-            isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
-          }`
-        }
+        className={({ isActive }) => defaultStyle(isActive)}
         aria-label="마이페이지로 이동"
         data-tooltip-id="mypageTooltip"
       >

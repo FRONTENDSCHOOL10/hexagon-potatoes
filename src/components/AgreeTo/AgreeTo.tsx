@@ -1,15 +1,13 @@
 import React from 'react';
+// import CheckList from '@/components/AgreeTo/CheckList';
 import CheckList from './CheckList';
 
-interface AgreeToProps {
+interface PropTypes {
   isAllChecked: boolean;
   onAllCheckedChange: (allChecked: boolean) => void;
 }
 
-const AgreeTo: React.FC<AgreeToProps> = ({
-  isAllChecked,
-  onAllCheckedChange,
-}) => {
+const AgreeTo = ({ isAllChecked, onAllCheckedChange }: PropTypes) => {
   const terms = [
     { id: 'term1', text: '만 14세 이상입니다. (필수)' },
     { id: 'term2', text: '이용약관 (필수)' },

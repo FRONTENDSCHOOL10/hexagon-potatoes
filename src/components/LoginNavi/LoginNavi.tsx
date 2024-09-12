@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const LoginNavi: React.FC = () => {
+const LoginNavi = () => {
   return (
     <div className="flex items-center space-x-4 self-center text-[.875rem] font-normal">
       <Link

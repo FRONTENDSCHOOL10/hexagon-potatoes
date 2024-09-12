@@ -32,12 +32,23 @@ const FloatingMenu = memo(() => {
         onClick={handleClick}
         aria-label={isClicked ? '작성 메뉴 열림' : '작성 메뉴 닫힘'}
         data-tooltip-id="writeTooltip"
+        type="button"
       >
         <svg className="h-4 w-4 fill-current text-white">
           <use href="/assets/sprite-sheet.svg#plus" />
         </svg>
       </button>
-      <Tooltip id="writeTooltip" place="left" content="글 작성하기" />
+      <Tooltip
+        id="writeTooltip"
+        place="left"
+        content="글 작성하기"
+        globalCloseEvents={{
+          escape: true,
+          scroll: false,
+          resize: false,
+          clickOutsideAnchor: false,
+        }}
+      />
 
       {/* 추가 버튼들 */}
       {isClicked && (
@@ -47,6 +58,7 @@ const FloatingMenu = memo(() => {
             className="flex cursor-pointer items-center"
             onClick={navigateToPartyPage}
             aria-label="파티 모집하기"
+            type="button"
           >
             <span className="text-sm text-black">파티 모집하기</span>
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500">
@@ -61,6 +73,7 @@ const FloatingMenu = memo(() => {
             className="flex cursor-pointer items-center"
             onClick={navigateToCommunityPage}
             aria-label="포스트 작성하기"
+            type="button"
           >
             <span className="text-sm text-black">포스트 작성하기</span>
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500">

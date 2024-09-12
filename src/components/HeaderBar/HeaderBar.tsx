@@ -2,9 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
-interface HeaderBarProps {
+interface PropTypes {
   type: 'back' | 'bell' | 'setting';
   title: string;
+}
+
+interface IconsPropTypes {
+  type: 'back' | 'bell' | 'setting';
+  navigate: ReturnType<typeof useNavigate>;
 }
 
 const handleBackClick = (navigate: ReturnType<typeof useNavigate>) => () => {
@@ -19,10 +24,7 @@ const handleSettingClick = (navigate: ReturnType<typeof useNavigate>) => () => {
   navigate('/home/setting');
 };
 
-const renderIcons = (
-  type: string,
-  navigate: ReturnType<typeof useNavigate>
-) => {
+const renderIcons = ({ type, navigate }: IconsPropTypes) => {
   switch (type) {
     case 'back':
       return (
@@ -63,6 +65,7 @@ const renderIcons = (
           />
         </button>
       );
+
     case 'setting':
       return (
         <div className="flex items-center gap-2">
@@ -74,7 +77,7 @@ const renderIcons = (
           >
             <svg className="h-4 w-4">
               <use href="/assets/sprite-sheet.svg#bell" />
-            </svg>{' '}
+            </svg>
             <Tooltip
               id="bellTooltip"
               place="bottom"
@@ -100,19 +103,22 @@ const renderIcons = (
           </button>
         </div>
       );
+
     default:
       return null;
   }
 };
 
-const HeaderBar: React.FC<HeaderBarProps> = ({ type, title }) => {
+const HeaderBar = ({ type, title }: PropTypes) => {
   const navigate = useNavigate();
 
   return (
     <header className="relative flex w-[360px] items-center gap-2 px-2 py-3">
-      {type === 'back' && renderIcons(type, navigate)}
+      {/* 뒤로가기 아이콘은 타이틀 앞으로 와야하고 */}
+      {type === 'back' && renderIcons({ type, navigate })}
       <div className="flex-1 text-left text-xl text-black">{title}</div>
-      {type !== 'back' && renderIcons(type, navigate)}
+      {/* 다른 아이콘은 타이틀 뒤로 와야함 */}
+      {type !== 'back' && renderIcons({ type, navigate })}
     </header>
   );
 };
