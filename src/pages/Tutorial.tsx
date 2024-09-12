@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import {
-  Pagination,
-  Navigation,
-  Keyboard,
-  Swiper as SwiperType,
-} from 'swiper/modules';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Keyboard, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import Button from '@/components/Buttons/Button';
 
 // 튜토리얼 슬라이드 데이터
@@ -60,13 +55,9 @@ const saveTutorialCompletion = () => {
   }
 };
 
-// 세션 스토리지에서 튜토리얼 완료 상태 확인
-const isTutorialCompleted = () =>
-  sessionStorage.getItem('tutorialCompleted') === 'true';
-
 // 슬라이드 변경 시 상태 업데이트 훅
 const useSlideChangeEffect = (
-  swiperRef: React.RefObject<SwiperType>,
+  swiperRef: any,
   setShowStartButton: React.Dispatch<React.SetStateAction<boolean>>,
   setShowSkipButton: React.Dispatch<React.SetStateAction<boolean>>,
   setShowPagination: React.Dispatch<React.SetStateAction<boolean>>
@@ -118,16 +109,10 @@ const TutorialSlide: React.FC<{
 
 const Tutorial = () => {
   const navigate = useNavigate();
-  const swiperRef = useRef<SwiperType | null>(null);
+  const swiperRef = useRef<SwiperRef | null>(null);
   const [showSkipButton, setShowSkipButton] = useState(false);
   const [showStartButton, setShowStartButton] = useState(false);
   const [showPagination, setShowPagination] = useState(true);
-
-  useEffect(() => {
-    if (isTutorialCompleted()) {
-      navigate('/', { replace: true });
-    }
-  }, [navigate]);
 
   useSlideChangeEffect(
     swiperRef,
