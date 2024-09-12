@@ -113,7 +113,15 @@ const PostActionBar = ({
             />
           </svg>{' '}
         </button>
-        <Tooltip id="my-tooltip" />
+        <Tooltip
+          id="my-tooltip"
+          globalCloseEvents={{
+            escape: true,
+            scroll: false,
+            resize: false,
+            clickOutsideAnchor: false,
+          }}
+        />
       </div>
     </>
   );
