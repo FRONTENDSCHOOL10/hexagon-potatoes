@@ -25,7 +25,6 @@ const SearchResult = () => {
     const fetchParties = async () => {
       try {
         const data = await getPartyByKeyword(keyword);
-
         setPartyList(data.items);
       } catch (err) {
         setError('파티 정보를 가져오는 데 실패했습니다.');
@@ -40,10 +39,19 @@ const SearchResult = () => {
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>{error}</p>;
 
+  const isHaveResult = partyList.length > 0;
+
   return (
-    <div>
-      <h1>{keyword} 검색 결과</h1>
-      <PartyArticleList data={partyList} />
+    <div className="flex flex-col gap-3">
+      <h1 className="">{keyword} 검색 결과</h1>
+      {isHaveResult ? (
+        <PartyArticleList data={partyList} />
+      ) : (
+        <span className="flex flex-row">
+          키워드 [ <p className="text-mainblue">{keyword}</p>]을 포함하는 결과가
+          없습니다.
+        </span>
+      )}
     </div>
   );
 };
