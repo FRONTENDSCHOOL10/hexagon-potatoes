@@ -5,8 +5,21 @@ const SearchBar = () => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
 
+  const getFromLocal = () => {
+    const history = localStorage.getItem('currentSearch');
+    return history ? JSON.parse(history) : [];
+  };
+  const saveToLocal = (history: string[]) => {
+    localStorage.setItem('currentSearch', JSON.stringify(history));
+  };
+
   const handleMovePage = () => {
     if (query.trim()) {
+      const history = getFromLocal();
+      if (!history.includes(query)) {
+        history.push(query);
+        saveToLocal(history);
+      }
       navigate(`/home/search/${query}`);
     }
   };
