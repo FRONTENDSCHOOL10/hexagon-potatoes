@@ -17,7 +17,6 @@ const headerConfigs: Record<string, HeaderConfig> = {
   '/home/notifications': { type: 'back', title: '알림' },
   '/home/chatHome': { type: 'bell', title: '채팅' },
   '/home/writepost': { type: 'back', title: '포스트 작성' },
-  // '/home/search/:keyword': { type: 'back', title: '검색' },
   '/home/partyCollect': { type: 'back', title: '파티 모집' },
   '/home/party/:partyId': { type: 'back', title: '파티 상세' },
   '/home/orderDetail/:id': { type: 'back', title: '주문 상세' },
@@ -26,6 +25,7 @@ const headerConfigs: Record<string, HeaderConfig> = {
   '/community/boast/:boastId': { type: 'back', title: '자랑글' },
   '/home/mypage': { type: 'setting', title: '마이 페이지' },
   '/home/setting': { type: 'back', title: '설정' },
+  '/home/nowwedeveloping': { type: 'back', title: '개발중' },
 };
 
 // 동적 경로 패턴 정의
@@ -35,6 +35,7 @@ const dynamicPathPatterns = [
   '/home/orderDetail/',
   '/community/tip/',
   '/community/boast/',
+  '/home/partylist/',
 ];
 
 export const useHeaderConfig = (pathname: string) => {
@@ -49,6 +50,7 @@ export const useHeaderConfig = (pathname: string) => {
       dynamicPathPatterns.forEach((pattern) => {
         if (pathname.startsWith(pattern)) {
           const dynamicPart = pathname.substring(pattern.length);
+          let titleSuffix = '';
 
           // 패턴에 맞는 동적 설정 찾기
           const dynamicPattern = Object.keys(headerConfigs).find(
@@ -61,10 +63,17 @@ export const useHeaderConfig = (pathname: string) => {
               title: headerConfigs[dynamicPattern].title,
             };
           } else {
+            // 제목에 추가 텍스트 붙이기
+            if (pattern === '/home/search/') {
+              titleSuffix = '의 검색 결과';
+            } else if (pattern === '/home/partylist/') {
+              titleSuffix = '의 파티리스트';
+            }
+
             headerProps = {
               type: 'back',
               title: dynamicPart
-                ? decodeURIComponent(dynamicPart) + '의 검색 결과'
+                ? decodeURIComponent(dynamicPart) + titleSuffix
                 : defaultConfig.title,
             };
           }
