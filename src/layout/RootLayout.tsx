@@ -11,7 +11,7 @@ const RootLayout = () => {
   return (
     <>
       <HeaderBar {...headerProps} />
-      <main>
+      <main className="mb-[3.125rem]">
         <Outlet />
         {showNavigationBar && <NavigationBar />}
       </main>
