@@ -29,7 +29,7 @@ const HomePage = lazy(() => import('@/pages/HomePage'));
 const Setting = lazy(() => import('@/pages/Setting'));
 const Notifications = lazy(() => import('@/pages/Notifications'));
 const WritePost = lazy(() => import('@/pages/WritePost'));
-import EmptyPage from './pages/EmptyPage';
+const EmptyPage = lazy(() => import('@/pages/EmptyPage'));
 
 // 튜토리얼 완료 상태 확인
 const isTutorialCompleted = () => {
