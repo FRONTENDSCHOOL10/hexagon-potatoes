@@ -12,10 +12,11 @@ import Article from '@/components/Lists/Article';
 import GoSearch from '@/components/SearchBar/GoSearch';
 import NameCard from '@/components/NameCard/NameCard';
 import getTipRandom from '@/api/getTipRandom';
+import PostingRandom from '@/components/PostingCard/PostingRandom';
 
 const HomePage = () => {
   const [randomTip, setRandomTip] = useState<any>(null);
-
+  const [randomPosting, setRandomPosting] = useState<any>(null);
   useEffect(() => {
     const fetchRandomTip = async () => {
       try {
@@ -87,25 +88,25 @@ const HomePage = () => {
           <SelectCountryButton
             buttonContent={'미국'}
             imgAlt={''}
-            pageUrl={''}
+            pageUrl={'미국'}
             imgSrc={'shipmatelogo.png'}
           />
           <SelectCountryButton
             buttonContent={'중국'}
             imgAlt={''}
-            pageUrl={''}
+            pageUrl={'중국'}
             imgSrc={'shipmatelogo.png'}
           />
           <SelectCountryButton
             buttonContent={'일본'}
             imgAlt={''}
-            pageUrl={''}
+            pageUrl={'일본'}
             imgSrc={'shipmatelogo.png'}
           />
           <SelectCountryButton
             buttonContent={'그 외 국가'}
             imgAlt={''}
-            pageUrl={''}
+            pageUrl={'nowwedeveloping'}
             imgSrc={'shipmatelogo.png'}
           />
         </div>
@@ -140,12 +141,7 @@ const HomePage = () => {
           직구 자랑
         </h1>
         <div>
-          <PostingCard
-            user={'유저'}
-            content={'얍'}
-            postingImg="/assets/shipmatelogo.png"
-            profileImg="/assets/shipmatelogo.png"
-          />
+          <PostingRandom />
         </div>
       </section>
       <section>
