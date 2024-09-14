@@ -25,6 +25,19 @@ const SelectCountryButton = ({
     }
   };
 
+  const countryImg = (country: string) => {
+    switch (country) {
+      case '미국':
+        return `/assets/country/american-flag.png`;
+      case '중국':
+        return `/assets/country/china-flag.png`;
+      case '일본':
+        return `/assets/country/japan-flag.png`;
+      default:
+        return `/assets/shipmatelogo.png`;
+    }
+  };
+
   // imgAlt 를 상위 컴포넌트에서 전달받을지 파일명을 잘라서 사용할지 고민.
   // 파일명에서 잘라쓰는 로직
   // const imgAlt = (imgSrc: string): string => {
@@ -39,8 +52,8 @@ const SelectCountryButton = ({
       onClick={handleClick}
     >
       <img
-        className="inline-block w-8"
-        src={`/assets/${imgSrc}`}
+        className="mr-2 inline-block h-7 w-7 rounded-full border object-cover"
+        src={countryImg(buttonContent)}
         alt={`${imgAlt} 선택 버튼 아이콘`}
       />
       {buttonContent}
