@@ -40,7 +40,7 @@ const SearchBar = () => {
         검색
       </label>
       <input
-        className="inline-block w-full rounded-lg bg-gray-100 p-3 text-sub-2 text-black outline-mainblue"
+        className="inline-block w-full rounded-lg bg-gray-100 p-3 text-sub-2 font-semibold text-black outline-mainblue"
         id="searchInput"
         onChange={handleChangeInput}
         onKeyDown={handleKeyDown} // 엔터 키 이벤트 처리
