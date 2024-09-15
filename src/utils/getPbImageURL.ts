@@ -11,7 +11,9 @@ const getPbImageURL = (
   item: PocketBaseItem,
   fileName: string = 'photo'
 ): string => {
-  return `${url}/api/files/${item.collectionId}/${item.id}/${item[fileName]}`;
+  return item[fileName]
+    ? `${url}/api/files/${item.collectionId}/${item.id}/${item[fileName]}`
+    : '';
 };
 
 export default getPbImageURL;
