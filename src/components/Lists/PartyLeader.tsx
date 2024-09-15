@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 // 데이터 가져오기
-interface propsType {
+interface PropTypes {
   // blob 객체일수도
   gradeImg: string;
   profile_photo: string;
@@ -22,7 +22,7 @@ const PartyLeader = ({
   member_description,
   user_id,
   gradeImg,
-}: propsType) => {
+}: PropTypes) => {
   return (
     <li
       aria-labelledby=""

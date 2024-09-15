@@ -1,9 +1,9 @@
-interface PropsType {
+interface PropTypes {
   title: string;
   description: string;
 }
 
-const Standard = ({ title, description }: PropsType) => {
+const Standard = ({ title, description }: PropTypes) => {
   return (
     <li className="list-none border-b border-b-gray-100 pb-3 leading-normal">
       <strong className="text-sub-1">{title}</strong>

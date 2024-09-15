@@ -1,11 +1,11 @@
 // 데이터 가져오기
-interface propsType {
+interface PropTypes {
   nickname: string;
   // blob 객체??
   item_photo: string;
   itemImgAlt: string;
   item_name: string;
-  itemCategory: string;
+  category: string;
   item_weight: string;
   item_size: string;
 }
@@ -14,10 +14,10 @@ const Item = ({
   nickname,
   item_photo,
   item_name,
-  itemCategory,
+  category,
   item_weight,
   item_size,
-}: propsType) => {
+}: PropTypes) => {
   return (
     <li className="flex list-none flex-row items-center gap-3 border-b border-b-gray-100 p-2 leading-normal">
       <img src={item_photo} alt={item_name} className="size-20" />
@@ -26,7 +26,7 @@ const Item = ({
           {nickname}
         </span>
         <span aria-label="물품 이름 및 카테고리" className="text-sub-2">
-          {item_name} / {itemCategory}
+          {item_name} / {category}
         </span>
         {/* if(만약 파티장이라면) */}
         {/* return <p aria-label="주소">{memberAddress}</p> */}

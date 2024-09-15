@@ -1,27 +1,41 @@
-import { useId, useState } from 'react';
+import React, { useId, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import StandardInput from '@/components/Inputs/StandardInput';
-// import AddressInput from '@/components/Inputs/AddressInput';
+import Dropdown from '@/components/Dropdown/Dropdown';
 import Button from '@/components/Buttons/Button';
-import DaumPost from '@/components/Inputs/AddressInput';
+import AddressInput from '@/components/Inputs/AddressInput';
+import { categories } from '@/components/Dropdown/DropdownList';
 
 const itemData = {
-  item_category: '물건',
+  item_category: '',
   item_name: '',
   item_price: '',
   item_weight: '',
   item_size: '',
   item_link: '',
-  item_photo: ['먼가'],
-  address: '주소',
+  item_photo: [],
+  address: '',
 };
 
 const JoinPartyPage = () => {
   const [formData, setFormData] = useState(itemData);
   const [isActive, setIsActive] = useState(false);
+  const uuid = uuidv4();
+  const FileInputRef = useRef(null);
   const imageInputId = useId();
-  const handleClickAddImgBtn = () => {};
 
-  const handleClickCreatePartyBtn = () => {};
+  const handlePressEnter = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+    if (e.key === 'Enter') {
+      const imageInputElem = document.getElementById(imageInputId);
+      imageInputElem?.click();
+    }
+  };
+
+  const handleClickCreatePartyBtn = () => {
+    const navigate = useNavigate();
+    navigate('/home/party/${party_id}');
+  };
 
   const checkInputFilled = (data: typeof formData) => {
     // 모든 인풋이 채워져 있는지 확인
@@ -38,28 +52,91 @@ const JoinPartyPage = () => {
     checkInputFilled(updatedData);
   };
 
+  const handleImgInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = e.target.files;
+
+    if (fileList) {
+      const updatedPhotos = [...(formData.item_photo || [])];
+      for (let file of fileList) {
+        const objectURL = URL.createObjectURL(file);
+        setFormData({
+          ...formData,
+          ['item_photo']: updatedPhotos.concat([{ url: objectURL, id: uuid }]),
+        });
+      }
+    }
+  };
+
+  const handleRemoveImg = (id: number) => {
+    const updatedData = formData.item_photo.filter((data) => data.id !== id);
+    setFormData((prev) => ({
+      ...prev,
+      ['item_photo']: updatedData,
+    }));
+  };
+
   return (
     <section className="flex flex-col gap-y-3">
       <h1 className="sr-only">파티 참여 페이지</h1>
-      <div>구매 상품 사진</div>
-      <div className="text-sub-2 relative">
-        <label className="relative z-10" htmlFor={imageInputId}>
-          <svg className="inline-block size-4 bg-slate-600">
-            <use href="/assets/sprite-sheet.svg#addimage" />
-          </svg>
-        </label>
-        <input
-          className="font-white absolute left-0 top-0 size-16 appearance-none border-none bg-orange-400"
-          type="file"
-          id={imageInputId}
-        />
-      </div>
-      <span>
-        상품과 무관한 사진을 첨부하면 노출 제한 처리될 수 있습니다. 사진첨부 시
-        개인정보가 노출되지 않도록 유의해주세요.
-      </span>
-      {/* 이미지 첨부 삭제, multiple */}
-      <form>
+      {/* swiper */}
+      <form className="flex flex-col gap-y-3">
+        <div
+          role="group"
+          aria-label="상품 사진 선택 필드"
+          className="relative flex flex-col gap-y-3 text-button"
+        >
+          <span className="text-button">구매 상품 사진</span>
+          <label
+            onKeyDown={handlePressEnter}
+            tabIndex={0}
+            className="relative flex size-[4.375rem] flex-col items-center justify-center rounded-xl border-none bg-gray-100 shadow-shadow-blue"
+            htmlFor={imageInputId}
+          >
+            <svg className="size-4 text-gray-300">
+              <use href="/assets/sprite-sheet.svg#addimage" />
+            </svg>
+            <span className="leading-none text-gray-300">1 / 5</span>
+          </label>
+          <input
+            ref={FileInputRef}
+            accept="image/jpg, image/jpeg, image/png"
+            multiple
+            className="sr-only absolute left-0 top-[2.13rem] size-[4.375rem] rounded-xl border-none bg-gray-100 text-transparent opacity-0"
+            type="file"
+            id={imageInputId}
+            onChange={handleImgInputChange}
+          />
+          {formData.item_photo !== undefined &&
+            formData.item_photo?.length !== 0 && (
+              <ul className="absolute left-[4.375rem] top-[2.13rem] ml-3 flex flex-row gap-x-3">
+                {formData.item_photo.map((data, idx) => (
+                  <li
+                    key={idx}
+                    className="relative rounded-xl shadow-shadow-blue"
+                  >
+                    <button
+                      type="button"
+                      className="absolute right-1 top-1 rounded-full bg-gray-600 p-1 text-white hover:bg-mainblue hover:text-white"
+                      onClick={() => handleRemoveImg(data.id)}
+                    >
+                      <svg className="size-[0.575rem] fill-current">
+                        <use href="/assets/sprite-sheet.svg#x" />
+                      </svg>
+                    </button>
+                    <img
+                      className="size-[4.375rem] rounded-xl"
+                      src={data.url}
+                      alt="이미지 미리보기"
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          <p className="text-caption">
+            상품과 무관한 사진을 첨부하면 노출 제한 처리될 수 있습니다. 사진첨부
+            시 개인정보가 노출되지 않도록 유의해주세요.
+          </p>
+        </div>
         <StandardInput
           inputName="item_name"
           type="text"
@@ -74,11 +151,11 @@ const JoinPartyPage = () => {
           placeholder="상품 가격"
           onInputChange={handleChangeInput}
         />
-        <StandardInput
-          inputName="item_category"
-          type="string"
-          inputLabel="카테고리"
-          placeholder="카테고리"
+        <Dropdown
+          dropdownName="item_category"
+          label="카테고리"
+          list={categories}
+          defaultMsg="상품의 카테고리를 선택해 주세요"
           onInputChange={handleChangeInput}
         />
         <StandardInput
@@ -103,7 +180,11 @@ const JoinPartyPage = () => {
           onInputChange={handleChangeInput}
         />
         {/* <AddressInput inputName="address" onInputChange={handleChangeInput} /> */}
-        <DaumPost />
+        <AddressInput
+          addressInputName="address"
+          detailAddressInputName="detail_address"
+          onAddressChange={handleChangeInput}
+        />
       </form>
 
       <Button
