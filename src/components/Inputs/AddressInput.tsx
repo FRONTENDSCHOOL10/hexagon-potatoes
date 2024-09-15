@@ -1,5 +1,3 @@
-import { useState, useId } from 'react';
-
 interface PropTypes {
   addressInputName: string;
   detailAddressInputName: string;

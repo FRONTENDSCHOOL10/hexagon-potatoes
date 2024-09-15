@@ -1,12 +1,11 @@
 import { useState, useId } from 'react';
 
-// date, file, number, text
-interface propsType {
+interface PropTypes {
   inputName: string;
   defaultValue: string;
   inputLabel: string;
   placeholder: string;
-  type: string;
+  type: 'date' | 'file' | 'number' | 'text' | 'url';
   onInputChange: (name: string) => (value: string | number) => void;
 }
 
@@ -17,7 +16,7 @@ const StandardInput = ({
   onInputChange,
   inputLabel,
   placeholder,
-}: propsType) => {
+}: PropTypes) => {
   const [inputVal, setInputVal] = useState<string | number>('');
 
   const today = new Date();
@@ -126,7 +125,7 @@ const StandardInput = ({
       aria-label={`${inputLabel} 입력 필드`}
       className="flex flex-col gap-y-1"
     >
-      <label className="text-sub-2" htmlFor={inputId}>
+      <label className="text-button" htmlFor={inputId}>
         {inputLabel}
       </label>
       {renderInput()}

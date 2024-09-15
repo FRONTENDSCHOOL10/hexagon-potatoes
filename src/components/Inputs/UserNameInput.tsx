@@ -1,19 +1,19 @@
 import React, { useState, useId } from 'react';
 import { validateName } from '@/utils/validate';
 
-interface propsType {
+interface PropTypes {
   inputName: string;
   defaultValue?: string;
   onUserNameChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
 }
 
-const UserNameInput: React.FC<propsType> = ({
+const UserNameInput = ({
   inputName,
   defaultValue,
   onUserNameChange,
   onValidChange,
-}) => {
+}: PropTypes) => {
   const [inputVal, setInputVal] = useState(defaultValue || '');
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(!!defaultValue);
@@ -54,8 +54,8 @@ const UserNameInput: React.FC<propsType> = ({
       aria-label="이름 입력 필드"
       className="flex flex-col gap-y-1"
     >
-      <label htmlFor={inputId} className="text-sub-2">
-        이름*
+      <label htmlFor={inputId} className="text-button">
+        이름
       </label>
       <input
         id={inputId}
@@ -69,7 +69,9 @@ const UserNameInput: React.FC<propsType> = ({
         required
       />
       {isEnteredVal && !isValid && (
-        <p className="text-xs font-normal text-errored">{validateMessage}</p>
+        <p role="alert" className="text-xs font-normal text-errored">
+          {validateMessage}
+        </p>
       )}
     </div>
   );

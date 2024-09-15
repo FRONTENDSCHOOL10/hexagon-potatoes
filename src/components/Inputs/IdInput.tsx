@@ -1,7 +1,7 @@
 import React, { useState, useId } from 'react';
 import { validateId } from '@/utils/validate';
 
-interface propsType {
+interface PropTypes {
   inputName: string;
   defaultValue?: string;
   onIdChange: (name: string) => (value: string | number) => void;
@@ -9,13 +9,13 @@ interface propsType {
   validateOnChange?: boolean; // 추가: 실시간 검증 여부를 결정
 }
 
-const IdInput: React.FC<propsType> = ({
+const IdInput = ({
   inputName,
   defaultValue,
   onIdChange,
   onValidChange,
   validateOnChange = true, // 기본값: true
-}) => {
+}: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState(defaultValue || '');
@@ -63,7 +63,7 @@ const IdInput: React.FC<propsType> = ({
       aria-label="아이디 입력 필드"
       className="flex flex-col gap-y-1"
     >
-      <label className="text-sub-2" htmlFor={inputId}>
+      <label className="text-button" htmlFor={inputId}>
         아이디
       </label>
       <input
@@ -78,7 +78,9 @@ const IdInput: React.FC<propsType> = ({
         onChange={handleChangeInput}
       />
       {validateOnChange && isEnteredVal && !isValid && (
-        <p className="text-xs font-normal text-errored">{validateMessage}</p>
+        <p role="alert" className="text-xs font-normal text-errored">
+          {validateMessage}
+        </p>
       )}
     </div>
   );

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import LabelList from '@/components/Label/LabelList';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 
-interface ArticleProps {
+interface PropTypes {
   level?: 2 | 3 | 4 | 5 | 6;
   type?: 'party' | 'tip'; // 아티클의 유형. 기본값은 'party'
   content_title: string; // 아티클 제목
@@ -25,7 +25,7 @@ const Article = ({
   nickname = '',
   id,
   label,
-}: ArticleProps) => {
+}: PropTypes) => {
   const Heading: React.ElementType = `h${level}`;
   const getLink = () => {
     if (type === 'party' && id) {
