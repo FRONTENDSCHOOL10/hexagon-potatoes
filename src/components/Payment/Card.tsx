@@ -39,7 +39,7 @@ const Card = ({}) => {
         <img
           className="absolute bottom-[1.19rem] right-[1rem] h-[0.75rem] w-10"
           src="/assets/visa.png"
-          alt=""
+          alt="NH농협 NANA체크카드"
         />
         <div className="absolute right-[1.125rem] top-[1.125rem] flex h-[1rem] w-[1rem] items-center justify-center rounded-full bg-slate-50">
           <svg
