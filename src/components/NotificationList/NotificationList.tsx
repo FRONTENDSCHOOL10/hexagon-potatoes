@@ -94,6 +94,7 @@ const NotificationList = ({
           handleDelete(id);
         }}
         className="p-1 pb-2 pl-2"
+        aria-label="알림삭제"
       >
         <svg
           role="img"
@@ -101,7 +102,7 @@ const NotificationList = ({
           height="0.8125rem"
           className="text-gray-200"
           viewBox="0 0 13 13"
-          aria-label=""
+          aria-hidden="true"
         >
           <use
             width="0.8125rem"
