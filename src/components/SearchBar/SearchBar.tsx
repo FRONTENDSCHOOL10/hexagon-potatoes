@@ -5,8 +5,21 @@ const SearchBar = () => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
 
+  const getFromLocal = () => {
+    const history = localStorage.getItem('currentSearch');
+    return history ? JSON.parse(history) : [];
+  };
+  const saveToLocal = (history: string[]) => {
+    localStorage.setItem('currentSearch', JSON.stringify(history));
+  };
+
   const handleMovePage = () => {
     if (query.trim()) {
+      const history = getFromLocal();
+      if (!history.includes(query)) {
+        history.push(query);
+        saveToLocal(history);
+      }
       navigate(`/home/search/${query}`);
     }
   };
@@ -27,7 +40,7 @@ const SearchBar = () => {
         검색
       </label>
       <input
-        className="inline-block w-full rounded-lg bg-gray-100 p-3 text-sub-2 text-black outline-mainblue"
+        className="inline-block w-full rounded-lg bg-gray-100 p-3 text-sub-2 font-semibold text-black outline-mainblue"
         id="searchInput"
         onChange={handleChangeInput}
         onKeyDown={handleKeyDown} // 엔터 키 이벤트 처리

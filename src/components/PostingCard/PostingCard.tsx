@@ -30,7 +30,7 @@ const PostingCard = ({
             />
           ) : (
             <DefaultProfileSVG size={24} />
-          )}{' '}
+          )}
           <span aria-label="닉네임">{user}</span>
         </div>
 
@@ -46,11 +46,11 @@ const PostingCard = ({
         </button>
       </header>
 
-      <figure className="h-[20.99rem] w-full bg-slate-200">
+      <figure className="h-[20.99rem] bg-slate-200">
         <img
           src={postingImg ? postingImg : defaultTipImage}
           alt="포스팅 이미지"
-          className="w-full object-contain object-center"
+          className="h-full w-full object-cover object-center"
         />
       </figure>
 

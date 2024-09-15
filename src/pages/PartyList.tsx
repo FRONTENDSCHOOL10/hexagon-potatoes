@@ -58,9 +58,11 @@ import PartyArticleList from '@/components/Lists/PartyArticleList';
 const PartyListPage = () => {
   return (
     <section className="flex flex-col gap-y-3">
-      <h1 className="sr-only">파티 리스트 페이지</h1>
-      <p className="mt-4 text-heading-1">파티원을 모집 중이에요!</p>
+      <h1 className="text-heading-1">
+        이 나라의 파티가 파티원을 모집 중이에요!
+      </h1>
       <PartyArticleList data={partyData} />
+      {/* country 가 주소창에서 뜯은거 포함하고 있는거 찾아야됨 */}
     </section>
   );
 };

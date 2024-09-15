@@ -15,7 +15,8 @@ async function getUserIdByNickName(nickname: string): Promise<string> {
     const users = response.data.items;
 
     if (users.length === 0) {
-      throw new Error(`닉네임 '${nickname}'을 가진 사용자를 찾을 수 없습니다.`);
+      return 'no user';
+      // throw new Error(`닉네임 '${nickname}'을 가진 사용자를 찾을 수 없습니다.`);
     }
 
     return users[0].id; // 첫 번째 사용자 레코드의 ID 반환
