@@ -7,7 +7,6 @@ import 'swiper/css/navigation';
 import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 import SelectCountryButton from '@/components/Buttons/SelectCountryButton';
 import PartyLeader from '@/components/Lists/PartyLeader';
-import PostingCard from '@/components/PostingCard/PostingCard';
 import Article from '@/components/Lists/Article';
 import GoSearch from '@/components/SearchBar/GoSearch';
 import NameCard from '@/components/NameCard/NameCard';
@@ -89,25 +88,21 @@ const HomePage = () => {
             buttonContent={'미국'}
             imgAlt={''}
             pageUrl={'미국'}
-            imgSrc={'shipmatelogo.png'}
           />
           <SelectCountryButton
             buttonContent={'중국'}
             imgAlt={''}
             pageUrl={'중국'}
-            imgSrc={'shipmatelogo.png'}
           />
           <SelectCountryButton
             buttonContent={'일본'}
             imgAlt={''}
             pageUrl={'일본'}
-            imgSrc={'shipmatelogo.png'}
           />
           <SelectCountryButton
             buttonContent={'그 외 국가'}
             imgAlt={''}
             pageUrl={'nowwedeveloping'}
-            imgSrc={'shipmatelogo.png'}
           />
         </div>
       </section>
@@ -115,6 +110,7 @@ const HomePage = () => {
         <h1 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           이달의 우수 파티장
         </h1>
+        {/* 평점 4,5에 해당하는 유저 > 스와이퍼로 보여주기 */}
         <PartyLeader
           gradeImg={'/assets/shipmatelogo.png'}
           profile_photo={'/assets/shipmatelogo.png'}
@@ -130,6 +126,7 @@ const HomePage = () => {
         <h1 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           추천 파티 리스트
         </h1>
+        {/* 평점 4,5에 해당하는 유저 > 현재 모집중인 파티 3개 스와이퍼 */}
         <NameCard
           name={'이거는 파티'}
           subtext="여긴 아마 파티 소개"
