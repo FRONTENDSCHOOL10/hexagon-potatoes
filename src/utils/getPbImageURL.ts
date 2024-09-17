@@ -17,3 +17,12 @@ const getPbImageURL = (
 };
 
 export default getPbImageURL;
+
+// 이미지가 여러장일때
+export const getPbImagesURL = (
+  index: number,
+  item: PocketBaseItem,
+  fileName: string = 'photo'
+): string => {
+  return `${import.meta.env.VITE_PB_URL}api/files/${item.collectionId}/${item.id}/${item[fileName][index]}`;
+};

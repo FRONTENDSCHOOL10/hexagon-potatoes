@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import useFetch from '@/hooks/useFetch';
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 import PostingCard from '@/components/PostingCard/PostingCard';
@@ -19,7 +19,10 @@ const PostingRandom = () => {
       const randomIndex = Math.floor(Math.random() * postings.length);
       const selectedPosting = postings[randomIndex];
 
-      const postingImg = getPbImageURL(pb.baseUrl, selectedPosting, 'photo');
+      const postingImg =
+        selectedPosting.photo.length !== 0
+          ? getPbImagesURL(0, selectedPosting)
+          : '';
       const profileImg = getPbImageURL(
         pb.baseUrl,
         selectedPosting.expand.author_id,
