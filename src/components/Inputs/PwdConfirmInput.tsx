@@ -79,7 +79,7 @@ const PwdConfirmInput = ({
       aria-label="비밀번호 재입력 필드"
       className="relative flex flex-col gap-y-1"
     >
-      <label htmlFor={inputId} className="text-sub-2">
+      <label htmlFor={inputId} className="text-button">
         비밀번호 확인
       </label>
 
@@ -128,6 +128,7 @@ const PwdConfirmInput = ({
 
       {isEnteredVal && (
         <p
+          role="alert"
           className={`text-caption ${isConfirmed ? 'text-mainblue' : 'text-errored'}`}
         >
           {confirmedPwdMessage}

@@ -16,12 +16,12 @@ const Payment = ({ productPrice, shippingFee, customsDuties }: PropTypes) => {
       <h2 className="items-start justify-center border-b-2 border-[#020715] px-[0] py-[0.625rem] font-normal">
         결제내용
       </h2>
-      <ul>
+      <dl>
         <PaymentListItem price={productPrice}>상품금액</PaymentListItem>
         <PaymentListItem price={shippingFee}>배송비</PaymentListItem>
         <PaymentListItem price={customsDuties}>관세</PaymentListItem>
         <PaymentListItem price={COMMISSION}>수수료</PaymentListItem>
-      </ul>
+      </dl>
       <div className="flex items-start justify-between border-b-2 border-[#020715] px-[0] py-[0.625rem]">
         <span>결제 금액</span>
         <strong>

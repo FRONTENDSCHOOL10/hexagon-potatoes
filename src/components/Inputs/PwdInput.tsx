@@ -1,7 +1,7 @@
 import { useRef, useState, useId } from 'react';
 import { validatePwd } from '@/utils/validate';
 
-interface propsType {
+interface PropTypes {
   inputName: string;
   onPwdChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
@@ -13,7 +13,7 @@ const PwdInput = ({
   inputName,
   onPwdChange,
   validateOnChange = true,
-}: propsType) => {
+}: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
@@ -72,7 +72,7 @@ const PwdInput = ({
         aria-label="비밀번호 입력 필드"
         className="relative flex flex-col gap-y-1"
       >
-        <label className="text-sub-2" htmlFor={pwdInputId}>
+        <label className="text-button" htmlFor={pwdInputId}>
           비밀번호
         </label>
         <input
@@ -118,7 +118,7 @@ const PwdInput = ({
           </>
         )}
         {!isValid && isEnteredVal && (
-          <p className="text-xs font-normal text-errored">
+          <p role="alert" className="text-xs font-normal text-errored">
             올바른 비밀번호가 아닙니다.
           </p>
         )}

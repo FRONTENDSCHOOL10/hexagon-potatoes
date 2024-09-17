@@ -1,11 +1,11 @@
 // 레이블 데이터 가져오기
 import Label from './Label';
 
-interface LabelListProps {
+interface PropTypes {
   data?: string[];
 }
 
-const LabelList = ({ data }: LabelListProps) => {
+const LabelList = ({ data }: PropTypes) => {
   return (
     <ul className="my-2.5 flex flex-row text-caption">
       {/* 가져온 데이터 전달 */}

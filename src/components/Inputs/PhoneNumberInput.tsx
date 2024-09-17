@@ -2,7 +2,7 @@
 import React, { useState, useId } from 'react';
 import { validatePhoneNumber } from '@/utils/validate';
 
-interface propsType {
+interface PropTypes {
   inputName: string;
   defaultValue?: string;
   onPhoneNumberChange: (name: string) => (value: string | number) => void;
@@ -13,7 +13,7 @@ const PhoneNumberInput = ({
   defaultValue,
   onPhoneNumberChange,
   onValidChange,
-}: propsType) => {
+}: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
@@ -53,7 +53,7 @@ const PhoneNumberInput = ({
       aria-label="휴대폰 번호 입력 필드"
       className="flex flex-col gap-y-1"
     >
-      <label className="text-sub-2" htmlFor={inputId}>
+      <label className="text-button" htmlFor={inputId}>
         휴대폰 번호
       </label>
       <input
@@ -69,7 +69,9 @@ const PhoneNumberInput = ({
       />
 
       {isEnteredVal && !isValid && (
-        <p className={`text-xs font-normal text-errored`}>{validateMessage}</p>
+        <p role="alert" className={`text-xs font-normal text-errored`}>
+          {validateMessage}
+        </p>
       )}
     </div>
   );

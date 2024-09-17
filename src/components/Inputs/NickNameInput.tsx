@@ -2,7 +2,7 @@
 import React, { useState, useId } from 'react';
 import { validateNickname } from '@/utils/validate';
 
-interface propsType {
+interface PropTypes {
   inputName: string;
   defaultValue?: string;
   onNickNameChange: (name: string) => (value: string | number) => void;
@@ -14,7 +14,7 @@ const NicknameInput = ({
   defaultValue,
   onNickNameChange,
   onValidChange,
-}: propsType) => {
+}: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
@@ -56,7 +56,7 @@ const NicknameInput = ({
       aria-label="닉네임 입력 필드"
       className="flex flex-col gap-y-1"
     >
-      <label className="text-sub-2" htmlFor={inputId}>
+      <label className="text-button" htmlFor={inputId}>
         닉네임
       </label>
       <input
@@ -74,6 +74,7 @@ const NicknameInput = ({
 
       {isEnteredVal && (
         <p
+          role="alert"
           className={`text-xs font-normal ${isValid ? 'text-mainblue' : 'text-errored'}`}
         >
           {validateMessage}

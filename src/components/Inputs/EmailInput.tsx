@@ -1,7 +1,7 @@
 import { useState, useId } from 'react';
 import { validateEmail } from '@/utils/validate';
 
-interface PropsType {
+interface PropTypes {
   inputName: string;
   defaultValue?: string;
   onEmailChange: (name: string) => (value: string | number) => void;
@@ -24,7 +24,7 @@ const EmailInput = ({
   onValidChange,
   inputName,
   defaultValue,
-}: PropsType) => {
+}: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
@@ -109,8 +109,8 @@ const EmailInput = ({
       aria-label="이메일 입력 필드"
       className="flex flex-col gap-y-1"
     >
-      <label className="text-sub-2" htmlFor={inputId}>
-        이메일*
+      <label className="text-button" htmlFor={inputId}>
+        이메일
       </label>
       <input
         id={inputId}
@@ -148,6 +148,7 @@ const EmailInput = ({
       )}
       {isEnteredVal && (
         <p
+          role="alert"
           className={`text-xs font-normal ${isValid ? 'text-mainblue' : 'text-errored'}`}
         >
           {validateMessage}

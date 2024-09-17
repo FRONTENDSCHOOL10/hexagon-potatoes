@@ -2,7 +2,7 @@ import React from 'react';
 import Article from './Article';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 
-interface TypeProps {
+interface PropTypes {
   data: {
     type?: 'party' | 'tip';
     party_name: string;
@@ -15,7 +15,7 @@ interface TypeProps {
   }[];
 }
 
-const PartyArticleList = ({ data }: TypeProps) => {
+const PartyArticleList = ({ data }: PropTypes) => {
   const defaultPartyImage = '/assets/shipmatelogo.png';
   const defaultProfileImage = DefaultProfileSVG;
 
