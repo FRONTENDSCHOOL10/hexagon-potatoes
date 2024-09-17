@@ -41,7 +41,6 @@ const SearchResult = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      {/* <h1 className="">{keyword} 검색 결과</h1> */}
       {isHaveResult ? (
         <PartyArticleList data={partyList} />
       ) : (
