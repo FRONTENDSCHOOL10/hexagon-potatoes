@@ -30,7 +30,7 @@ const Magazine = ({ title, label, content, img }: PropTypes) => {
       )}
       <div className="relative z-10 flex h-full flex-col justify-end p-4 text-white">
         <div className="flex flex-grow flex-col justify-end">
-          <h2 className="mb-1 text-xl font-bold">{title}</h2>
+          <h3 className="mb-1 text-xl font-bold">{title}</h3>
           <p className="overflow-hidden text-ellipsis whitespace-nowrap text-caption text-sm leading-tight">
             {content}
           </p>
