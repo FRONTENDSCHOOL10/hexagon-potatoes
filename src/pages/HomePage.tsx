@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SwiperSlide, Swiper } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
 
-import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 import SelectCountryButton from '@/components/Buttons/SelectCountryButton';
 import PartyLeader from '@/components/Lists/PartyLeader';
 import Article from '@/components/Lists/Article';
@@ -12,10 +7,12 @@ import GoSearch from '@/components/SearchBar/GoSearch';
 import NameCard from '@/components/NameCard/NameCard';
 import getTipRandom from '@/api/getTipRandom';
 import PostingRandom from '@/components/PostingCard/PostingRandom';
+import MagazineList from '@/components/Magazine/MagazineList';
 
 const HomePage = () => {
   const [randomTip, setRandomTip] = useState<any>(null);
   const [randomPosting, setRandomPosting] = useState<any>(null);
+
   useEffect(() => {
     const fetchRandomTip = async () => {
       try {
@@ -36,48 +33,8 @@ const HomePage = () => {
         <h1 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           매거진
         </h1>
-        <Swiper
-          className="mySwiper"
-          modules={[Navigation]}
-          slidesPerView={3}
-          loop
-          spaceBetween={160}
-          centeredSlides={true}
-          pagination={{ clickable: true }}
-        >
-          <SwiperSlide>
-            <MiniPostingCard
-              nickname={'매거진1'}
-              content={'매거진1'}
-              id={''}
-              photo={'/assets/shipmatelogo.png'}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <MiniPostingCard
-              nickname={'매거진2'}
-              content={'매거진2'}
-              id={''}
-              photo={'/assets/shipmatelogo.png'}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <MiniPostingCard
-              nickname={'매거진3'}
-              content={'매거진3'}
-              id={''}
-              photo={'/assets/shipmatelogo.png'}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <MiniPostingCard
-              nickname={'매거진4'}
-              content={'매거진'}
-              id={''}
-              photo={'/assets/shipmatelogo.png'}
-            />
-          </SwiperSlide>
-        </Swiper>
+
+        <MagazineList />
       </section>
       <section>
         <h1 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
