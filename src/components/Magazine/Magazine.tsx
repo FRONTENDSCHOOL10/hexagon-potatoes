@@ -9,13 +9,13 @@ const Magazine = ({ title, label, content, img }: PropTypes) => {
   return (
     <article
       style={{
-        background: `url(${img}) center 160%/cover no-repeat`,
+        background: `url(${img}) center /cover no-repeat`,
       }}
       className="relative flex h-[14.5625rem] w-[10rem] flex-col overflow-hidden rounded-xl shadow-lg"
     >
       <div
         style={{
-          background: '#2727274D',
+          background: '#2727271D',
           position: 'absolute',
           top: 0,
           left: 0,

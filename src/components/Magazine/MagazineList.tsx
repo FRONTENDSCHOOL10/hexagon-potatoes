@@ -36,6 +36,8 @@ const MagazineList = () => {
         modules={[Keyboard, Pagination, Navigation]}
         slidesPerView={3}
         spaceBetween={160}
+        centeredSlides={true}
+        loop
         pagination={{ clickable: true }}
         keyboard={{ enabled: true }}
         navigation={{
@@ -43,7 +45,7 @@ const MagazineList = () => {
           prevEl: '.swiper-button-prev',
         }}
         grabCursor={true}
-        aria-label="Magazine carousel"
+        aria-label="매거진 리스트"
       >
         {magazineData.map((item: any) => (
           <SwiperSlide key={item.id} aria-label={`Slide ${item.id}`}>
