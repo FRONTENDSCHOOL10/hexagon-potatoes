@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 // 데이터 가져오기
 interface PropTypes {
   // blob 객체일수도
-  gradeImg: string;
+  gradeImg?: string;
   profile_photo: string;
   nickname: string;
-  itemImgAlt: string;
+  itemImgAlt?: string;
   rating: string;
-  member_grade: string;
-  member_description: string;
+  member_grade?: string;
+  member_description?: string;
   user_id: number;
+  party_number: number;
 }
 
 const PartyLeader = ({
@@ -22,6 +23,7 @@ const PartyLeader = ({
   member_description,
   user_id,
   gradeImg,
+  party_number,
 }: PropTypes) => {
   return (
     <li
@@ -35,7 +37,7 @@ const PartyLeader = ({
           className="grid h-16 grid-cols-[auto_auto_minmax(30px,_1fr)] border-b border-b-gray-100 pb-3.5"
         >
           <img
-            src={profile_photo}
+            src={profile_photo || 'assets/shipmatelogo.png'}
             alt={itemImgAlt}
             className="absolute right-0 size-16"
           />
@@ -48,7 +50,11 @@ const PartyLeader = ({
           >
             {member_grade}
           </span>
-          <img src={gradeImg} className="w-4 self-center" alt="사용자 등급" />
+          <img
+            src={gradeImg || 'assets/shipmatelogo.png'}
+            className="w-4 self-center"
+            alt="사용자 등급"
+          />
           {/* 자기 소개 db 필요 */}
           <p className="col-span-3 text-body-2 text-gray-300">
             {member_description}
@@ -67,8 +73,9 @@ const PartyLeader = ({
             {rating}
           </span>
           <span aria-label="진행중인 파티" className="text-mainblue">
-            {/* 개최한 파티 개수 가져오기 */}
-            현재 진행중인 파티 {}개
+            {party_number > 0
+              ? `현재 진행중인 파티 ${party_number}개`
+              : '모집중인 파티 없음'}
           </span>
         </div>
       </Link>
