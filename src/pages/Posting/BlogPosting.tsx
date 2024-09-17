@@ -17,7 +17,7 @@ interface PocketBaseRecord {
 interface InstaPostingItem extends PocketBaseRecord {
   photo: string;
   content: string;
-  expand: {
+  expand?: {
     author_id: {
       id: string;
       profile_photo: string;
@@ -65,17 +65,22 @@ const BlogPosting = ({ item }: PropTypes) => {
         >
           {formatDateLong(item.created)}
         </time>
-        <NameCard
-          name={authorId.nickname}
-          subtext={authorId.user_email}
-          profileImg={
-            authorId.profile_photo
-              ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
-              : null
-          }
-          type={'followingText'}
-          id={''}
-        />
+        {/* 관리자 프로필 넣고 싶으면 수정 */}
+        {authorId ? (
+          <NameCard
+            name={authorId.nickname}
+            subtext={authorId.user_email}
+            profileImg={
+              authorId.profile_photo
+                ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
+                : null
+            }
+            type={'followingText'}
+            id={''}
+          />
+        ) : (
+          ''
+        )}
       </header>
 
       <div className="flex flex-col gap-3 px-[0.75rem]">
