@@ -23,7 +23,7 @@ const fetchTopRatedUsers = async () => {
   try {
     const response = await axios.get(baseUserUrl, {
       params: {
-        filter: 'rating = 5',
+        filter: 'rating=4' || 'rating = 5',
       },
     });
     return response.data.items;

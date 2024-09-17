@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
 
 import SelectCountryButton from '@/components/Buttons/SelectCountryButton';
-import PartyLeader from '@/components/Lists/PartyLeader';
 import Article from '@/components/Lists/Article';
 import GoSearch from '@/components/SearchBar/GoSearch';
-import NameCard from '@/components/NameCard/NameCard';
 import getTipRandom from '@/api/getTipRandom';
 import PostingRandom from '@/components/PostingCard/PostingRandom';
 import MagazineList from '@/components/Magazine/MagazineList';
-import BestPartyLeader from '@/components/Lists/PartyLeader5';
+import BestPartyLeader from '@/components/Lists/BestPartyLeaderRandom';
+import BestPartyRandom from '../components/Lists/BestPartyRandom';
 
 const HomePage = () => {
   const [randomTip, setRandomTip] = useState<any>(null);
-  const [randomPosting, setRandomPosting] = useState<any>(null);
 
   useEffect(() => {
     const fetchRandomTip = async () => {
@@ -74,11 +72,7 @@ const HomePage = () => {
         <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           추천 파티 리스트
         </h2>
-        <NameCard
-          name={'이거는 파티'}
-          subtext="여긴 아마 파티 소개"
-          type={'viewParty'}
-        />
+        <BestPartyRandom />
       </section>
       <section>
         <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">

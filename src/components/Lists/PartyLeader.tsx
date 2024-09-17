@@ -39,7 +39,7 @@ const PartyLeader = ({
           <img
             src={profile_photo || 'assets/shipmatelogo.png'}
             alt={itemImgAlt}
-            className="absolute right-0 size-16"
+            className="absolute right-3 size-14"
           />
           {/* 더 적절한 label을 쓰고 싶다 */}
           <p className="mr-1.5 place-content-center text-sub-1">{nickname}</p>
