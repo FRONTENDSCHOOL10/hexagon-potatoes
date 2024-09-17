@@ -1,6 +1,10 @@
 import React, { useState, useRef, ChangeEvent, KeyboardEvent } from 'react';
 
-const HashtagInput = () => {
+interface PropTypes {
+  onChange: (tags: string[]) => void;
+}
+
+const HashtagInput = ({ onChange }: PropTypes) => {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
   const composingRef = useRef<boolean>(false);
@@ -26,14 +30,18 @@ const HashtagInput = () => {
         .filter((tag) => tag.length > 0 && !tags.includes(tag));
 
       if (newTags.length > 0) {
-        setTags([...tags, ...newTags]);
+        const updatedTags = [...tags, ...newTags];
+        setTags(updatedTags);
+        onChange(updatedTags); // Notify parent component
         setInputValue('');
       }
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
+    const updatedTags = tags.filter((tag) => tag !== tagToRemove);
+    setTags(updatedTags);
+    onChange(updatedTags); // Notify parent component
   };
 
   return (
@@ -56,6 +64,7 @@ const HashtagInput = () => {
       </div>
       <input
         type="text"
+        name="tag"
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
