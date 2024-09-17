@@ -21,6 +21,7 @@ const Login = () => {
     try {
       const authData = await loginUser(username, password);
       localStorage.setItem('authToken', authData.token);
+      localStorage.setItem('authId', authData.record.id);
       navigate('/home');
     } catch (error) {
       setAlertMessage('아이디 또는 비밀번호를 확인해주세요.');
