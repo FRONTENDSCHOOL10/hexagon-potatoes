@@ -136,7 +136,7 @@ const WritePost = () => {
           placeholder="본문을 입력하세요"
           name="content"
           onChange={(e) => handleInputChange('content', e.target.value)}
-          className="mb-3 h-[25rem] resize-none overflow-hidden overflow-ellipsis whitespace-nowrap rounded-xl border border-gray-200 p-5 font-[Pretendard] text-[0.875rem] font-normal not-italic leading-5 placeholder:text-gray-200"
+          className="mb-3 h-[25rem] rounded-xl border border-gray-200 p-5 font-[Pretendard] text-[0.875rem] font-normal not-italic leading-5 placeholder:text-gray-200"
         ></textarea>
       </div>
       {error && (
