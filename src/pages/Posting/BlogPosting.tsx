@@ -2,7 +2,9 @@ import LabelList from '@/components/Label/LabelList';
 import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import { formatDateLong, formatDateString } from '@/utils/dateFormatter';
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import interleaveContent from '@/utils/seperateTextAndImages';
+import React from 'react';
 
 interface PocketBaseRecord {
   id: string;
@@ -53,6 +55,8 @@ const BlogPosting = ({ item }: PropTypes) => {
     console.log('공유 클릭');
   };
 
+  const interleavedContent = interleaveContent(item.content, item.photo);
+
   return (
     <article className="mb-[2.56rem] flex flex-col pb-[0.75rem]">
       <header className="flex min-h-[11.38rem] flex-col bg-[#D9D9D9] px-[0.75rem] pb-[0.62rem] pt-[2.81rem] [box-shadow:0px_0px_6px_0px_rgba(0,_0,_0,_0.12)]">
@@ -79,15 +83,19 @@ const BlogPosting = ({ item }: PropTypes) => {
 
       <div className="flex flex-col gap-3 px-[0.75rem]">
         <LabelList data={item.tag} />
-        {item.photo && (
-          <img
-            className="w-[21rem] object-cover object-center"
-            // 이미지 높이값 따로 안정함
-            src={getPbImageURL(ENDPOINT, item)}
-            alt="게시물" //적절한 alt 속성값을 찾지 못함
-          />
-        )}
-        <p className="text-body-2">{item.content}</p>
+        {interleavedContent.map((contentItem, index) => (
+          <React.Fragment key={index}>
+            {contentItem.type === 'text' ? (
+              <p className="text-body-2">{contentItem.content}</p>
+            ) : (
+              <img
+                className="w-[21rem] object-cover object-center"
+                src={getPbImagesURL(index === 1 ? index - 1 : index - 2, item)}
+                alt={`게시물 이미지 ${index - 1}`}
+              />
+            )}
+          </React.Fragment>
+        ))}
         <PostActionBar
           postId={item.id}
           onLike={handleLike}
