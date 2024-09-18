@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import defaultTipImageSrc from '/assets/shipmatelogo.png';
+import { getPbImagesURL } from '@/utils/getPbImageURL';
 
 interface PropTypes {
   nickname: string;
@@ -19,7 +19,7 @@ const MiniPostingCard = ({ nickname, content, id, photo }: PropTypes) => {
       >
         <img
           className="h-[10.3rem] w-full bg-[rgba(0,_0,_0,_0.05)] object-cover"
-          src={photo} // null, undefined, 빈 문자열 모두 처리
+          src={photo ? getPbImagesURL(0, photo) : defaultTipImage} // null, undefined, 빈 문자열 모두 처리
           alt="포스팅 이미지"
         />
 

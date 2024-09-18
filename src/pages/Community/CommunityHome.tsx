@@ -7,7 +7,6 @@ const CommunityHome = () => {
   const ENDPOINT = `https://hexagon-potatoes.pockethost.io`;
   const tipUrl = `${ENDPOINT}/api/collections/tip/records`;
   const boastUrl = `${ENDPOINT}/api/collections/posting/records`;
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
 
   const {
     status: tipStatus,
@@ -45,7 +44,7 @@ const CommunityHome = () => {
                 id={d?.id}
                 nickname={d?.expand?.author_id?.nickname}
                 content={d?.content}
-                photo={d.photo ? getPbImageURL(ENDPOINT, d) : defaultTipImage}
+                photo={d.photo.length !== 0 ? d : null}
               />
             ))}
         </div>

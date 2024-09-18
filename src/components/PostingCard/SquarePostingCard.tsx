@@ -1,4 +1,4 @@
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import { Link } from 'react-router-dom';
 
 interface PropTypes {
@@ -18,7 +18,9 @@ const SquarePostingCard = ({ data }: PropTypes) => {
         {/* 적당한 alt 속성값이 떠오르지 않아 추후에 gemini 고려 */}
         <img
           className="h-full w-full object-cover"
-          src={data.photo ? getPbImageURL(ENDPOINT, data) : defaultTipImage}
+          src={
+            data.photo.length !== 0 ? getPbImagesURL(0, data) : defaultTipImage
+          }
           alt="추천 피드 이미지"
         />
       </Link>

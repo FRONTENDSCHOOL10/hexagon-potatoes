@@ -1,5 +1,5 @@
 import axios from 'axios';
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import getUserById from './getUserById';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
@@ -8,7 +8,7 @@ const baseTipUrl = `${pb.baseUrl}/api/collections/tip/records`;
 
 // getTip으로 팁 레코드들을 가져와서 랜덤으로 하나 선택하는 함수
 const getTipImageUrl = (tip: any): string => {
-  return tip.photo ? getPbImageURL(pb.baseUrl, tip, 'photo') : '';
+  return tip.photo.length !== 0 ? getPbImagesURL(0, tip) : '';
 };
 
 const fetchAuthorData = async (authorId: string) => {

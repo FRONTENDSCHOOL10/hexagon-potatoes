@@ -1,7 +1,7 @@
 import LabelList from '@/components/Label/LabelList';
 import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 
 interface PocketBaseRecord {
   id: string;
@@ -67,7 +67,7 @@ const InstaPosting = ({ item }: PropTypes) => {
       {item.photo && (
         <img
           className="h-[20.9rem] w-[21rem] bg-[#F2F2F2] object-cover"
-          src={getPbImageURL(ENDPOINT, item)}
+          src={getPbImagesURL(0, item)}
           alt=""
         />
       )}
