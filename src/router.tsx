@@ -14,6 +14,7 @@ import UserTip from '@/pages/Community/UserTip';
 import PartyListPage from '@/pages/PartyList';
 import JoinPartyPage from '@/pages/JoinParty';
 import OrderDetailPage from '@/pages/OrderDetail';
+import MagazineDetail from './pages/MagazineDetail';
 
 // 동적 로딩할 컴포넌트 설정
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
@@ -174,6 +175,14 @@ const routes = [
         element: (
           <SuspenseWrapper>
             <TipDetail />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: 'community/magazine/:magazineId',
+        element: (
+          <SuspenseWrapper>
+            <MagazineDetail />
           </SuspenseWrapper>
         ),
       },
