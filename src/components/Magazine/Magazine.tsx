@@ -1,13 +1,17 @@
+import { Link } from 'react-router-dom';
+
 interface PropTypes {
   title: string;
   label?: string;
   content: string;
   img: string;
+  id: string;
 }
 
-const Magazine = ({ title, label, content, img }: PropTypes) => {
+const Magazine = ({ id, title, label, content, img }: PropTypes) => {
   return (
-    <article
+    <Link
+      to={`/home/community/magazine/${id}`}
       style={{
         background: `url(${img}) center /cover no-repeat`,
       }}
@@ -36,7 +40,7 @@ const Magazine = ({ title, label, content, img }: PropTypes) => {
           </p>
         </div>
       </div>
-    </article>
+    </Link>
   );
 };
 
