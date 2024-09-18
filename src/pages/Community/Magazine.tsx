@@ -2,7 +2,7 @@ import useFetch from '@/hooks/useFetch';
 import BlogPosting from '../Posting/BlogPosting';
 
 const Magazine = () => {
-  const ENDPOINT = `https://hexagon-potatoes.pockethost.io/api/collections/tip/records`;
+  const ENDPOINT = `https://hexagon-potatoes.pockethost.io/api/collections/magazine/records`;
 
   const { error, status, data } = useFetch(ENDPOINT, 'author_id');
   const tipData = data?.items;
