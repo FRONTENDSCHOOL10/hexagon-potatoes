@@ -1,21 +1,41 @@
 interface PropTypes {
-  title?: string;
-  label: string;
+  title: string;
+  label?: string;
   content: string;
-  img?: string;
+  img: string;
 }
 
 const Magazine = ({ title, label, content, img }: PropTypes) => {
   return (
     <article
-      style={{ background: `url(${img}) lightgray 50% / cover no-repeat` }}
-      className="flex h-[233px] w-[152px] flex-col items-start rounded-[12px] py-[10px] pl-[12px] pr-[12px] font-[Pretendard] font-normal not-italic"
+      style={{
+        background: `url(${img}) center /cover no-repeat`,
+      }}
+      className="relative flex h-[14.5625rem] w-[10rem] flex-col overflow-hidden rounded-xl shadow-lg"
     >
-      <span className="mb-[150px] flex h-[18px] w-[41px] items-center justify-center rounded-[7px] bg-[#FFF] text-center text-xs">
-        {label}
-      </span>
-      <h3 className="mb-[4px] text-xl">{title}</h3>
-      <p className="text-xs">{content}</p>
+      <div
+        style={{
+          background: '#2727271D',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+      ></div>
+      {label && (
+        <span className="absolute left-3 top-3 z-10 rounded-lg bg-mainblue px-2 py-1 text-caption text-white">
+          {label}
+        </span>
+      )}
+      <div className="relative z-10 flex h-full flex-col justify-end p-4 text-white">
+        <div className="flex flex-grow flex-col justify-end">
+          <h3 className="mb-1 text-xl font-bold">{title}</h3>
+          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-caption text-sm leading-tight">
+            {content}
+          </p>
+        </div>
+      </div>
     </article>
   );
 };

@@ -6,7 +6,7 @@ const LoginNavi = () => {
     <div className="flex items-center space-x-4 self-center text-[.875rem] font-normal">
       <Link
         to="/find-id"
-        className="hover:underline"
+        className="hover:text-mainblue focus:text-mainblue"
         aria-label="아이디 찾기 페이지로 이동"
       >
         아이디 찾기
@@ -14,7 +14,7 @@ const LoginNavi = () => {
       <span aria-hidden="true">|</span>
       <Link
         to="/find-password"
-        className="hover:underline"
+        className="hover:text-mainblue focus:text-mainblue"
         aria-label="비밀번호 찾기 페이지로 이동"
       >
         비밀번호 찾기
@@ -22,7 +22,7 @@ const LoginNavi = () => {
       <span aria-hidden="true">|</span>
       <Link
         to="/login/signup"
-        className="hover:underline"
+        className="hover:text-mainblue focus:text-mainblue"
         aria-label="회원가입 페이지로 이동"
       >
         회원가입 하기

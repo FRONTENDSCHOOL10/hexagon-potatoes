@@ -1,19 +1,10 @@
-interface propsType {
+import { useNavigate } from 'react-router-dom';
+interface PropTypes {
   buttonContent: string;
-  imgSrc: string;
   imgAlt: string;
   pageUrl: string;
 }
-
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-const SelectCountryButton = ({
-  imgSrc = 'shipmatelogo.png',
-  imgAlt,
-  buttonContent,
-  pageUrl,
-}: propsType) => {
+const SelectCountryButton = ({ imgAlt, buttonContent, pageUrl }: PropTypes) => {
   const navigate = useNavigate();
   // const [pageUrl, setPageUrl] = useState();
 
@@ -54,7 +45,7 @@ const SelectCountryButton = ({
       <img
         className="mr-2 inline-block h-7 w-7 rounded-full border object-cover"
         src={countryImg(buttonContent)}
-        alt={`${imgAlt} 선택 버튼 아이콘`}
+        alt={`나라`}
       />
       {buttonContent}
     </button>

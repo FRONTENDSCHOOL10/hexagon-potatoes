@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import PartyArticleList from '@/components/Lists/PartyArticleList'; // ArticleList의 경로는 실제 경로로 수정하세요
-import getPartyByKeyword from '@/api/getPartyByKeyword'; // getPartyByKeyword의 경로는 실제 경로로 수정하세요
+import PartyArticleList from '@/components/Lists/PartyArticleList';
+import getPartyByKeyword from '@/api/getPartyByKeyword';
 import getLastPath from '@/utils/getLastPath';
 
 interface PartyItem {
@@ -41,7 +41,6 @@ const SearchResult = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      {/* <h1 className="">{keyword} 검색 결과</h1> */}
       {isHaveResult ? (
         <PartyArticleList data={partyList} />
       ) : (
