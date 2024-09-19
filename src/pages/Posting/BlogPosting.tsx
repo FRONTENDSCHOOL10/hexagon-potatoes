@@ -59,12 +59,12 @@ const BlogPosting = ({ item, type }: PropTypes) => {
   const interleavedContent = interleaveContent(item.content, item.photo);
 
   return (
-    <article className="mb-[2.56rem] flex flex-col pb-[0.75rem]">
+    <article className="pretendard mb-[2.56rem] flex flex-col pb-[0.75rem]">
       <header className="flex min-h-[11.38rem] flex-col bg-[#D9D9D9] px-[0.75rem] pb-[0.62rem] pt-[2.81rem] [box-shadow:0px_0px_6px_0px_rgba(0,_0,_0,_0.12)]">
         <h2 className="mb-[0.38rem] text-h1 text-black">{item.title}</h2>
         <time
           aria-label="작성날짜"
-          className="mb-[1.31rem] h-[1.0625rem] text-sub-2 font-light leading-[1.0625rem] text-gray-300"
+          className="mb-[1.31rem] h-[1.0625rem] text-sub-2 leading-[1.0625rem] text-gray-300"
           dateTime={formatDateString(item.created)}
         >
           {formatDateLong(item.created)}
