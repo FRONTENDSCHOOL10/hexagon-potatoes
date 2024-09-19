@@ -1,27 +1,32 @@
-import React, { ReactNode, Suspense, lazy, useEffect, useState } from 'react';
+import {
+  ComponentType,
+  ReactNode,
+  Suspense,
+  lazy,
+  useEffect,
+  useState,
+} from 'react';
 import { createBrowserRouter, Navigate, useNavigate } from 'react-router-dom';
 import RootLayout from '@/layout/RootLayout';
-import Tutorial from '@/pages/Tutorial';
-import Landing from '@/pages/Landing';
-import Login from '@/pages/Login';
-import SignUp from '@/pages/SignUp';
-import CommunityHome from '@/pages/Community/CommunityHome';
-import RecommendFeed from '@/pages/Community/RecommendFeed';
-import Magazine from '@/pages/Community/Magazine';
-import Following from '@/pages/Community/Following';
-import PopularPost from '@/pages/Community/PopularPost';
-import UserTip from '@/pages/Community/UserTip';
-import PartyListPage from '@/pages/PartyList';
-import JoinPartyPage from '@/pages/JoinParty';
-import OrderDetailPage from '@/pages/OrderDetail';
-import MagazineDetail from '@/pages/MagazineDetail';
 import { checkAuthId } from '@/api/auth';
+import { Helmet } from 'react-helmet-async';
+import Alert from './components/Alert/Alert';
 
-// 동적 로딩할 컴포넌트 설정
+// Lazy loaded components
+const Tutorial = lazy(() => import('@/pages/Tutorial'));
+const Landing = lazy(() => import('@/pages/Landing'));
+const Login = lazy(() => import('@/pages/Login'));
+const SignUp = lazy(() => import('@/pages/SignUp'));
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
 const PartyDetail = lazy(() => import('@/pages/PartyDetail'));
 const ChatHome = lazy(() => import('@/pages/ChatHome'));
 const Community = lazy(() => import('@/pages/Community/Community'));
+const CommunityHome = lazy(() => import('@/pages/Community/CommunityHome'));
+const RecommendFeed = lazy(() => import('@/pages/Community/RecommendFeed'));
+const Magazine = lazy(() => import('@/pages/Community/Magazine'));
+const Following = lazy(() => import('@/pages/Community/Following'));
+const PopularPost = lazy(() => import('@/pages/Community/PopularPost'));
+const UserTip = lazy(() => import('@/pages/Community/UserTip'));
 const TipDetail = lazy(() => import('@/pages/TipDetail'));
 const BoastDetail = lazy(() => import('@/pages/BoastDetail'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
@@ -32,6 +37,7 @@ const Setting = lazy(() => import('@/pages/Setting'));
 const Notifications = lazy(() => import('@/pages/Notifications'));
 const WritePost = lazy(() => import('@/pages/WritePost'));
 const EmptyPage = lazy(() => import('@/pages/EmptyPage'));
+const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 const NotificationSettings = lazy(() => import('@/pages/NotificationSettings'));
 const DoNotDisturbSettings = lazy(() => import('@/pages/DoNotDisturbSettings'));
 const AccountSettings = lazy(() => import('@/pages/AccountSettings'));
@@ -41,32 +47,22 @@ const Announcements = lazy(() => import('@/pages/Announcements'));
 const ChangeCountry = lazy(() => import('@/pages/ChangeCountry'));
 const ClearCache = lazy(() => import('@/pages/ClearCache'));
 const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
-import Alert from '@/components/Alert/Alert';
+const PartyListPage = lazy(() => import('@/pages/PartyList'));
+const JoinPartyPage = lazy(() => import('@/pages/JoinParty'));
+const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'));
+const MagazineDetail = lazy(() => import('@/pages/MagazineDetail'));
 
 interface PropTypes {
   children: ReactNode; // children의 타입을 명시적으로 지정
 }
 
-// 튜토리얼 완료 상태 확인
-const isTutorialCompleted = () => {
-  const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
-  const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
-  const isPass = tutorialCompleted || isAlreadyLogin;
-  return isPass ? true : false;
-};
+interface wrrraperPropTypes {
+  component: ComponentType<any>;
+  title: string;
+  [key: string]: any; // 나머지 props를 허용
+}
 
-const isAuth = () => {
-  const authToken = localStorage.getItem('authToken');
-  return authToken ? true : false;
-};
-
-// 로딩 중 표시할 컴포넌트
 const Loading = () => <div>로딩 중...</div>;
-
-// 공통 로딩 컴포넌트
-const SuspenseWrapper: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => <Suspense fallback={<Loading />}>{children}</Suspense>;
 
 const PrivateRoute = ({ children }: PropTypes) => {
   const [isValidUser, setIsValidUser] = useState<boolean | null>(null);
@@ -74,9 +70,9 @@ const PrivateRoute = ({ children }: PropTypes) => {
 
   useEffect(() => {
     const verifyUser = async () => {
-      const authId = localStorage.getItem('authId'); // authId 가져오기
+      const authId = localStorage.getItem('authId');
       if (authId) {
-        const userData = await checkAuthId(authId); // authId로 유효성 검사
+        const userData = await checkAuthId(authId);
         setIsValidUser(!!userData);
       } else {
         setIsValidUser(false);
@@ -86,57 +82,57 @@ const PrivateRoute = ({ children }: PropTypes) => {
   }, []);
 
   if (isValidUser === null) return <Loading />;
-  console.log(isValidUser);
-  if (isValidUser) {
-    return children; // 유효한 사용자일 경우 children 반환
-  }
+  if (isValidUser) return children;
   return (
     <Alert
       type={'error'}
       title={'로그인되지 않은 유저입니다.'}
       subtext={'첫 화면으로 돌아갑니다.'}
-      onClose={() => {
-        navigate('/');
-      }}
+      onClose={() => navigate('/')}
     />
+  );
+};
+
+const ProtectedSuspenseRoute = ({
+  component: Component,
+  title,
+  ...rest
+}: wrrraperPropTypes) => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Helmet>
+        <title>{title} | Shipmate</title>
+      </Helmet>
+      <PrivateRoute>
+        <Component {...rest} />
+      </PrivateRoute>
+    </Suspense>
+  );
+};
+
+const PublicSuspenseRoute = ({
+  component: Component,
+  title,
+  ...rest
+}: wrrraperPropTypes) => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Helmet>
+        <title>{title} | Shipmate</title>
+      </Helmet>
+      <Component {...rest} />
+    </Suspense>
   );
 };
 
 const routes = [
   {
     path: '/tutorial',
-    Component: () => {
-      const isComplete = isTutorialCompleted();
-
-      if (isAuth()) {
-        return <Navigate to="/home" />;
-      }
-
-      if (isComplete) {
-        return <Navigate to="/" replace />;
-      }
-      return (
-        <SuspenseWrapper>
-          <Tutorial />
-        </SuspenseWrapper>
-      );
-    },
+    element: <PublicSuspenseRoute component={Tutorial} title="튜토리얼" />,
   },
   {
     path: '/',
-    Component: () => {
-      const isComplete = isTutorialCompleted();
-
-      if (!isComplete) {
-        return <Navigate to="/tutorial" replace />;
-      }
-
-      return (
-        <SuspenseWrapper>
-          <Landing />
-        </SuspenseWrapper>
-      );
-    },
+    element: <PublicSuspenseRoute component={Landing} title="홈페이지" />,
   },
   {
     path: '/login',
@@ -144,19 +140,11 @@ const routes = [
     children: [
       {
         index: true,
-        element: (
-          <SuspenseWrapper>
-            <Login />
-          </SuspenseWrapper>
-        ),
+        element: <PublicSuspenseRoute component={Login} title="로그인" />,
       },
       {
         path: 'signup',
-        element: (
-          <SuspenseWrapper>
-            <SignUp />
-          </SuspenseWrapper>
-        ),
+        element: <PublicSuspenseRoute component={SignUp} title="회원가입" />,
       },
     ],
   },
@@ -166,112 +154,73 @@ const routes = [
     children: [
       {
         index: true,
-        element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <HomePage />
-            </PrivateRoute>
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={HomePage} title="홈" />,
       },
       {
         path: 'notifications',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <Notifications />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={Notifications} title="알림" />
         ),
       },
       {
         path: 'chatHome',
-        element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <ChatHome />
-            </PrivateRoute>
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={ChatHome} title="채팅" />,
       },
       {
         path: 'writepost',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <WritePost />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={WritePost} title="게시물 작성" />
         ),
       },
       {
         path: 'community',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <Community />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={Community} title="커뮤니티" />
         ),
         children: [
           {
             index: true,
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <CommunityHome />
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={CommunityHome}
+                title="커뮤니티 홈"
+              />
             ),
           },
           {
             path: 'recommendFeed',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <RecommendFeed />
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={RecommendFeed}
+                title="추천 피드"
+              />
             ),
           },
           {
             path: 'following',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <Following />
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute component={Following} title="팔로잉" />
             ),
           },
           {
             path: 'userTip',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <UserTip />
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute component={UserTip} title="유저 팁" />
             ),
           },
           {
             path: 'popularPost',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <PopularPost />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={PopularPost}
+                title="인기 포스트"
+              />
             ),
           },
           {
             path: 'magazine',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <Magazine />
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute component={Magazine} title="매거진" />
             ),
           },
         ],
@@ -279,141 +228,113 @@ const routes = [
       {
         path: 'community/tip/:tipId',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <TipDetail />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={TipDetail} title="유저 팁 상세" />
         ),
       },
       {
         path: 'community/magazine/:magazineId',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <MagazineDetail />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute
+            component={MagazineDetail}
+            title="매거진 상세"
+          />
         ),
       },
       {
         path: 'community/boast/:boastId',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <BoastDetail />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={BoastDetail} title="자랑 상세" />
         ),
       },
       {
         path: 'mypage',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <MyPage />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={MyPage} title="마이페이지" />
         ),
       },
       {
         path: 'setting',
-        element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <Setting />
-            </PrivateRoute>
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={Setting} title="설정" />,
         children: [
           {
             path: 'notification',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <NotificationSettings />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={NotificationSettings}
+                title="알림 설정"
+              />
             ),
           },
           {
             path: 'account',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <AccountSettings />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={AccountSettings}
+                title="계정 설정"
+              />
             ),
           },
           {
             path: 'do-not-disturb',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <DoNotDisturbSettings />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={DoNotDisturbSettings}
+                title="방해 금지 설정"
+              />
             ),
           },
           {
             path: 'blocked-users',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <BlockedUsers />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={BlockedUsers}
+                title="차단된 사용자"
+              />
             ),
           },
           {
             path: 'other-settings',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <OtherSettings />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={OtherSettings}
+                title="기타 설정"
+              />
             ),
           },
           {
             path: 'announcements',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <Announcements />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={Announcements}
+                title="공지사항"
+              />
             ),
           },
           {
             path: 'change-country',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <ChangeCountry />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={ChangeCountry}
+                title="국가 변경"
+              />
             ),
           },
           {
             path: 'clear-cache',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <ClearCache />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={ClearCache}
+                title="캐시 삭제"
+              />
             ),
           },
           {
             path: 'update-version',
             element: (
-              <SuspenseWrapper>
-                <PrivateRoute>
-                  <UpdateVersion />,
-                </PrivateRoute>
-              </SuspenseWrapper>
+              <ProtectedSuspenseRoute
+                component={UpdateVersion}
+                title="버전 업데이트"
+              />
             ),
           },
         ],
@@ -421,84 +342,70 @@ const routes = [
       {
         path: 'partyCollect',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <PartyCollect />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={PartyCollect} title="파티 모집" />
         ),
       },
       {
         path: 'joinParty',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <JoinPartyPage />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={JoinPartyPage} title="파티 참여" />
         ),
       },
       {
         path: 'partyList/:country',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <PartyListPage />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute
+            component={PartyListPage}
+            title="파티 리스트"
+          />
         ),
       },
       {
         path: 'orderDetail',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <OrderDetailPage />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute
+            component={OrderDetailPage}
+            title="결제 상세"
+          />
         ),
       },
       {
         path: 'party/:partyId',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <PartyDetail />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute component={PartyDetail} title="파티 상세" />
         ),
       },
       {
         path: 'search',
-        element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <SearchPage />
-            </PrivateRoute>
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={SearchPage} title="검색" />,
       },
       {
         path: 'search/:keyword',
         element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <SearchResultPage />
-            </PrivateRoute>
-          </SuspenseWrapper>
-        ),
-      },
-      {
-        path: 'nowwedeveloping',
-        element: (
-          <SuspenseWrapper>
-            <PrivateRoute>
-              <EmptyPage />
-            </PrivateRoute>
-          </SuspenseWrapper>
+          <ProtectedSuspenseRoute
+            component={SearchResultPage}
+            title="검색 결과"
+          />
         ),
       },
     ],
+  },
+  {
+    path: 'nowwedeveloping',
+    element: <ProtectedSuspenseRoute component={EmptyPage} title="개발 중" />,
+  },
+  {
+    path: 'cantfindpage',
+    element: (
+      <ProtectedSuspenseRoute
+        component={ErrorPage}
+        title="페이지를 찾을 수 없음"
+      />
+    ),
+  },
+  {
+    path: '*',
+    element: <Navigate to="/cantfindpage" />,
   },
 ];
 
