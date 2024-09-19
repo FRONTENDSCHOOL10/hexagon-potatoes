@@ -29,7 +29,7 @@ const Alert: React.FC<AlertProps> = memo(
   ({ type, title, subtext, onClose }) => {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50"
+        className="fixed inset-0 z-[60] flex items-center justify-center bg-gray-500 bg-opacity-50"
         role="dialog"
         aria-labelledby="alertTitle"
         aria-describedby="alertDescription"
