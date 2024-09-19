@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import React, { ReactNode, Suspense, lazy, useEffect, useState } from 'react';
+import { createBrowserRouter, Navigate, useNavigate } from 'react-router-dom';
 import RootLayout from '@/layout/RootLayout';
 import Tutorial from '@/pages/Tutorial';
 import Landing from '@/pages/Landing';
@@ -14,7 +14,8 @@ import UserTip from '@/pages/Community/UserTip';
 import PartyListPage from '@/pages/PartyList';
 import JoinPartyPage from '@/pages/JoinParty';
 import OrderDetailPage from '@/pages/OrderDetail';
-import MagazineDetail from './pages/MagazineDetail';
+import MagazineDetail from '@/pages/MagazineDetail';
+import { checkAuthId } from '@/api/auth';
 
 // 동적 로딩할 컴포넌트 설정
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
@@ -40,6 +41,11 @@ const Announcements = lazy(() => import('@/pages/Announcements'));
 const ChangeCountry = lazy(() => import('@/pages/ChangeCountry'));
 const ClearCache = lazy(() => import('@/pages/ClearCache'));
 const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
+import Alert from '@/components/Alert/Alert';
+
+interface PropTypes {
+  children: ReactNode; // children의 타입을 명시적으로 지정
+}
 
 // 튜토리얼 완료 상태 확인
 const isTutorialCompleted = () => {
@@ -47,6 +53,11 @@ const isTutorialCompleted = () => {
   const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
   const isPass = tutorialCompleted || isAlreadyLogin;
   return isPass ? true : false;
+};
+
+const isAuth = () => {
+  const authToken = localStorage.getItem('authToken');
+  return authToken ? true : false;
 };
 
 // 로딩 중 표시할 컴포넌트
@@ -57,11 +68,49 @@ const SuspenseWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => <Suspense fallback={<Loading />}>{children}</Suspense>;
 
+const PrivateRoute = ({ children }: PropTypes) => {
+  const [isValidUser, setIsValidUser] = useState<boolean | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      const authId = localStorage.getItem('authId'); // authId 가져오기
+      if (authId) {
+        const userData = await checkAuthId(authId); // authId로 유효성 검사
+        setIsValidUser(!!userData);
+      } else {
+        setIsValidUser(false);
+      }
+    };
+    verifyUser();
+  }, []);
+
+  if (isValidUser === null) return <Loading />;
+  console.log(isValidUser);
+  if (isValidUser) {
+    return children; // 유효한 사용자일 경우 children 반환
+  }
+  return (
+    <Alert
+      type={'error'}
+      title={'로그인되지 않은 유저입니다.'}
+      subtext={'첫 화면으로 돌아갑니다.'}
+      onClose={() => {
+        navigate('/');
+      }}
+    />
+  );
+};
+
 const routes = [
   {
     path: '/tutorial',
     Component: () => {
       const isComplete = isTutorialCompleted();
+
+      if (isAuth()) {
+        return <Navigate to="/home" />;
+      }
 
       if (isComplete) {
         return <Navigate to="/" replace />;
@@ -119,7 +168,9 @@ const routes = [
         index: true,
         element: (
           <SuspenseWrapper>
-            <HomePage />
+            <PrivateRoute>
+              <HomePage />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -127,7 +178,9 @@ const routes = [
         path: 'notifications',
         element: (
           <SuspenseWrapper>
-            <Notifications />
+            <PrivateRoute>
+              <Notifications />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -135,7 +188,9 @@ const routes = [
         path: 'chatHome',
         element: (
           <SuspenseWrapper>
-            <ChatHome />
+            <PrivateRoute>
+              <ChatHome />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -143,7 +198,9 @@ const routes = [
         path: 'writepost',
         element: (
           <SuspenseWrapper>
-            <WritePost />
+            <PrivateRoute>
+              <WritePost />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -151,33 +208,71 @@ const routes = [
         path: 'community',
         element: (
           <SuspenseWrapper>
-            <Community />
+            <PrivateRoute>
+              <Community />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
         children: [
           {
             index: true,
-            element: <CommunityHome />,
+            element: (
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <CommunityHome />
+                </PrivateRoute>
+              </SuspenseWrapper>
+            ),
           },
           {
             path: 'recommendFeed',
-            element: <RecommendFeed />,
+            element: (
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <RecommendFeed />
+                </PrivateRoute>
+              </SuspenseWrapper>
+            ),
           },
           {
             path: 'following',
-            element: <Following />,
+            element: (
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <Following />
+                </PrivateRoute>
+              </SuspenseWrapper>
+            ),
           },
           {
             path: 'userTip',
-            element: <UserTip />,
+            element: (
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <UserTip />
+                </PrivateRoute>
+              </SuspenseWrapper>
+            ),
           },
           {
             path: 'popularPost',
-            element: <PopularPost />,
+            element: (
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <PopularPost />,
+                </PrivateRoute>
+              </SuspenseWrapper>
+            ),
           },
           {
             path: 'magazine',
-            element: <Magazine />,
+            element: (
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <Magazine />
+                </PrivateRoute>
+              </SuspenseWrapper>
+            ),
           },
         ],
       },
@@ -185,7 +280,9 @@ const routes = [
         path: 'community/tip/:tipId',
         element: (
           <SuspenseWrapper>
-            <TipDetail />
+            <PrivateRoute>
+              <TipDetail />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -193,7 +290,9 @@ const routes = [
         path: 'community/magazine/:magazineId',
         element: (
           <SuspenseWrapper>
-            <MagazineDetail />
+            <PrivateRoute>
+              <MagazineDetail />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -201,7 +300,9 @@ const routes = [
         path: 'community/boast/:boastId',
         element: (
           <SuspenseWrapper>
-            <BoastDetail />
+            <PrivateRoute>
+              <BoastDetail />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -209,7 +310,9 @@ const routes = [
         path: 'mypage',
         element: (
           <SuspenseWrapper>
-            <MyPage />
+            <PrivateRoute>
+              <MyPage />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -217,78 +320,100 @@ const routes = [
         path: 'setting',
         element: (
           <SuspenseWrapper>
-            <Setting />
+            <PrivateRoute>
+              <Setting />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
         children: [
           {
             path: 'notification',
             element: (
-                <NotificationSettings />
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <NotificationSettings />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
           {
             path: 'account',
             element: (
-
-                <AccountSettings />
-
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <AccountSettings />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
           {
             path: 'do-not-disturb',
             element: (
-
-                <DoNotDisturbSettings />
-
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <DoNotDisturbSettings />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
           {
             path: 'blocked-users',
             element: (
-
-                <BlockedUsers />
-
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <BlockedUsers />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
           {
             path: 'other-settings',
             element: (
-
-                <OtherSettings />
-
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <OtherSettings />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
           {
             path: 'announcements',
             element: (
-    
-                <Announcements />
-             
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <Announcements />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
           {
             path: 'change-country',
             element: (
-              
-                <ChangeCountry />
-           
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <ChangeCountry />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
           {
             path: 'clear-cache',
             element: (
-          
-                <ClearCache />
-    
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <ClearCache />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
           {
             path: 'update-version',
             element: (
-           
-                <UpdateVersion />
-        
+              <SuspenseWrapper>
+                <PrivateRoute>
+                  <UpdateVersion />,
+                </PrivateRoute>
+              </SuspenseWrapper>
             ),
           },
         ],
@@ -297,7 +422,9 @@ const routes = [
         path: 'partyCollect',
         element: (
           <SuspenseWrapper>
-            <PartyCollect />
+            <PrivateRoute>
+              <PartyCollect />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -305,7 +432,9 @@ const routes = [
         path: 'joinParty',
         element: (
           <SuspenseWrapper>
-            <JoinPartyPage />
+            <PrivateRoute>
+              <JoinPartyPage />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -313,7 +442,9 @@ const routes = [
         path: 'partyList/:country',
         element: (
           <SuspenseWrapper>
-            <PartyListPage />
+            <PrivateRoute>
+              <PartyListPage />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -321,7 +452,9 @@ const routes = [
         path: 'orderDetail',
         element: (
           <SuspenseWrapper>
-            <OrderDetailPage />
+            <PrivateRoute>
+              <OrderDetailPage />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -329,7 +462,9 @@ const routes = [
         path: 'party/:partyId',
         element: (
           <SuspenseWrapper>
-            <PartyDetail />
+            <PrivateRoute>
+              <PartyDetail />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -337,7 +472,9 @@ const routes = [
         path: 'search',
         element: (
           <SuspenseWrapper>
-            <SearchPage />
+            <PrivateRoute>
+              <SearchPage />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -345,7 +482,9 @@ const routes = [
         path: 'search/:keyword',
         element: (
           <SuspenseWrapper>
-            <SearchResultPage />
+            <PrivateRoute>
+              <SearchResultPage />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
@@ -353,7 +492,9 @@ const routes = [
         path: 'nowwedeveloping',
         element: (
           <SuspenseWrapper>
-            <EmptyPage />
+            <PrivateRoute>
+              <EmptyPage />
+            </PrivateRoute>
           </SuspenseWrapper>
         ),
       },
