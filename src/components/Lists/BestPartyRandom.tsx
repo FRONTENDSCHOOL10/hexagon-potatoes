@@ -7,11 +7,11 @@ import getPartyByUserId from '@/api/getPartyByUserId';
 const countryImg = (country: string) => {
   switch (country) {
     case '미국':
-      return '/assets/country/american-flag.png';
+      return '/assets/country/american-flag.webp';
     case '중국':
-      return '/assets/country/china-flag.png';
+      return '/assets/country/china-flag.webp';
     case '일본':
-      return '/assets/country/japan-flag.png';
+      return '/assets/country/japan-flag.webp';
     default:
       return '/assets/shipmatelogo.png';
   }
