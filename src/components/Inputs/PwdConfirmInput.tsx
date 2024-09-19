@@ -26,9 +26,7 @@ const PwdConfirmInput = ({
     : '비밀번호가 일치하지 않습니다.';
 
   const inputStyle = (isValid: boolean) =>
-    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${
-      isValid ? 'outline-mainblue' : 'outline-errored'
-    }`;
+    `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored border-errored'}`;
 
   const checkConfirmPwd = (val: string) => {
     const isValid = pwdInputVal === val;
@@ -100,7 +98,7 @@ const PwdConfirmInput = ({
         <>
           <button
             type="button"
-            className="absolute right-0 top-[48px] mr-10 text-sub-2"
+            className="absolute right-0 top-[2.7rem] mr-10 text-sub-2"
             onClick={toggleShowPwd}
           >
             <svg className="size-3.5 fill-current text-gray-200">
@@ -116,7 +114,7 @@ const PwdConfirmInput = ({
 
           <button
             type="button"
-            className="absolute right-0 top-[49px] mr-5 text-sub-2"
+            className="absolute right-0 top-11 mr-5 text-sub-2"
             onClick={handleClearInput}
           >
             <svg className="size-3 fill-current text-gray-200">

@@ -19,10 +19,7 @@ const PostingRandom = () => {
       const randomIndex = Math.floor(Math.random() * postings.length);
       const selectedPosting = postings[randomIndex];
 
-      const postingImg =
-        selectedPosting.photo.length !== 0
-          ? getPbImagesURL(0, selectedPosting)
-          : '';
+      const postingImg = getPbImageURL(pb.baseUrl, selectedPosting, 'photo');
       const profileImg = getPbImageURL(
         pb.baseUrl,
         selectedPosting.expand.author_id,
