@@ -11,6 +11,14 @@ interface PropTypes {
   postingImg?: string;
   content: string;
   label?: string[];
+  data: {
+    id: string;
+    collectionId: string;
+    collectionName: string;
+    created: string;
+    updated: string;
+    photo: string[];
+  };
 }
 
 const PostingCard = ({
