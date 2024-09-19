@@ -34,7 +34,9 @@ const EmptyPage = lazy(() => import('@/pages/EmptyPage'));
 // 튜토리얼 완료 상태 확인
 const isTutorialCompleted = () => {
   const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
-  return tutorialCompleted ? JSON.parse(tutorialCompleted) : false;
+  const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
+  const isPass = tutorialCompleted || isAlreadyLogin;
+  return isPass ? true : false;
 };
 
 // 로딩 중 표시할 컴포넌트
