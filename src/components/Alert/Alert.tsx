@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import Button from '../Buttons/Button';
 
 interface AlertProps {
@@ -27,6 +27,20 @@ const renderIcon = (type: 'notice' | 'error') => {
 
 const Alert: React.FC<AlertProps> = memo(
   ({ type, title, subtext, onClose }) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        onClose(); // 엔터 키가 눌리면 onClose 호출
+      }
+    };
+    useEffect(() => {
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }, []);
     return (
       <div
         className="fixed inset-0 z-[60] flex items-center justify-center bg-gray-500 bg-opacity-50"
@@ -61,6 +75,7 @@ const Alert: React.FC<AlertProps> = memo(
             isActive
             onClick={onClose}
             aria-label="닫기" // 버튼에 대한 접근성 레이블 추가
+            type={'button'}
           />
         </div>
       </div>
