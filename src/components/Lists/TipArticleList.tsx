@@ -1,6 +1,6 @@
 import Article from './Article';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 
 interface PropTypes {
   data: {
@@ -34,14 +34,12 @@ const TipArticleList = ({ data }: PropTypes) => {
   console.log(data);
   return (
     <ul className="flex w-full flex-col gap-y-3" aria-label="팁 목록">
-      {data?.slice(0, 3).map((item, index) => (
+      {data?.map((item, index) => (
         <Article
           key={item.id} // 리스트 항목에 대한 고유 키
           type={'tip'} // 'tip'으로 고정
           content_title={item.title} // 팁 제목
-          content_img={
-            item.photo ? getPbImageURL(tipUrl, item) : defaultTipImage
-          } // 팁 이미지
+          content_img={item.photo ? getPbImagesURL(0, item) : defaultTipImage} // 팁 이미지
           subtitle={item.content} // 팁 내용
           profile_photo={
             item?.expand?.author_id?.profile_photo
