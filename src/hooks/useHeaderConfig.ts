@@ -26,8 +26,9 @@ const headerConfigs: Record<string, HeaderConfig> = {
   '/home/community/userTip': { type: 'bell', title: '유저팁' },
   '/home/community/popularPost': { type: 'bell', title: '인기포스트' },
   '/home/community/magazine': { type: 'bell', title: '매거진' },
-  '/community/tip/:tipId': { type: 'back', title: '팁' },
-  '/community/boast/:boastId': { type: 'back', title: '자랑글' },
+  '/home/community/tip/:tipId': { type: 'back', title: '유저팁' },
+  '/home/community/boast/:boastId': { type: 'back', title: '자랑글' },
+  '/home/community/magazine/:magazineId': { type: 'back', title: '매거진' },
   '/home/mypage': { type: 'setting', title: '마이 페이지' },
   '/home/setting': { type: 'back', title: '설정' },
   '/home/nowwedeveloping': { type: 'back', title: '개발중' },
@@ -38,8 +39,9 @@ const dynamicPathPatterns = [
   '/home/search/',
   '/home/party/',
   '/home/orderDetail/',
-  '/community/tip/',
-  '/community/boast/',
+  '/home/community/tip/',
+  '/home/community/boast/',
+  '/home/community/magazine/',
   '/home/partylist/',
 ];
 
