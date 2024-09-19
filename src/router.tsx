@@ -31,6 +31,15 @@ const Setting = lazy(() => import('@/pages/Setting'));
 const Notifications = lazy(() => import('@/pages/Notifications'));
 const WritePost = lazy(() => import('@/pages/WritePost'));
 const EmptyPage = lazy(() => import('@/pages/EmptyPage'));
+const NotificationSettings = lazy(() => import('@/pages/NotificationSettings'));
+const DoNotDisturbSettings = lazy(() => import('@/pages/DoNotDisturbSettings'));
+const AccountSettings = lazy(() => import('@/pages/AccountSettings'));
+const BlockedUsers = lazy(() => import('@/pages/BlockedUsers'));
+const OtherSettings = lazy(() => import('@/pages/OtherSettings'));
+const Announcements = lazy(() => import('@/pages/Announcements'));
+const ChangeCountry = lazy(() => import('@/pages/ChangeCountry'));
+const ClearCache = lazy(() => import('@/pages/ClearCache'));
+const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
 
 // 튜토리얼 완료 상태 확인
 const isTutorialCompleted = () => {
@@ -209,6 +218,78 @@ const routes = [
             <Setting />
           </SuspenseWrapper>
         ),
+        children: [
+          {
+            path: 'notification',
+            element: (
+                <NotificationSettings />
+            ),
+          },
+          {
+            path: 'account',
+            element: (
+
+                <AccountSettings />
+
+            ),
+          },
+          {
+            path: 'do-not-disturb',
+            element: (
+
+                <DoNotDisturbSettings />
+
+            ),
+          },
+          {
+            path: 'blocked-users',
+            element: (
+
+                <BlockedUsers />
+
+            ),
+          },
+          {
+            path: 'other-settings',
+            element: (
+
+                <OtherSettings />
+
+            ),
+          },
+          {
+            path: 'announcements',
+            element: (
+    
+                <Announcements />
+             
+            ),
+          },
+          {
+            path: 'change-country',
+            element: (
+              
+                <ChangeCountry />
+           
+            ),
+          },
+          {
+            path: 'clear-cache',
+            element: (
+          
+                <ClearCache />
+    
+            ),
+          },
+          {
+            path: 'update-version',
+            element: (
+           
+                <UpdateVersion />
+        
+            ),
+          },
+        ],
       },
       {
         path: 'partyCollect',
