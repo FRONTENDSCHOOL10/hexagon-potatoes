@@ -12,7 +12,7 @@ const MagazineDetail = () => {
     // 로딩 스피너 만들면 넣어주기
     return <div>Loading...</div>;
   }
-  return <>{data ? <BlogPosting item={data} /> : null}</>;
+  return <>{data ? <BlogPosting item={data} type={'magazine'} /> : null}</>;
 };
 
 export default MagazineDetail;

@@ -33,9 +33,10 @@ interface InstaPostingItem extends PocketBaseRecord {
 // 컴포넌트 props 타입 정의
 interface PropTypes {
   item: InstaPostingItem;
+  type?: 'magazine' | 'tip';
 }
 
-const BlogPosting = ({ item }: PropTypes) => {
+const BlogPosting = ({ item, type }: PropTypes) => {
   const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
   if (!item) return null;
   const authorId = item.expand?.author_id;
@@ -83,19 +84,38 @@ const BlogPosting = ({ item }: PropTypes) => {
 
       <div className="flex flex-col gap-3 px-[0.75rem]">
         <LabelList data={item.tag} />
-        {interleavedContent.map((contentItem, index) => (
-          <React.Fragment key={index}>
-            {contentItem.type === 'text' ? (
-              <p className="text-body-2">{contentItem.content}</p>
-            ) : (
+        {/* 매거진에 들어가는 블로그 포스팅일때는 이미지가 한장이라서 일반적인 이미지 - 텍스트 형식으로 렌더링 */}
+        {type === 'magazine' ? (
+          <>
+            {item.photo && (
               <img
                 className="w-[21rem] object-cover object-center"
-                src={getPbImagesURL(index === 1 ? index - 1 : index - 2, item)}
-                alt={`게시물 이미지 ${index - 1}`}
+                src={getPbImageURL(ENDPOINT, item)}
+                alt="게시물"
               />
             )}
-          </React.Fragment>
-        ))}
+            <p className="text-body-2">{item.content}</p>
+          </>
+        ) : (
+          // 유저팁에 들어가는 블로그 포스팅은 이미지 - 텍스트 적절히 교차 배열되서 랜더링됌
+          interleavedContent.map((contentItem, index) => (
+            <React.Fragment key={index}>
+              {contentItem.type === 'text' ? (
+                <p className="text-body-2">{contentItem.content}</p>
+              ) : (
+                <img
+                  className="w-[21rem] object-cover object-center"
+                  src={getPbImagesURL(
+                    index === 1 ? index - 1 : index - 2,
+                    item
+                  )}
+                  alt={`게시물 이미지 ${index - 1}`}
+                />
+              )}
+            </React.Fragment>
+          ))
+        )}
+
         <PostActionBar
           postId={item.id}
           onLike={handleLike}
