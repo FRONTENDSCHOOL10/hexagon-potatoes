@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import PartyLeader from './PartyLeader';
 import pb from '@/utils/pocketbase';
+import getRandomItems from '@/utils/getRandomItems';
+import getPbImageURL from '@/utils/getPbImageURL'; // 추가
 
 const baseUrl = `${pb.baseUrl}/api/collections/users/records`;
 const partyBaseUrl = `${pb.baseUrl}/api/collections/party/records`;
@@ -47,8 +49,21 @@ const BestPartyLeader = () => {
           throw new Error('유효한 파티가 있는 유저가 없습니다.');
         }
 
-        const randomIndex = Math.floor(Math.random() * validUsers.length);
-        setBestUser(validUsers[randomIndex]);
+        // 랜덤하게 1명의 유저 선택
+        const randomUsers = getRandomItems(validUsers, 1);
+        const selectedUser = randomUsers[0];
+
+        // 프로필 사진 URL 가져오기
+        const profilePhotoUrl = getPbImageURL(
+          pb.baseUrl,
+          users,
+          'profile_photo'
+        );
+
+        setBestUser({
+          ...selectedUser,
+          profile_photo: profilePhotoUrl,
+        });
         setLoading(false);
       } catch (err) {
         console.error('유저 정보를 가져오는 데 실패했습니다:', err);

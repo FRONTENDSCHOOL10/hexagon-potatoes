@@ -27,7 +27,7 @@ const BestPartyRandom = () => {
           throw new Error('우수 평점을 가진 유저가 없습니다.');
         }
 
-        const partyPromises = users.map((user) =>
+        const partyPromises = users.map((user: { id: any }) =>
           axios.get(partyBaseUrl, {
             params: {
               filter: `party_leader="${user.id}"`, // 유저 ID로 파티 필터링
@@ -36,13 +36,15 @@ const BestPartyRandom = () => {
         );
 
         const partyResponses = await Promise.all(partyPromises);
-        const usersWithParties = users.map((user, index) => ({
-          ...user,
-          parties: partyResponses[index].data.items,
-        }));
+        const usersWithParties = users.map(
+          (user: any, index: string | number) => ({
+            ...user,
+            parties: partyResponses[index].data.items,
+          })
+        );
 
         const validUsers = usersWithParties.filter(
-          (user) => user.parties.length > 0
+          (user: { parties: string | any[] }) => user.parties.length > 0
         );
         if (validUsers.length === 0) {
           throw new Error('유효한 파티가 있는 유저가 없습니다.');

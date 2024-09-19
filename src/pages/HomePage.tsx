@@ -19,6 +19,7 @@ const HomePage = () => {
         <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           매거진
         </h2>
+        {/* 다른 페이지 다녀오고 새로고침 여러번 해도 오류 안 나는 거 확인 */}
         <MagazineList />
       </section>
       <section>
@@ -52,24 +53,28 @@ const HomePage = () => {
         <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           이달의 우수 파티장
         </h2>
+        {/* 다른 페이지 다녀오고 새로고침 여러번 해도 오류 안 나는 거 확인 */}
         <BestPartyLeader />
       </section>
       <section>
         <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           추천 파티 리스트
         </h2>
+        {/* 다른 페이지 다녀오고 새로고침 여러번 해도 오류 안 나는 거 확인 */}
         <BestPartyRandom />
       </section>
       <section>
         <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           직구 자랑
         </h2>
+        {/* 다른 페이지 다녀오고 새로고침 여러번 해도 오류 안 나는 거 확인 */}
         <PostingRandom />
       </section>
       <section>
         <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
           유저들의 팁
         </h2>
+        {/* 다른 페이지 다녀오고 새로고침 여러번 해도 오류 안 나는 거 확인 */}
         <RandomTip />
       </section>
     </div>

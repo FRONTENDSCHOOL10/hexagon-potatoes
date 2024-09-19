@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import Article from '@/components/Lists/Article';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
@@ -8,11 +8,11 @@ import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG'
 const baseTipUrl = `${pb.baseUrl}/api/collections/tip/records`;
 const baseUserUrl = `${pb.baseUrl}/api/collections/users/records`;
 
-const getTipImageUrl = (tip) => {
-  return tip.photo ? getPbImageURL(pb.baseUrl, tip, 'photo') : '';
+const getTipImageUrl = (tip: any): string => {
+  return tip.photo ? getPbImagesURL(0, tip) : '';
 };
 
-const fetchAuthorData = async (authorId) => {
+const fetchAuthorData = async (authorId: any) => {
   try {
     const response = await axios.get(baseUserUrl, {
       params: {
