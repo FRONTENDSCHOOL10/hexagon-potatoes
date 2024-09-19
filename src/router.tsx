@@ -9,10 +9,9 @@ import {
 import { createBrowserRouter, Navigate, useNavigate } from 'react-router-dom';
 import RootLayout from '@/layout/RootLayout';
 import { checkAuthId } from '@/api/auth';
-import { Helmet } from 'react-helmet-async';
 import Alert from './components/Alert/Alert';
 
-// Lazy loaded components
+// 레이지 로딩
 const Tutorial = lazy(() => import('@/pages/Tutorial'));
 const Landing = lazy(() => import('@/pages/Landing'));
 const Login = lazy(() => import('@/pages/Login'));
@@ -53,13 +52,12 @@ const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'));
 const MagazineDetail = lazy(() => import('@/pages/MagazineDetail'));
 
 interface PropTypes {
-  children: ReactNode; // children의 타입을 명시적으로 지정
+  children: ReactNode;
 }
 
 interface wrrraperPropTypes {
   component: ComponentType<any>;
-  title: string;
-  [key: string]: any; // 나머지 props를 허용
+  [key: string]: any;
 }
 
 const Loading = () => <div>로딩 중...</div>;
@@ -87,7 +85,9 @@ const PrivateRoute = ({ children }: PropTypes) => {
     <Alert
       type={'error'}
       title={'로그인되지 않은 유저입니다.'}
-      subtext={'첫 화면으로 돌아갑니다.'}
+      subtext={
+        '로그인 후 다시 시도해 주세요. 혹시 예상치 못한 오류로 인해 이동할 수 있습니다. 첫 화면으로 돌아갑니다.'
+      }
       onClose={() => navigate('/')}
     />
   );
@@ -95,14 +95,10 @@ const PrivateRoute = ({ children }: PropTypes) => {
 
 const ProtectedSuspenseRoute = ({
   component: Component,
-  title,
   ...rest
 }: wrrraperPropTypes) => {
   return (
     <Suspense fallback={<Loading />}>
-      <Helmet>
-        <title>{title} | Shipmate</title>
-      </Helmet>
       <PrivateRoute>
         <Component {...rest} />
       </PrivateRoute>
@@ -112,14 +108,10 @@ const ProtectedSuspenseRoute = ({
 
 const PublicSuspenseRoute = ({
   component: Component,
-  title,
   ...rest
 }: wrrraperPropTypes) => {
   return (
     <Suspense fallback={<Loading />}>
-      <Helmet>
-        <title>{title} | Shipmate</title>
-      </Helmet>
       <Component {...rest} />
     </Suspense>
   );
@@ -128,11 +120,11 @@ const PublicSuspenseRoute = ({
 const routes = [
   {
     path: '/tutorial',
-    element: <PublicSuspenseRoute component={Tutorial} title="튜토리얼" />,
+    element: <PublicSuspenseRoute component={Tutorial} />,
   },
   {
     path: '/',
-    element: <PublicSuspenseRoute component={Landing} title="홈페이지" />,
+    element: <PublicSuspenseRoute component={Landing} />,
   },
   {
     path: '/login',
@@ -140,11 +132,11 @@ const routes = [
     children: [
       {
         index: true,
-        element: <PublicSuspenseRoute component={Login} title="로그인" />,
+        element: <PublicSuspenseRoute component={Login} />,
       },
       {
         path: 'signup',
-        element: <PublicSuspenseRoute component={SignUp} title="회원가입" />,
+        element: <PublicSuspenseRoute component={SignUp} />,
       },
     ],
   },
@@ -154,254 +146,149 @@ const routes = [
     children: [
       {
         index: true,
-        element: <ProtectedSuspenseRoute component={HomePage} title="홈" />,
+        element: <ProtectedSuspenseRoute component={HomePage} />,
       },
       {
         path: 'notifications',
-        element: (
-          <ProtectedSuspenseRoute component={Notifications} title="알림" />
-        ),
+        element: <ProtectedSuspenseRoute component={Notifications} />,
       },
       {
         path: 'chatHome',
-        element: <ProtectedSuspenseRoute component={ChatHome} title="채팅" />,
+        element: <ProtectedSuspenseRoute component={ChatHome} />,
       },
       {
         path: 'writepost',
-        element: (
-          <ProtectedSuspenseRoute component={WritePost} title="게시물 작성" />
-        ),
+        element: <ProtectedSuspenseRoute component={WritePost} />,
       },
       {
         path: 'community',
-        element: (
-          <ProtectedSuspenseRoute component={Community} title="커뮤니티" />
-        ),
+        element: <ProtectedSuspenseRoute component={Community} />,
         children: [
           {
             index: true,
-            element: (
-              <ProtectedSuspenseRoute
-                component={CommunityHome}
-                title="커뮤니티 홈"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={CommunityHome} />,
           },
           {
             path: 'recommendFeed',
-            element: (
-              <ProtectedSuspenseRoute
-                component={RecommendFeed}
-                title="추천 피드"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={RecommendFeed} />,
           },
           {
             path: 'following',
-            element: (
-              <ProtectedSuspenseRoute component={Following} title="팔로잉" />
-            ),
+            element: <ProtectedSuspenseRoute component={Following} />,
           },
           {
             path: 'userTip',
-            element: (
-              <ProtectedSuspenseRoute component={UserTip} title="유저 팁" />
-            ),
+            element: <ProtectedSuspenseRoute component={UserTip} />,
           },
           {
             path: 'popularPost',
-            element: (
-              <ProtectedSuspenseRoute
-                component={PopularPost}
-                title="인기 포스트"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={PopularPost} />,
           },
           {
             path: 'magazine',
-            element: (
-              <ProtectedSuspenseRoute component={Magazine} title="매거진" />
-            ),
+            element: <ProtectedSuspenseRoute component={Magazine} />,
           },
         ],
       },
       {
         path: 'community/tip/:tipId',
-        element: (
-          <ProtectedSuspenseRoute component={TipDetail} title="유저 팁 상세" />
-        ),
+        element: <ProtectedSuspenseRoute component={TipDetail} />,
       },
       {
         path: 'community/magazine/:magazineId',
-        element: (
-          <ProtectedSuspenseRoute
-            component={MagazineDetail}
-            title="매거진 상세"
-          />
-        ),
+        element: <ProtectedSuspenseRoute component={MagazineDetail} />,
       },
       {
         path: 'community/boast/:boastId',
-        element: (
-          <ProtectedSuspenseRoute component={BoastDetail} title="자랑 상세" />
-        ),
+        element: <ProtectedSuspenseRoute component={BoastDetail} />,
       },
       {
         path: 'mypage',
-        element: (
-          <ProtectedSuspenseRoute component={MyPage} title="마이페이지" />
-        ),
+        element: <ProtectedSuspenseRoute component={MyPage} />,
       },
       {
         path: 'setting',
-        element: <ProtectedSuspenseRoute component={Setting} title="설정" />,
+        element: <ProtectedSuspenseRoute component={Setting} />,
         children: [
           {
             path: 'notification',
             element: (
-              <ProtectedSuspenseRoute
-                component={NotificationSettings}
-                title="알림 설정"
-              />
+              <ProtectedSuspenseRoute component={NotificationSettings} />
             ),
           },
           {
             path: 'account',
-            element: (
-              <ProtectedSuspenseRoute
-                component={AccountSettings}
-                title="계정 설정"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={AccountSettings} />,
           },
           {
             path: 'do-not-disturb',
             element: (
-              <ProtectedSuspenseRoute
-                component={DoNotDisturbSettings}
-                title="방해 금지 설정"
-              />
+              <ProtectedSuspenseRoute component={DoNotDisturbSettings} />
             ),
           },
           {
             path: 'blocked-users',
-            element: (
-              <ProtectedSuspenseRoute
-                component={BlockedUsers}
-                title="차단된 사용자"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={BlockedUsers} />,
           },
           {
             path: 'other-settings',
-            element: (
-              <ProtectedSuspenseRoute
-                component={OtherSettings}
-                title="기타 설정"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={OtherSettings} />,
           },
           {
             path: 'announcements',
-            element: (
-              <ProtectedSuspenseRoute
-                component={Announcements}
-                title="공지사항"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={Announcements} />,
           },
           {
             path: 'change-country',
-            element: (
-              <ProtectedSuspenseRoute
-                component={ChangeCountry}
-                title="국가 변경"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={ChangeCountry} />,
           },
           {
             path: 'clear-cache',
-            element: (
-              <ProtectedSuspenseRoute
-                component={ClearCache}
-                title="캐시 삭제"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={ClearCache} />,
           },
           {
             path: 'update-version',
-            element: (
-              <ProtectedSuspenseRoute
-                component={UpdateVersion}
-                title="버전 업데이트"
-              />
-            ),
+            element: <ProtectedSuspenseRoute component={UpdateVersion} />,
           },
         ],
       },
       {
         path: 'partyCollect',
-        element: (
-          <ProtectedSuspenseRoute component={PartyCollect} title="파티 모집" />
-        ),
+        element: <ProtectedSuspenseRoute component={PartyCollect} />,
       },
       {
         path: 'joinParty',
-        element: (
-          <ProtectedSuspenseRoute component={JoinPartyPage} title="파티 참여" />
-        ),
+        element: <ProtectedSuspenseRoute component={JoinPartyPage} />,
       },
       {
         path: 'partyList/:country',
-        element: (
-          <ProtectedSuspenseRoute
-            component={PartyListPage}
-            title="파티 리스트"
-          />
-        ),
+        element: <ProtectedSuspenseRoute component={PartyListPage} />,
       },
       {
         path: 'orderDetail',
-        element: (
-          <ProtectedSuspenseRoute
-            component={OrderDetailPage}
-            title="결제 상세"
-          />
-        ),
+        element: <ProtectedSuspenseRoute component={OrderDetailPage} />,
       },
       {
         path: 'party/:partyId',
-        element: (
-          <ProtectedSuspenseRoute component={PartyDetail} title="파티 상세" />
-        ),
+        element: <ProtectedSuspenseRoute component={PartyDetail} />,
       },
       {
         path: 'search',
-        element: <ProtectedSuspenseRoute component={SearchPage} title="검색" />,
+        element: <ProtectedSuspenseRoute component={SearchPage} />,
       },
       {
         path: 'search/:keyword',
-        element: (
-          <ProtectedSuspenseRoute
-            component={SearchResultPage}
-            title="검색 결과"
-          />
-        ),
+        element: <ProtectedSuspenseRoute component={SearchResultPage} />,
       },
     ],
   },
   {
     path: 'nowwedeveloping',
-    element: <ProtectedSuspenseRoute component={EmptyPage} title="개발 중" />,
+    element: <ProtectedSuspenseRoute component={EmptyPage} />,
   },
   {
     path: 'cantfindpage',
-    element: (
-      <ProtectedSuspenseRoute
-        component={ErrorPage}
-        title="페이지를 찾을 수 없음"
-      />
-    ),
+    element: <ProtectedSuspenseRoute component={ErrorPage} />,
   },
   {
     path: '*',

@@ -6,6 +6,7 @@ import UserNameInput from '@/components/Inputs/UserNameInput';
 import ItemsList from '@/components/Lists/ItemList';
 import Payment from '@/components/Payment/Payment';
 import Button from '@/components/Buttons/Button';
+import { Helmet } from 'react-helmet-async';
 
 // useParams로 주소의 파티글 아이디값 빼오기
 
@@ -91,44 +92,50 @@ const OrderDetailPage = () => {
   };
 
   return (
-    <section className="flex flex-col gap-y-3">
-      <h1>주문 상세 페이지</h1>
+    <>
+      <Helmet>
+        <title>주문 상세 페이지 | Shipmate</title>
+        <meta
+          name="description"
+          content="주문 상세 정보를 확인하고 결제하세요."
+        />
+        <meta name="keywords" content="주문, 결제, 해외 직구" />
+      </Helmet>
+      <section className="flex flex-col gap-y-3">
+        <h1>주문 상세 페이지</h1>
 
-      <UserNameInput
-        inputName="name"
-        onUserNameChange={handleChangeInput}
-        defaultValue={leaderData.name}
-        onValidChange={handleValidChange}
-        isValid={isValid}
-      />
-      <AddressInput
-        addressInputName="address"
-        detailAddressInputName="detail_address"
-        onAddressChange={handleChangeInput}
-        // defaultAddressVal={leaderData.address}
-        // defaultDetailAddressVal={leaderData.detail_address}
-      />
-      {partyData.party_leader === loginUserData.loginUserId && (
-        <>
-          <StandardInput
-            type="number"
-            inputLabel="개인통관고유부호"
-            placeholder="개인통관고유부호"
-            inputName="personal_code"
-            // defaultValue={leaderData.personal_code}
-            onInputChange={handleChangeInput}
-          />
-          {/* <ItemsList data={data} /> */}
-        </>
-      )}
-      <Payment />
-      <Button
-        type="submit"
-        buttonContent="최종 결제하기"
-        isActive={isActive}
-        onClick={handleClickPaymentBtn}
-      />
-    </section>
+        <UserNameInput
+          inputName="name"
+          onUserNameChange={handleChangeInput}
+          defaultValue={leaderData.name}
+          onValidChange={handleValidChange}
+          isValid={isValid}
+        />
+        <AddressInput
+          addressInputName="address"
+          detailAddressInputName="detail_address"
+          onAddressChange={handleChangeInput}
+        />
+        {partyData.party_leader === loginUserData.loginUserId && (
+          <>
+            <StandardInput
+              type="number"
+              inputLabel="개인통관고유부호"
+              placeholder="개인통관고유부호"
+              inputName="personal_code"
+              onInputChange={handleChangeInput}
+            />
+          </>
+        )}
+        <Payment />
+        <Button
+          type="submit"
+          buttonContent="최종 결제하기"
+          isActive={isActive}
+          onClick={handleClickPaymentBtn}
+        />
+      </section>
+    </>
   );
 };
 
