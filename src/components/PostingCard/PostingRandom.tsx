@@ -5,7 +5,7 @@ import pb from '@/utils/pocketbase';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 import PostingCard from '@/components/PostingCard/PostingCard';
 
-const basePostingUrl = `${pb.baseUrl}/api/collections/posting/records`;
+const basePostingUrl = `${pb.baseUrl}api/collections/posting/records`;
 
 // 랜덤 포스팅 선택 및 렌더링
 const PostingRandom = () => {

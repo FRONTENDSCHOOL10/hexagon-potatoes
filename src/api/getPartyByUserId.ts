@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pb from '@/utils/pocketbase';
 
-const baseUrl = `${pb.baseUrl}/api/collections/party/records`;
+const baseUrl = `${pb.baseUrl}api/collections/party/records`;
 
 // 사용자가 파티를 가지고 있는지 먼저 확인하는 함수
 async function checkUserHasParty(userId: string): Promise<boolean> {

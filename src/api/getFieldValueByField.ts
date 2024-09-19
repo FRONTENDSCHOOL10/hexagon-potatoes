@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pb from '@/utils/pocketbase'; // PocketBase 인스턴스 import
 
-const baseUrl = `${pb.baseUrl}/api/collections`;
+const baseUrl = `${pb.baseUrl}api/collections`;
 
 async function getFieldValueByField(
   tableName: string,

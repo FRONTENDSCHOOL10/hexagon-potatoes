@@ -5,8 +5,8 @@ import getUserById from '@/api/getUserById';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 import getUserIdByNickName from './getUserIdByNickName';
 
-const baseUrl = `${pb.baseUrl}/api/collections/party/records`;
-const usersBaseUrl = `${pb.baseUrl}/api/collections/users/records`;
+const baseUrl = `${pb.baseUrl}api/collections/party/records`;
+const usersBaseUrl = `${pb.baseUrl}api/collections/users/records`;
 const countryImg = (country: string) => {
   switch (country) {
     case '미국':

@@ -3,8 +3,8 @@ import axios from 'axios';
 import NameCard from '@/components/NameCard/NameCard';
 import pb from '@/utils/pocketbase';
 
-const baseUrl = `${pb.baseUrl}/api/collections/users/records`;
-const partyBaseUrl = `${pb.baseUrl}/api/collections/party/records`;
+const baseUrl = `${pb.baseUrl}api/collections/users/records`;
+const partyBaseUrl = `${pb.baseUrl}api/collections/party/records`;
 
 const BestPartyRandom = () => {
   const [randomUser, setRandomUser] = useState<any>(null);
