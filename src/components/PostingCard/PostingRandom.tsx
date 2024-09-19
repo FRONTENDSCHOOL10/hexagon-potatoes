@@ -15,11 +15,10 @@ const PostingRandom = () => {
   useEffect(() => {
     if (status === 'success' && data?.items.length > 0) {
       // 랜덤 포스팅 선택
-      const postings = data.items;
+      const postings = data?.items;
       const randomIndex = Math.floor(Math.random() * postings.length);
       const selectedPosting = postings[randomIndex];
 
-      const postingImg = getPbImageURL(pb.baseUrl, selectedPosting, 'photo');
       const profileImg = getPbImageURL(
         pb.baseUrl,
         selectedPosting.expand.author_id,
@@ -30,8 +29,9 @@ const PostingRandom = () => {
         user: selectedPosting.expand.author_id.nickname,
         content: selectedPosting.content,
         label: selectedPosting.tag,
-        postingImg: postingImg,
+        postingImg: selectedPosting.photo,
         profileImg: profileImg,
+        data: selectedPosting,
       });
     }
   }, [status, data]);
@@ -59,6 +59,7 @@ const PostingRandom = () => {
       postingImg={randomPosting.postingImg}
       profileImg={randomPosting.profileImg}
       label={randomPosting.label}
+      data={randomPosting.data}
     />
   );
 };

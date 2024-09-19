@@ -4,12 +4,11 @@ import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 
 const PopularPost = () => {
   const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
-  const ENDPOINT = `https://hexagon-potatoes.pockethost.io`;
-  const postingUrl = `https://hexagon-potatoes.pockethost.io/api/collections/posting/records`;
+  const ENDPOINT = `${import.meta.env.VITE_PB_URL}`;
+  const postingUrl = `${ENDPOINT}api/collections/posting/records`;
 
   const { data, error, status } = useFetch(postingUrl, 'author_id');
   const PostData = data?.items;
-  console.log(data?.items[1]);
 
   return (
     <section className="mt-3 flex flex-col gap-3">
@@ -22,9 +21,10 @@ const PopularPost = () => {
               : ''
           }
           user={d.expand.author_id.nickname}
-          postingImg={d.photo.length !== 0 ? getPbImagesURL(0, d) : null}
+          postingImg={d.photo}
           content={d.content}
           label={d.tag}
+          data={d}
         />
       ))}
     </section>

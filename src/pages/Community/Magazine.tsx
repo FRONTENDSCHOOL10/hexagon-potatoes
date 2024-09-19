@@ -16,7 +16,13 @@ const Magazine = () => {
     return <div>No data available</div>;
   }
 
-  return <>{tipData?.map((d: any) => <BlogPosting key={d.id} item={d} />)}</>;
+  return (
+    <>
+      {tipData?.map((d: any) => (
+        <BlogPosting key={d.id} item={d} type={'magazine'} />
+      ))}
+    </>
+  );
 };
 
 export default Magazine;
