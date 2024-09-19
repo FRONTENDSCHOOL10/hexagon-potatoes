@@ -1,12 +1,13 @@
 import React, { useState, useId } from 'react';
 import { validateId } from '@/utils/validate';
+import { checkDuplicate } from '@/utils/checkDuplicate';
 
 interface PropTypes {
   inputName: string;
   defaultValue?: string;
   onIdChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
-  validateOnChange?: boolean; // 추가: 실시간 검증 여부를 결정
+  validateOnChange: boolean;
 }
 
 const IdInput = ({
@@ -14,25 +15,29 @@ const IdInput = ({
   defaultValue,
   onIdChange,
   onValidChange,
-  validateOnChange = true, // 기본값: true
+  validateOnChange = true,
 }: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
+  const [isDuplicate, setIsDuplicate] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState(defaultValue || '');
   const inputId = useId();
 
   const inputStyle = (isValid: boolean) =>
-    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored'}`;
+    `text-sub-2 relative px-5 py-2 h-[2.8125rem] rounded-xl w-full border border-gray-200 outline-1 ${(isValid && isDuplicate) || !isEnteredVal ? 'outline-mainblue' : 'outline-errored border-errored'}`;
 
-  // Validation message based on validity
-  const validateMessage = !isValid
-    ? '사용할 수 없는 아이디입니다.'
-    : '사용가능한 아이디입니다.';
+  const validationMessage = () => {
+    if (!isEnteredVal) return '';
+    if (!isValid) return '6~12자의 영문, 숫자 조합을 입력해주세요.';
+    if (!isDuplicate) return '중복된 아이디입니다.';
+  };
 
-  const validateInputVal = (val: string) => {
+  const validateInputVal = async (val: string) => {
     const isValidInput = validateId(val);
+    const isDuplicate = await checkDuplicate('username', val);
     setIsValid(isValidInput);
-    onValidChange(isValidInput);
+    setIsDuplicate(isDuplicate);
+    onValidChange(isValidInput && isDuplicate);
   };
 
   const checkInputFilled = (val: string) => {
@@ -40,15 +45,11 @@ const IdInput = ({
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputVal(value);
-    checkInputFilled(value);
-
-    if (validateOnChange) {
-      validateInputVal(value);
-    }
-
-    onIdChange(inputName)(value);
+    const inputVal = e.target.value;
+    setInputVal(inputVal);
+    checkInputFilled(inputVal);
+    validateOnChange && validateInputVal(inputVal);
+    onIdChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -61,11 +62,16 @@ const IdInput = ({
     <div
       role="group"
       aria-label="아이디 입력 필드"
-      className="flex flex-col gap-y-1"
+      className="relative flex flex-col gap-y-1"
     >
       <label className="text-button" htmlFor={inputId}>
         아이디
       </label>
+      {validateOnChange && (
+        <p className="absolute right-0 top-1 text-sub-2 text-mainblue">
+          6~12자의 영문, 숫자 조합
+        </p>
+      )}
       <input
         id={inputId}
         value={inputVal}
@@ -77,9 +83,9 @@ const IdInput = ({
         onKeyDown={handlePressEnter}
         onChange={handleChangeInput}
       />
-      {validateOnChange && isEnteredVal && !isValid && (
+      {isEnteredVal && (
         <p role="alert" className="text-xs font-normal text-errored">
-          {validateMessage}
+          {validationMessage()}
         </p>
       )}
     </div>
