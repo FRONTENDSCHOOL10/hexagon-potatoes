@@ -5,8 +5,8 @@ import pb from '@/utils/pocketbase';
 import Article from '@/components/Lists/Article';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
-const baseTipUrl = `${pb.baseUrl}/api/collections/tip/records`;
-const baseUserUrl = `${pb.baseUrl}/api/collections/users/records`;
+const baseTipUrl = `${pb.baseUrl}api/collections/tip/records`;
+const baseUserUrl = `${pb.baseUrl}api/collections/users/records`;
 
 const getTipImageUrl = (tip: any): string => {
   return tip.photo ? getPbImagesURL(0, tip) : '';

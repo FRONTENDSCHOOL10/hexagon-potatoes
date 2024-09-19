@@ -4,7 +4,7 @@ import pb from '@/utils/pocketbase';
 import getUserById from '@/api/getUserById'; // 실제 경로로 수정하세요
 import getPartyByUserId from './getPartyByUserId';
 
-const baseUrl = `${pb.baseUrl}/api/collections/users/records`;
+const baseUrl = `${pb.baseUrl}api/collections/users/records`;
 
 // 유저가 리더인 파티 개수 가져오기
 const fetchPartyCount = async (userId: string): Promise<number> => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import pb from '@/utils/pocketbase';
-const baseUrl = `${pb.baseUrl}/api/collections/users/records`;
+const baseUrl = `${pb.baseUrl}api/collections/users/records`;
 
 export async function checkDuplicate(
   fieldName: string,

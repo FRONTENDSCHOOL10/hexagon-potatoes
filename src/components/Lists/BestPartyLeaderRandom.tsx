@@ -5,8 +5,8 @@ import pb from '@/utils/pocketbase';
 import getRandomItems from '@/utils/getRandomItems';
 import getPbImageURL from '@/utils/getPbImageURL'; // 추가
 
-const baseUrl = `${pb.baseUrl}/api/collections/users/records`;
-const partyBaseUrl = `${pb.baseUrl}/api/collections/party/records`;
+const baseUrl = `${pb.baseUrl}api/collections/users/records`;
+const partyBaseUrl = `${pb.baseUrl}api/collections/party/records`;
 
 const BestPartyLeader = () => {
   const [bestUser, setBestUser] = useState<any>(null);

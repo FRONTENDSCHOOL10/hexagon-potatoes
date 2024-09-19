@@ -1,6 +1,6 @@
 import pb from '@/utils/pocketbase';
 import axios from 'axios';
-const baseUrl = `${pb.baseUrl}/api/collections/users/auth-with-password`;
+const baseUrl = `${pb.baseUrl}api/collections/users/auth-with-password`;
 
 export const loginUser = async (usernameOrEmail: string, password: string) => {
   try {
