@@ -10,7 +10,13 @@ import { useState, useId } from 'react';
 import ModalLayout from '@/layout/Modal';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 
-const Postcode = ({ isOpen, onInputChange, onTogglePostPopup }) => {
+const Postcode = ({
+  isOpen,
+  onInputChange,
+  addressInputName,
+  onAddressChange,
+  onTogglePostPopup,
+}) => {
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
@@ -26,7 +32,8 @@ const Postcode = ({ isOpen, onInputChange, onTogglePostPopup }) => {
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    onInputChange(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    onInputChange(fullAddress);
+    onAddressChange(addressInputName)(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   };
 
   return (
@@ -69,6 +76,7 @@ const AddressInput = ({
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
+    // console.log(inputVal);
     setAddressInputVal(inputVal);
     checkInputFilled(inputVal);
     onAddressChange(addressInputName)(inputVal);
@@ -78,6 +86,7 @@ const AddressInput = ({
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const inputVal = e.target.value;
+    console.log(inputVal);
     setDetailAddressInputVal(inputVal);
     checkInputFilled(inputVal);
     onAddressChange(detailAddressInputName)(inputVal);
@@ -102,11 +111,10 @@ const AddressInput = ({
         value={addressInputVal}
         id={addressInputId}
         type="text"
-        defaultValue={defaultAddressVal}
         placeholder="주소를 입력해 주세요."
         name={addressInputName}
         className={inputStyle}
-        onChange={handleAddressChange}
+        // onChange={handleAddressChange}
         onClick={handleTogglePostPopup}
         required
         readOnly
@@ -118,7 +126,6 @@ const AddressInput = ({
         id={detailAddressInputId}
         type="text"
         value={detailAddressInputVal}
-        defaultValue={defaultDetailAddressVal}
         placeholder="상세 주소를 입력해 주세요."
         name={detailAddressInputName}
         className={inputStyle}
@@ -129,6 +136,8 @@ const AddressInput = ({
         isOpen={isOpen}
         onTogglePostPopup={handleTogglePostPopup}
         onInputChange={setAddressInputVal}
+        onAddressChange={onAddressChange}
+        addressInputName={addressInputName}
       />
     </div>
   );

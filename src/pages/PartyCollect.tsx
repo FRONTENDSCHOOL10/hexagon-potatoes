@@ -1,10 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useFetch from '@/hooks/useFetch';
+import axios from 'axios';
 import StandardInput from '@/components/Inputs/StandardInput';
 import Button from '@/components/Buttons/Button';
 import Dropdown from '@/components/Dropdown/Dropdown';
-import { categories } from '@/components/Dropdown/DropdownList';
+import { countries } from '@/components/Dropdown/DropdownList';
 
 const partyData = {
   party_name: '',
@@ -14,20 +16,15 @@ const partyData = {
   target_members: '',
   weight: '',
   country: '',
-  size: '',
   participation_deadline: '',
 };
 
 const PartyCollect = () => {
-  const [formData, setFormData] = useState(partyData);
+  const [data, setData] = useState(partyData);
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
-  const handleClickNextBtn = () => {
-    // 모든 인풋이 채워졌는지 확인
-    navigate('/home/JoinParty');
-  };
 
-  const checkInputFilled = (data: typeof formData) => {
+  const checkInputFilled = (data: typeof data) => {
     // 모든 인풋이 채워져 있는지 확인
     const isFilled = Object.values(data).every(
       (d) => d !== undefined && d !== null && d !== ''
@@ -37,9 +34,42 @@ const PartyCollect = () => {
 
   const handleChangeInput = (inputName: string) => (value: string | number) => {
     // 데이터 받아와서 업데이트
-    const updatedData = { ...formData, [inputName]: value };
-    setFormData(updatedData);
+    const updatedData = { ...data, [inputName]: value };
+    setData(updatedData);
     checkInputFilled(updatedData);
+  };
+
+  // 보낼 데이터 만들기
+  const createFormData = () => {
+    const formData = new FormData();
+    formData.append('party_name', data.party_name);
+    formData.append('country', data.country);
+    formData.append('participation_deadline', data.participation_deadline);
+    formData.append('party_about', data.party_about);
+    formData.append('party_notice', data.party_notice);
+    formData.append('personal_code', data.personal_code);
+    formData.append('target_members', data.target_members);
+    formData.append('weight', data.weight);
+
+    return formData;
+  };
+
+  const fetchData = async () => {
+    const formData = await createFormData();
+    try {
+      await axios.post(
+        'https://hexagon-potatoes.pockethost.io/api/collections/party/records',
+        formData
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClickNextBtn = async () => {
+    // 모든 인풋이 채워졌는지 확인
+    fetchData();
+    navigate('/home/JoinParty');
   };
 
   return (
@@ -74,7 +104,7 @@ const PartyCollect = () => {
         placeholder="개인통관고유부호"
       />
       <Dropdown
-        list={categories}
+        list={countries}
         label="직구할 국가"
         dropdownName="country"
         onInputChange={handleChangeInput}

@@ -23,7 +23,7 @@ const PwdInput = ({
   const pwdInputId = useId();
 
   const inputStyle = (isValid: boolean) =>
-    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid ? 'outline-mainblue' : 'outline-errored'}`;
+    `text-sub-2 block relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid ? 'outline-mainblue' : 'outline-errored'}`;
 
   const validateInputVal = (val: string) => {
     setIsValid(validatePwd(val));
@@ -70,9 +70,9 @@ const PwdInput = ({
       <div
         role="group"
         aria-label="비밀번호 입력 필드"
-        className="relative flex flex-col gap-y-1"
+        className="relative flex-row gap-y-1"
       >
-        <label className="text-button" htmlFor={pwdInputId}>
+        <label className="block text-button" htmlFor={pwdInputId}>
           비밀번호
         </label>
         <input
@@ -80,7 +80,6 @@ const PwdInput = ({
           value={inputVal}
           id={pwdInputId}
           type="password"
-          // defaultValue=""
           placeholder="비밀번호를 입력해 주세요."
           className={inputStyle(isValid)}
           name={inputName}
@@ -90,10 +89,14 @@ const PwdInput = ({
         />
 
         {isEnteredVal && (
-          <>
+          <div
+            role="group"
+            aria-label="비밀번호 옵션 버튼 영역"
+            className="absolute right-0 top-1/2 -translate-y-1/2 transform"
+          >
             <button
               type="button"
-              className="absolute right-0 top-[48px] mr-10 text-sub-2"
+              className="mr-10 text-sub-2"
               onClick={() => handleShowPwd(inputRef)}
             >
               <svg className="size-3.5 fill-current text-gray-200">
@@ -108,14 +111,14 @@ const PwdInput = ({
             </button>
             <button
               type="button"
-              className="absolute right-0 top-[49px] mr-5 text-sub-2"
+              className="mr-5 text-sub-2"
               onClick={handleDeleteInputVal}
             >
               <svg className="size-3 fill-current text-gray-200">
                 <use href="/assets/sprite-sheet.svg#x" />
               </svg>
             </button>
-          </>
+          </div>
         )}
         {!isValid && isEnteredVal && (
           <p role="alert" className="text-xs font-normal text-errored">
