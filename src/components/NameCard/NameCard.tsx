@@ -65,7 +65,9 @@ const NameCard = ({ name, subtext, profileImg, type, id }: PropTypes) => {
   };
 
   return (
-    <div className="flex h-[2.5rem] w-[21rem] items-start justify-center gap-3">
+    <div
+      className={`${type === 'viewParty' && 'p-3 shadow-shadow-blue'} flex h-[4rem] w-[21rem] items-center justify-center gap-3 rounded-md`}
+    >
       {profileImg ? (
         <img
           className="h-[2.5rem] w-[2.5rem] flex-shrink-0 overflow-hidden rounded-full object-cover"
