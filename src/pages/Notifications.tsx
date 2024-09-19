@@ -1,52 +1,125 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import NotificationList from '@/components/NotificationList/NotificationList';
 
-const data: {
+interface Notification {
   id: string;
-  name?: string;
-  time: string;
-  isChecked: boolean;
-  type: 'paymentRequest' | 'joined' | 'delivery';
-}[] = [
-  {
-    id: 'dsaf332',
-    type: 'paymentRequest',
-    name: '같이사요',
-    time: '2024-09-15 12:42:23.613Z',
-    isChecked: true,
-  },
-  {
-    id: 'dskkk33',
-    type: 'joined',
-    time: '2024-09-11 10:58:54.484Z',
-    isChecked: false,
-  },
-  {
-    id: 'adlajj39',
-    type: 'delivery',
-    name: '함께하는 직구',
-    time: '2024-09-15T07:38:21Z',
-    isChecked: true,
-  },
-];
-
-const Notifications = ({}) => {
-  const handleDelete = (id: string) => {
-    console.log(`${id}삭제`);
+  type: string;
+  created: string;
+  read: boolean;
+  expand: {
+    party_id: {
+      party_name: string;
+    };
   };
-  // 삭제 로직은 생각해봐야될듯 Notifications 데이터 useState로 관리해서 삭제한 id의 객체 삭제 하면 될듯..?
+}
+
+const fetchUserNotifications = async (
+  userId: string
+): Promise<Notification[]> => {
+  try {
+    const response = await axios.get<{ items: Notification[] }>(
+      `${import.meta.env.VITE_PB_URL}api/collections/notification/records`,
+      {
+        params: {
+          filter: `user_id="${userId}"`,
+          sort: '-created',
+          expand: 'party_id',
+        },
+      }
+    );
+    return response.data.items;
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    throw error;
+  }
+};
+
+const Notifications = () => {
+  const defaultTipImage = '/assets/shipmatelogo.png';
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleDelete = async (id: string) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((item) => item.id !== id)
+    );
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_PB_URL}api/collections/notification/records/${id}`
+      );
+      console.log('성공');
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
+  };
+
+  const handleReadStatusChange = async (id: string, isRead: boolean) => {
+    try {
+      await axios.patch(
+        `${import.meta.env.VITE_PB_URL}api/collections/notification/records/${id}`,
+        {
+          read: isRead,
+        }
+      );
+
+      setNotifications((prev) =>
+        prev.map((notif) =>
+          notif.id === id ? { ...notif, read: isRead } : notif
+        )
+      );
+    } catch (error) {
+      console.error('Failed to update read status:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = localStorage.getItem('authId');
+        if (!userId) {
+          throw new Error('User ID not found');
+        }
+        const responseData = await fetchUserNotifications(userId);
+        setNotifications(responseData);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching notifications:', err);
+        setError(
+          err instanceof Error ? err.message : 'An unknown error occurred'
+        );
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
-    <ul className="flex flex-col gap-3 p-3">
-      {data.map((item) => (
-        <NotificationList
-          key={item.id}
-          id={item.id}
-          type={item.type}
-          name={item.name}
-          handleDelete={handleDelete}
-          time={item.time}
-          isChecked={item.isChecked}
-        />
-      ))}
+    <ul className="flex flex-col px-3 pb-3">
+      {notifications.length !== 0 ? (
+        notifications.map((item) => (
+          <NotificationList
+            key={item.id}
+            id={item.id}
+            type={item.type}
+            partyName={item.expand.party_id.party_name}
+            handleDelete={handleDelete}
+            handleReadStatusChange={handleReadStatusChange}
+            time={item.created}
+            isRead={item.read}
+          />
+        ))
+      ) : (
+        <div className="flex flex-col items-center justify-center text-gray-700">
+          <img src={defaultTipImage} alt="Default tip" />
+          <span>받은 알림이 없어요</span>
+        </div>
+      )}
     </ul>
   );
 };

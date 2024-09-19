@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 import formatRelativeTime from '@/utils/formatRelativeTime';
+import { useState } from 'react';
 
 interface PropTypes {
   id: string;
   type: 'paymentRequest' | 'joined' | 'delivery';
-  name?: string;
+  partyName?: string;
   handleDelete: (id: string) => void;
-  isChecked: boolean;
+  isRead: boolean;
+  handleReadStatusChange: (id: string, isRead: boolean) => void;
   time: string;
 }
 
@@ -26,16 +28,22 @@ interface NotificationType {
 const NotificationList = ({
   id,
   type,
-  name,
+  partyName,
   time,
   handleDelete,
-  isChecked,
+  handleReadStatusChange,
+  isRead,
 }: PropTypes) => {
+  const [readStatus, setReadStatus] = useState(isRead);
   const commonClasses: string =
-    'flex min-h-[3.5rem] w-[21rem] items-start border-b border-gray-200 pb-3 [list-style:none]';
-  const bgColor: string = isChecked
+    'flex min-h-[3.5rem] w-[21rem] items-start border-b border-gray-200 py-3 pl-2 [list-style:none]';
+  const bgColor: string = readStatus
     ? `${commonClasses} bg-slate-100`
     : commonClasses;
+
+  const handleClick = () => {
+    handleReadStatusChange(id, true);
+  };
 
   const notificationType: NotificationType = {
     paymentRequest: {
@@ -68,13 +76,13 @@ const NotificationList = ({
           <use href="/assets/sprite-sheet.svg#box" />
         </svg>
       ),
-      msg: `"${name}" 파티의 배송 현황을 확인하세요.`,
+      msg: `"${partyName}" 파티의 배송 현황을 확인하세요.`,
       path: `/home/party/${id}`,
     },
   };
 
   return (
-    <li className={bgColor}>
+    <li className={bgColor} onClick={handleClick}>
       <Link to={notificationType[type].path} className="flex flex-grow gap-3">
         <div className="flex h-[2.5rem] min-w-[2.5rem] items-center justify-center rounded-full bg-gray-200">
           {notificationType[type].icon}
@@ -93,7 +101,7 @@ const NotificationList = ({
         onClick={() => {
           handleDelete(id);
         }}
-        className="p-1 pb-2 pl-2"
+        className="min-w-[2rem] pb-2 pl-2 pr-2 pt-1"
         aria-label="알림삭제"
       >
         <svg
