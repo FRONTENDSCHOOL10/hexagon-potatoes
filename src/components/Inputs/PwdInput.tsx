@@ -6,6 +6,7 @@ interface PropTypes {
   onPwdChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
   validateOnChange?: boolean;
+  onEnter?: (event: React.FormEvent<HTMLFormElement>) => void; // 엔터 처리 함수 추가
 }
 
 const PwdInput = ({
@@ -13,6 +14,7 @@ const PwdInput = ({
   inputName,
   onPwdChange,
   validateOnChange = true,
+  onEnter,
 }: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
@@ -43,7 +45,13 @@ const PwdInput = ({
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       (document.activeElement as HTMLElement).blur();
+      if (!validateOnChange) {
+        onEnter && onEnter(e); // 로그인 처리 함수 호출
+      } else {
+        validateInputVal(inputVal);
+      }
     }
   };
 

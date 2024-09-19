@@ -65,6 +65,7 @@ const Login = () => {
             }}
             onValidChange={() => {}}
             validateOnChange={false}
+            onEnter={handleLogin}
           />
           <Button
             type="submit"
