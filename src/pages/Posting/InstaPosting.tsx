@@ -2,6 +2,9 @@ import LabelList from '@/components/Label/LabelList';
 import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
 
 interface PocketBaseRecord {
   id: string;
@@ -64,12 +67,26 @@ const InstaPosting = ({ item }: PropTypes) => {
           type="followingText"
         />
       )}
+
       {item.photo && (
-        <img
-          className="h-[20.9rem] w-[21rem] bg-[#F2F2F2] object-cover"
-          src={getPbImagesURL(0, item)}
-          alt=""
-        />
+        <Swiper
+          pagination={{
+            dynamicBullets: true,
+          }}
+          modules={[Pagination]}
+          slidesPerView="auto"
+          className="mySwiper"
+        >
+          {item.photo.map((_, index) => (
+            <SwiperSlide>
+              <img
+                className="h-[20.9rem] w-[21rem] bg-[#F2F2F2] object-cover"
+                src={getPbImagesURL(index, item)}
+                alt=""
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       )}
       <p className="w-[21rem] text-body-2">{item.content}</p>
       {Array.isArray(item.tag) && item.tag.length > 0 && (
