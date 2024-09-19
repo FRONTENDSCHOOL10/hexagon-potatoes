@@ -26,7 +26,7 @@ const PwdConfirmInput = ({
     : '비밀번호가 일치하지 않습니다.';
 
   const inputStyle = (isValid: boolean) =>
-    `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored border-errored'}`;
+    `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border  outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue border-gray-200' : 'outline-errored border-errored'}`;
 
   const checkConfirmPwd = (val: string) => {
     const isValid = pwdInputVal === val;

@@ -121,6 +121,7 @@ const SignUp = () => {
           inputName="username"
           onIdChange={() => handleChange('username')}
           onValidChange={handleValidChange('usernameValid')}
+          validateOnChange
         />
         <EmailInput
           inputName="user_email"
@@ -152,7 +153,12 @@ const SignUp = () => {
           isAllChecked={isAllChecked}
           onAllCheckedChange={handleAgreeChange}
         />
-        <Button buttonContent="회원가입" isActive={isAllPass} type="submit" />
+        <Button
+          buttonContent="회원가입"
+          isActive={isAllPass}
+          type="submit"
+          onClick={() => {}}
+        />
         {alertVisible && (
           <Alert
             type={'notice'}
