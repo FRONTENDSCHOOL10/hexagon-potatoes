@@ -20,9 +20,9 @@ const UserNameInput = ({
 
   const inputId = useId();
 
-  const inputStyle = `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored'}`;
+  const inputStyle = `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored border-errored'}`;
 
-  const validateMessage = '올바른 이름이 아닙니다.';
+  const validateMessage = '최소 2자 이상의 한글로 입력해주세요.';
 
   const validateInputVal = (val: string) => {
     const isValidInput = validateName(val);
@@ -52,11 +52,14 @@ const UserNameInput = ({
     <div
       role="group"
       aria-label="이름 입력 필드"
-      className="flex flex-col gap-y-1"
+      className="relative flex flex-col gap-y-1"
     >
       <label htmlFor={inputId} className="text-button">
         이름
       </label>
+      <p className="absolute right-0 top-1 text-sub-2 text-mainblue">
+        최소 2자 이상의 한글
+      </p>
       <input
         id={inputId}
         value={inputVal}
