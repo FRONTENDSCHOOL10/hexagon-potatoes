@@ -14,6 +14,7 @@ const headerConfigs: Record<string, HeaderConfig> = {
   '/login': { type: 'back', title: '로그인' },
   '/login/signup': { type: 'back', title: '회원가입' },
   '/home': { type: 'bell', title: '홈' },
+  '/home/search': { type: 'back', title: '검색' },
   '/home/notifications': { type: 'back', title: '알림' },
   '/home/chatHome': { type: 'bell', title: '채팅' },
   '/home/writepost': { type: 'back', title: '포스트 작성' },
