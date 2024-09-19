@@ -71,6 +71,7 @@ const SignUp = () => {
           name: formData.name,
           username: formData.username,
           user_email: formData.user_email,
+          email: formData.user_email,
           nickname: formData.nickname,
           phone_number: formData.phone_number,
           password: formData.password,
