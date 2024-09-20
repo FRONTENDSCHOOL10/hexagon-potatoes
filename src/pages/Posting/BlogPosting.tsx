@@ -3,6 +3,7 @@ import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import { formatDateLong, formatDateString } from '@/utils/dateFormatter';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import pb from '@/utils/pocketbase';
 import interleaveContent from '@/utils/seperateTextAndImages';
 import React from 'react';
 
@@ -37,7 +38,7 @@ interface PropTypes {
 }
 
 const BlogPosting = ({ item, type }: PropTypes) => {
-  const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
+  const url = `${pb.baseUrl}`;
   if (!item) return null;
   const authorId = item.expand?.author_id;
 
@@ -74,7 +75,7 @@ const BlogPosting = ({ item, type }: PropTypes) => {
           subtext={authorId.user_email}
           profileImg={
             authorId.profile_photo
-              ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
+              ? getPbImageURL(url, authorId, 'profile_photo')
               : null
           }
           type={'followingText'}
@@ -90,7 +91,7 @@ const BlogPosting = ({ item, type }: PropTypes) => {
             {item.photo && (
               <img
                 className="w-[21rem] object-cover object-center"
-                src={getPbImageURL(ENDPOINT, item)}
+                src={getPbImageURL(url, item)}
                 alt="게시물"
               />
             )}
