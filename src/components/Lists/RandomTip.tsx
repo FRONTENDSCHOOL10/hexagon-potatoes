@@ -6,16 +6,32 @@ import Article from '@/components/Lists/Article';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
 const baseTipUrl = `${pb.baseUrl}api/collections/tip/records`;
-const url = 'https://hexagon-potatoes.pockethost.io';
+const url = `${pb.baseUrl}`;
 
 const getTipImageUrl = (tip: any): string => {
   return tip.photo ? getPbImagesURL(0, tip) : '';
 };
 
+interface Author {
+  id: string;
+  profile_photo?: string;
+  nickname: string;
+}
+
+interface RandomTipData {
+  id: string;
+  content_title: string;
+  content_img: string;
+  subtitle: string;
+  profile_photo: string | typeof DefaultProfileSVG;
+  nickname: string;
+  authorData: Author | null;
+}
+
 const RandomTip = () => {
-  const [randomTip, setRandomTip] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [randomTip, setRandomTip] = useState<RandomTipData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     //AbortController를 도입하여 요청 관리를 개선
@@ -32,7 +48,7 @@ const RandomTip = () => {
         });
 
         const tips = response.data.items;
-        console.log(tips[1].expand);
+
         if (tips.length === 0) {
           throw new Error('팁이 없습니다.');
         }
