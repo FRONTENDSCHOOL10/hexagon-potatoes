@@ -2,6 +2,7 @@ import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 import LabelList from '../Label/LabelList';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/pagination';
+import 'swiper/css';
 import { Pagination } from 'swiper/modules';
 import { getPbImagesURL } from '@/utils/getPbImageURL';
 
