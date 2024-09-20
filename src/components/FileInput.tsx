@@ -1,4 +1,8 @@
 import React, { useId, useRef, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, A11y } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import { v4 as uuidv4 } from 'uuid';
 
 interface FileData {
@@ -58,13 +62,13 @@ const FileInput = ({ onChange, maxFiles = 5 }: PropTypes) => {
       <label
         onKeyDown={handlePressEnter}
         tabIndex={0}
-        className="relative flex size-[4.375rem] flex-col items-center justify-center rounded-xl border-none bg-gray-100 shadow-shadow-blue"
+        className="relative flex size-[4.375rem] cursor-pointer flex-col items-center justify-center rounded-xl border-none bg-gray-100 shadow-shadow-blue"
         htmlFor={imageInputId}
       >
-        <svg className="size-4 text-gray-300">
+        <svg className="size-4 text-gray-300" aria-hidden="true">
           <use href="/assets/sprite-sheet.svg#addimage" />
         </svg>
-        <span className="leading-none text-gray-300">
+        <span className="leading-none text-gray-300" aria-hidden="true">
           {files.length} / {maxFiles}
         </span>
       </label>
@@ -77,31 +81,79 @@ const FileInput = ({ onChange, maxFiles = 5 }: PropTypes) => {
         type="file"
         id={imageInputId}
         onChange={handleImgInputChange}
+        aria-describedby="photo-input-description"
       />
+      <span id="photo-input-description" className="sr-only">
+        최대 {maxFiles}장의 jpg, jpeg, png 이미지를 선택할 수 있습니다.
+      </span>
       {files.length > 0 && (
-        <ul className="absolute left-[4.375rem] top-[2.13rem] ml-3 flex flex-row gap-x-3">
-          {files.map((file) => (
-            <li
-              key={file.id}
-              className="relative rounded-xl shadow-shadow-blue"
-            >
-              <button
-                type="button"
-                className="absolute right-1 top-1 rounded-full bg-gray-600 p-1 text-white hover:bg-mainblue hover:text-white"
-                onClick={() => handleRemoveImg(file.id)}
+        <Swiper
+          // modules={[Navigation]}
+          spaceBetween={12}
+          slidesPerView="auto"
+          modules={[Navigation, A11y]}
+          a11y={{
+            prevSlideMessage: '이전 이미지',
+            nextSlideMessage: '다음 이미지',
+            firstSlideMessage: '첫 번째 이미지',
+            lastSlideMessage: '마지막 이미지',
+          }}
+          style={{
+            position: 'absolute',
+            left: '4.375rem',
+            top: '2.13rem',
+            marginLeft: '0.75rem',
+          }}
+        >
+          {files.map((file, index) => (
+            <SwiperSlide key={file.id} style={{ width: 'auto' }}>
+              <li
+                style={{
+                  position: 'relative',
+                  borderRadius: '0.75rem',
+                  boxShadow:
+                    '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                }}
               >
-                <svg className="size-[0.575rem] fill-current">
-                  <use href="/assets/sprite-sheet.svg#x" />
-                </svg>
-              </button>
-              <img
-                className="size-[4.375rem] rounded-xl"
-                src={file.previewUrl}
-                alt="이미지 미리보기"
-              />
-            </li>
+                <button
+                  type="button"
+                  aria-label={`${index + 1}번 이미지 제거`}
+                  style={{
+                    position: 'absolute',
+                    right: '0.25rem',
+                    top: '0.25rem',
+                    borderRadius: '9999px',
+                    backgroundColor: '#4B5563',
+                    padding: '0.25rem',
+                    color: 'white',
+                    zIndex: 10,
+                  }}
+                  onClick={() => handleRemoveImg(file.id)}
+                >
+                  <svg
+                    style={{
+                      width: '0.575rem',
+                      height: '0.575rem',
+                      fill: 'currentColor',
+                    }}
+                    aria-hidden="true"
+                  >
+                    <use href="/assets/sprite-sheet.svg#x" />
+                  </svg>
+                </button>
+                <img
+                  style={{
+                    width: '4.375rem',
+                    height: '4.375rem',
+                    borderRadius: '0.75rem',
+                  }}
+                  src={file.previewUrl}
+                  alt="이미지 미리보기"
+                />
+              </li>
+            </SwiperSlide>
           ))}
-        </ul>
+        </Swiper>
       )}
     </div>
   );

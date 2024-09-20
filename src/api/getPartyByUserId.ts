@@ -1,26 +1,45 @@
 import axios from 'axios';
-import pb from '@/utils/pocketbase'; // PocketBase 인스턴스 import
+import pb from '@/utils/pocketbase';
 
-const baseUrl = `${pb.baseUrl}/api/collections/party/records`;
+const baseUrl = `${pb.baseUrl}api/collections/party/records`;
+
+// 사용자가 파티를 가지고 있는지 먼저 확인하는 함수
+async function checkUserHasParty(userId: string): Promise<boolean> {
+  try {
+    const response = await axios.get(baseUrl, {
+      params: {
+        filter: `party_leader='${userId}'`,
+        fields: 'id', // 필요한 필드만 요청
+        limit: 1, // 하나의 결과만 요청
+      },
+    });
+
+    return response.data.items.length > 0;
+  } catch (error) {
+    console.error('파티 확인 중 오류 발생:', error);
+    throw error;
+  }
+}
 
 // 사용자 ID를 통해 파티 레코드 정보를 조회하는 함수
-async function getPartyByUserId(userId: string): Promise<any[]> {
+async function getPartyByUserId(
+  userId: string
+): Promise<{ success: boolean; data: any[] | string }> {
   try {
-    // 특정 필드의 값이 userId인 레코드를 조회
-    const response = await axios.get(`${baseUrl}`, {
+    const hasParty = await checkUserHasParty(userId);
+
+    if (!hasParty) {
+      return { success: false, data: '파티가 없습니다.' };
+    }
+
+    // 파티가 있는 경우에만 전체 정보를 요청
+    const response = await axios.get(baseUrl, {
       params: {
         filter: `party_leader='${userId}'`,
       },
     });
 
-    const records = response.data.items;
-
-    if (records.length === 0) {
-      console.warn(`사용자 ID '${userId}'에 해당하는 파티를 찾을 수 없습니다.`);
-      return []; // 빈 배열 반환
-    }
-
-    return records; // 모든 레코드 반환
+    return { success: true, data: response.data.items };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error('Axios 오류 발생:', error.message);
@@ -29,7 +48,7 @@ async function getPartyByUserId(userId: string): Promise<any[]> {
     } else {
       console.error('예상치 못한 오류 발생:', error);
     }
-    throw error; // 오류를 던져서 호출한 쪽에서 처리할 수 있도록 함
+    throw error;
   }
 }
 

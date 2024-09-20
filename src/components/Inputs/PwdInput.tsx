@@ -6,6 +6,7 @@ interface PropTypes {
   onPwdChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
   validateOnChange?: boolean;
+  onEnter?: (event: React.FormEvent<HTMLFormElement>) => void; // 엔터 처리 함수 추가
 }
 
 const PwdInput = ({
@@ -13,6 +14,7 @@ const PwdInput = ({
   inputName,
   onPwdChange,
   validateOnChange = true,
+  onEnter,
 }: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
   const [isShowPwd, setIsShowPwd] = useState(false);
@@ -21,9 +23,8 @@ const PwdInput = ({
   const inputRef = useRef(null);
 
   const pwdInputId = useId();
-
   const inputStyle = (isValid: boolean) =>
-    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid ? 'outline-mainblue' : 'outline-errored'}`;
+    `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border  outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue border-gray-200' : 'outline-errored border-errored'}`;
 
   const validateInputVal = (val: string) => {
     setIsValid(validatePwd(val));
@@ -37,16 +38,20 @@ const PwdInput = ({
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
     setInputVal(inputVal);
-    if (validateOnChange) {
-      validateInputVal(inputVal);
-    }
+    validateOnChange && validateInputVal(inputVal);
     checkInputFilled(inputVal);
     onPwdChange(inputName)(inputVal);
   };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       (document.activeElement as HTMLElement).blur();
+      if (!validateOnChange) {
+        onEnter && onEnter(e); // 로그인 처리 함수 호출
+      } else {
+        validateInputVal(inputVal);
+      }
     }
   };
 
@@ -75,6 +80,11 @@ const PwdInput = ({
         <label className="text-button" htmlFor={pwdInputId}>
           비밀번호
         </label>
+        {validateOnChange && (
+          <p className="absolute right-0 top-1 text-sub-2 text-mainblue">
+            8~15자의 영문, 숫자, 특수문자(~!@#$%^&*)
+          </p>
+        )}
         <input
           ref={inputRef}
           value={inputVal}
@@ -93,7 +103,7 @@ const PwdInput = ({
           <>
             <button
               type="button"
-              className="absolute right-0 top-[48px] mr-10 text-sub-2"
+              className="absolute right-0 top-[2.7rem] mr-10 text-sub-2"
               onClick={() => handleShowPwd(inputRef)}
             >
               <svg className="size-3.5 fill-current text-gray-200">
@@ -108,7 +118,7 @@ const PwdInput = ({
             </button>
             <button
               type="button"
-              className="absolute right-0 top-[49px] mr-5 text-sub-2"
+              className="absolute right-0 top-11 mr-5 text-sub-2"
               onClick={handleDeleteInputVal}
             >
               <svg className="size-3 fill-current text-gray-200">
@@ -119,7 +129,7 @@ const PwdInput = ({
         )}
         {!isValid && isEnteredVal && (
           <p role="alert" className="text-xs font-normal text-errored">
-            올바른 비밀번호가 아닙니다.
+            8~15자의 영문, 숫자, 특수문자(~!@#$%^&*)를 조합해 사용해주세요.
           </p>
         )}
       </div>

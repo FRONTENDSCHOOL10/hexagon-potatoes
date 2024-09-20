@@ -1,25 +1,31 @@
-import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import {
+  ComponentType,
+  ReactNode,
+  Suspense,
+  lazy,
+  useEffect,
+  useState,
+} from 'react';
+import { createBrowserRouter, Navigate, useNavigate } from 'react-router-dom';
 import RootLayout from '@/layout/RootLayout';
-import Tutorial from '@/pages/Tutorial';
-import Landing from '@/pages/Landing';
-import Login from '@/pages/Login';
-import SignUp from '@/pages/SignUp';
-import CommunityHome from '@/pages/Community/CommunityHome';
-import RecommendFeed from '@/pages/Community/RecommendFeed';
-import Magazine from '@/pages/Community/Magazine';
-import Following from '@/pages/Community/Following';
-import PopularPost from '@/pages/Community/PopularPost';
-import UserTip from '@/pages/Community/UserTip';
-import PartyListPage from '@/pages/PartyList';
-import JoinPartyPage from '@/pages/JoinParty';
-import OrderDetailPage from '@/pages/OrderDetail';
+import { checkAuthId } from '@/api/auth';
+import Alert from './components/Alert/Alert';
 
-// 동적 로딩할 컴포넌트 설정
+// 레이지 로딩
+const Tutorial = lazy(() => import('@/pages/Tutorial'));
+const Landing = lazy(() => import('@/pages/Landing'));
+const Login = lazy(() => import('@/pages/Login'));
+const SignUp = lazy(() => import('@/pages/SignUp'));
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
 const PartyDetail = lazy(() => import('@/pages/PartyDetail'));
 const ChatHome = lazy(() => import('@/pages/ChatHome'));
 const Community = lazy(() => import('@/pages/Community/Community'));
+const CommunityHome = lazy(() => import('@/pages/Community/CommunityHome'));
+const RecommendFeed = lazy(() => import('@/pages/Community/RecommendFeed'));
+const Magazine = lazy(() => import('@/pages/Community/Magazine'));
+const Following = lazy(() => import('@/pages/Community/Following'));
+const PopularPost = lazy(() => import('@/pages/Community/PopularPost'));
+const UserTip = lazy(() => import('@/pages/Community/UserTip'));
 const TipDetail = lazy(() => import('@/pages/TipDetail'));
 const BoastDetail = lazy(() => import('@/pages/BoastDetail'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
@@ -30,6 +36,7 @@ const Setting = lazy(() => import('@/pages/Setting'));
 const Notifications = lazy(() => import('@/pages/Notifications'));
 const WritePost = lazy(() => import('@/pages/WritePost'));
 const EmptyPage = lazy(() => import('@/pages/EmptyPage'));
+const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 const NotificationSettings = lazy(() => import('@/pages/NotificationSettings'));
 const DoNotDisturbSettings = lazy(() => import('@/pages/DoNotDisturbSettings'));
 const AccountSettings = lazy(() => import('@/pages/AccountSettings'));
@@ -39,52 +46,85 @@ const Announcements = lazy(() => import('@/pages/Announcements'));
 const ChangeCountry = lazy(() => import('@/pages/ChangeCountry'));
 const ClearCache = lazy(() => import('@/pages/ClearCache'));
 const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
+const PartyListPage = lazy(() => import('@/pages/PartyList'));
+const JoinPartyPage = lazy(() => import('@/pages/JoinParty'));
+const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'));
+const MagazineDetail = lazy(() => import('@/pages/MagazineDetail'));
 
-// 튜토리얼 완료 상태 확인
-const isTutorialCompleted = () => {
-  const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
-  return tutorialCompleted ? JSON.parse(tutorialCompleted) : false;
-};
+interface PropTypes {
+  children: ReactNode;
+}
 
-// 로딩 중 표시할 컴포넌트
+interface wrrraperPropTypes {
+  component: ComponentType<any>;
+  [key: string]: any;
+}
+
 const Loading = () => <div>로딩 중...</div>;
 
-// 공통 로딩 컴포넌트
-const SuspenseWrapper: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => <Suspense fallback={<Loading />}>{children}</Suspense>;
+const PrivateRoute = ({ children }: PropTypes) => {
+  const [isValidUser, setIsValidUser] = useState<boolean | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      const authId = localStorage.getItem('authId');
+      if (authId) {
+        const userData = await checkAuthId(authId);
+        setIsValidUser(!!userData);
+      } else {
+        setIsValidUser(false);
+      }
+    };
+    verifyUser();
+  }, []);
+
+  if (isValidUser === null) return <Loading />;
+  if (isValidUser) return children;
+  return (
+    <Alert
+      type={'error'}
+      title={'로그인되지 않은 유저입니다.'}
+      subtext={
+        '로그인 후 다시 시도해 주세요. 혹시 예상치 못한 오류로 인해 이동할 수 있습니다. 첫 화면으로 돌아갑니다.'
+      }
+      onClose={() => navigate('/')}
+    />
+  );
+};
+
+const ProtectedSuspenseRoute = ({
+  component: Component,
+  ...rest
+}: wrrraperPropTypes) => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <PrivateRoute>
+        <Component {...rest} />
+      </PrivateRoute>
+    </Suspense>
+  );
+};
+
+const PublicSuspenseRoute = ({
+  component: Component,
+  ...rest
+}: wrrraperPropTypes) => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Component {...rest} />
+    </Suspense>
+  );
+};
 
 const routes = [
   {
     path: '/tutorial',
-    Component: () => {
-      const isComplete = isTutorialCompleted();
-
-      if (isComplete) {
-        return <Navigate to="/" replace />;
-      }
-      return (
-        <SuspenseWrapper>
-          <Tutorial />
-        </SuspenseWrapper>
-      );
-    },
+    element: <PublicSuspenseRoute component={Tutorial} />,
   },
   {
     path: '/',
-    Component: () => {
-      const isComplete = isTutorialCompleted();
-
-      if (!isComplete) {
-        return <Navigate to="/tutorial" replace />;
-      }
-
-      return (
-        <SuspenseWrapper>
-          <Landing />
-        </SuspenseWrapper>
-      );
-    },
+    element: <PublicSuspenseRoute component={Landing} />,
   },
   {
     path: '/login',
@@ -92,19 +132,11 @@ const routes = [
     children: [
       {
         index: true,
-        element: (
-          <SuspenseWrapper>
-            <Login />
-          </SuspenseWrapper>
-        ),
+        element: <PublicSuspenseRoute component={Login} />,
       },
       {
         path: 'signup',
-        element: (
-          <SuspenseWrapper>
-            <SignUp />
-          </SuspenseWrapper>
-        ),
+        element: <PublicSuspenseRoute component={SignUp} />,
       },
     ],
   },
@@ -114,239 +146,153 @@ const routes = [
     children: [
       {
         index: true,
-        element: (
-          <SuspenseWrapper>
-            <HomePage />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={HomePage} />,
       },
       {
         path: 'notifications',
-        element: (
-          <SuspenseWrapper>
-            <Notifications />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={Notifications} />,
       },
       {
         path: 'chatHome',
-        element: (
-          <SuspenseWrapper>
-            <ChatHome />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={ChatHome} />,
       },
       {
         path: 'writepost',
-        element: (
-          <SuspenseWrapper>
-            <WritePost />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={WritePost} />,
       },
       {
         path: 'community',
-        element: (
-          <SuspenseWrapper>
-            <Community />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={Community} />,
         children: [
           {
             index: true,
-            element: <CommunityHome />,
+            element: <ProtectedSuspenseRoute component={CommunityHome} />,
           },
           {
             path: 'recommendFeed',
-            element: <RecommendFeed />,
+            element: <ProtectedSuspenseRoute component={RecommendFeed} />,
           },
           {
             path: 'following',
-            element: <Following />,
+            element: <ProtectedSuspenseRoute component={Following} />,
           },
           {
             path: 'userTip',
-            element: <UserTip />,
+            element: <ProtectedSuspenseRoute component={UserTip} />,
           },
           {
             path: 'popularPost',
-            element: <PopularPost />,
+            element: <ProtectedSuspenseRoute component={PopularPost} />,
           },
           {
             path: 'magazine',
-            element: <Magazine />,
+            element: <ProtectedSuspenseRoute component={Magazine} />,
           },
         ],
       },
       {
         path: 'community/tip/:tipId',
-        element: (
-          <SuspenseWrapper>
-            <TipDetail />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={TipDetail} />,
+      },
+      {
+        path: 'community/magazine/:magazineId',
+        element: <ProtectedSuspenseRoute component={MagazineDetail} />,
       },
       {
         path: 'community/boast/:boastId',
-        element: (
-          <SuspenseWrapper>
-            <BoastDetail />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={BoastDetail} />,
       },
       {
         path: 'mypage',
-        element: (
-          <SuspenseWrapper>
-            <MyPage />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={MyPage} />,
       },
       {
         path: 'setting',
-        element: (
-          <SuspenseWrapper>
-            <Setting />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={Setting} />,
         children: [
           {
             path: 'notification',
             element: (
-                <NotificationSettings />
+              <ProtectedSuspenseRoute component={NotificationSettings} />
             ),
           },
           {
             path: 'account',
-            element: (
-
-                <AccountSettings />
-
-            ),
+            element: <ProtectedSuspenseRoute component={AccountSettings} />,
           },
           {
             path: 'do-not-disturb',
             element: (
-
-                <DoNotDisturbSettings />
-
+              <ProtectedSuspenseRoute component={DoNotDisturbSettings} />
             ),
           },
           {
             path: 'blocked-users',
-            element: (
-
-                <BlockedUsers />
-
-            ),
+            element: <ProtectedSuspenseRoute component={BlockedUsers} />,
           },
           {
             path: 'other-settings',
-            element: (
-
-                <OtherSettings />
-
-            ),
+            element: <ProtectedSuspenseRoute component={OtherSettings} />,
           },
           {
             path: 'announcements',
-            element: (
-    
-                <Announcements />
-             
-            ),
+            element: <ProtectedSuspenseRoute component={Announcements} />,
           },
           {
             path: 'change-country',
-            element: (
-              
-                <ChangeCountry />
-           
-            ),
+            element: <ProtectedSuspenseRoute component={ChangeCountry} />,
           },
           {
             path: 'clear-cache',
-            element: (
-          
-                <ClearCache />
-    
-            ),
+            element: <ProtectedSuspenseRoute component={ClearCache} />,
           },
           {
             path: 'update-version',
-            element: (
-           
-                <UpdateVersion />
-        
-            ),
+            element: <ProtectedSuspenseRoute component={UpdateVersion} />,
           },
         ],
       },
       {
         path: 'partyCollect',
-        element: (
-          <SuspenseWrapper>
-            <PartyCollect />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={PartyCollect} />,
       },
       {
         path: 'joinParty',
-        element: (
-          <SuspenseWrapper>
-            <JoinPartyPage />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={JoinPartyPage} />,
       },
       {
         path: 'partyList/:country',
-        element: (
-          <SuspenseWrapper>
-            <PartyListPage />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={PartyListPage} />,
       },
       {
         path: 'orderDetail',
-        element: (
-          <SuspenseWrapper>
-            <OrderDetailPage />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={OrderDetailPage} />,
       },
       {
         path: 'party/:partyId',
-        element: (
-          <SuspenseWrapper>
-            <PartyDetail />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={PartyDetail} />,
       },
       {
         path: 'search',
-        element: (
-          <SuspenseWrapper>
-            <SearchPage />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={SearchPage} />,
       },
       {
         path: 'search/:keyword',
-        element: (
-          <SuspenseWrapper>
-            <SearchResultPage />
-          </SuspenseWrapper>
-        ),
-      },
-      {
-        path: 'nowwedeveloping',
-        element: (
-          <SuspenseWrapper>
-            <EmptyPage />
-          </SuspenseWrapper>
-        ),
+        element: <ProtectedSuspenseRoute component={SearchResultPage} />,
       },
     ],
+  },
+  {
+    path: 'nowwedeveloping',
+    element: <ProtectedSuspenseRoute component={EmptyPage} />,
+  },
+  {
+    path: 'cantfindpage',
+    element: <ProtectedSuspenseRoute component={ErrorPage} />,
+  },
+  {
+    path: '*',
+    element: <Navigate to="/cantfindpage" />,
   },
 ];
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pb from '@/utils/pocketbase';
 
-const baseUrl = `${pb.baseUrl}/api/collections/users/records`;
+const baseUrl = `${pb.baseUrl}api/collections/users/records`;
 
 // 사용자 이름으로 사용자 ID를 조회하는 함수
 async function getUserIdByNickName(nickname: string): Promise<string> {

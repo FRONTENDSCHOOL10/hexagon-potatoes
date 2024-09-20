@@ -22,7 +22,10 @@ export function validateId(val: string): boolean {
 //비밀번호 유효성
 //영문, 숫자, 특수문자(~!@#$%^&*) 조합 8−15자리
 export function validatePwd(val: string): boolean {
-  const result = /^[\w~!@#$%^&*()_=+|,./<>?;:'"[\]{}-]{8,15}$/g.test(val);
+  const result =
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*])[A-Za-z\d~!@#$%^&*]{8,15}$/.test(
+      val
+    );
   return result;
 }
 

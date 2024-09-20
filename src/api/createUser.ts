@@ -1,11 +1,12 @@
 import pb from '@/utils/pocketbase';
 import axios from 'axios';
 
-const baseUrl = `${pb.baseUrl}/api/collections/users/records`;
+const baseUrl = `${pb.baseUrl}api/collections/users/records`;
 const createUser = async (userData: {
   name: string;
   username: string;
   user_email: string;
+  email: string;
   nickname: string;
   phone_number: string;
   password: string;

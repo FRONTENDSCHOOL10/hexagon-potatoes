@@ -1,5 +1,10 @@
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 import LabelList from '../Label/LabelList';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css/pagination';
+import 'swiper/css';
+import { Pagination } from 'swiper/modules';
+import { getPbImagesURL } from '@/utils/getPbImageURL';
 
 interface PropTypes {
   profileImg?: string;
@@ -7,6 +12,14 @@ interface PropTypes {
   postingImg?: string;
   content: string;
   label?: string[];
+  data: {
+    id: string;
+    collectionId: string;
+    collectionName: string;
+    created: string;
+    updated: string;
+    photo: string[];
+  };
 }
 
 const PostingCard = ({
@@ -15,8 +28,9 @@ const PostingCard = ({
   postingImg,
   content,
   label,
+  data,
 }: PropTypes) => {
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+  const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
   return (
     <article className="mx-auto h-auto w-[21rem] justify-between rounded-[0.9375rem] bg-[#FFF] shadow-shadow-blue">
       <header className="flex h-12 flex-row items-center justify-between p-3">
@@ -47,14 +61,32 @@ const PostingCard = ({
       </header>
 
       <figure className="h-[20.99rem] bg-slate-200">
-        <img
-          src={postingImg ? postingImg : defaultTipImage}
-          alt="포스팅 이미지"
-          className="h-full w-full object-cover object-center"
-        />
+        {Array.isArray(postingImg) && postingImg.length > 0 ? (
+          <Swiper
+            pagination={true}
+            modules={[Pagination]}
+            className="h-full w-full"
+          >
+            {postingImg.map((img, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={getPbImagesURL(index, data) || defaultTipImage}
+                  alt={`포스팅 이미지 ${index + 1}`}
+                  className="h-full w-full object-cover object-center"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <img
+            src={defaultTipImage}
+            alt="포스팅 이미지"
+            className="h-full w-full object-cover object-center"
+          />
+        )}
       </figure>
 
-      <footer className="flex h-auto flex-col justify-between gap-3 p-3">
+      <footer className="flex h-auto flex-col justify-between gap-0.5 px-3 pb-0.5 pt-3">
         <p className="text-body-1 text-black">{content}</p>
         <LabelList data={label} />
       </footer>

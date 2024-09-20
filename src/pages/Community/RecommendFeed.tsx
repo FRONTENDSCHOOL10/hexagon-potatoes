@@ -1,6 +1,7 @@
 import SquarePostingCard from '@/components/PostingCard/SquarePostingCard';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
 
 const RecommendFeed = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,11 +40,21 @@ const RecommendFeed = () => {
   }
 
   return (
-    <ul className="flex flex-row flex-wrap gap-x-2 gap-y-3 px-[0.69rem] pb-[1.94rem] pt-[0.75rem]">
-      {data.map((item: any) => (
-        <SquarePostingCard key={item.id} data={item} />
-      ))}
-    </ul>
+    <>
+      <Helmet>
+        <title>추천 피드 | Shipmate</title>
+        <meta
+          name="description"
+          content="쉽메이트에서 추천하는 게시물을 확인하세요."
+        />
+        <meta name="keywords" content="추천, 게시물, 쉽메이트, 소통" />
+      </Helmet>
+      <ul className="flex flex-row flex-wrap gap-x-2 gap-y-3 px-[0.69rem] pb-[1.94rem] pt-[0.75rem]">
+        {data.map((item: any) => (
+          <SquarePostingCard key={item.id} data={item} />
+        ))}
+      </ul>
+    </>
   );
 };
 

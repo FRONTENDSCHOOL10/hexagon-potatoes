@@ -6,6 +6,7 @@ import { useState, FormEvent, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import imageCompression from 'browser-image-compression';
 import Alert from '@/components/Alert/Alert';
+import { Helmet } from 'react-helmet-async';
 
 const WritePost = () => {
   const navigate = useNavigate();
@@ -111,50 +112,60 @@ const WritePost = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-3">
-      <Dropdown
-        dropdownName={'카테고리'}
-        list={['유저팁']}
-        label={'카테고리'}
-        defaultMsg={'자랑'}
-        onInputChange={handleChange}
-      />
+    <>
+      <Helmet>
+        <title>게시물 작성 | Shipmate</title>
+        <meta
+          name="description"
+          content="유저팁 또는 자랑 게시물을 작성하세요."
+        />
+        <meta name="keywords" content="게시물, 유저팁, 자랑, 쉽메이트" />
+      </Helmet>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-3">
+        <Dropdown
+          dropdownName={'카테고리'}
+          list={['유저팁']}
+          label={'카테고리'}
+          defaultMsg={'자랑'}
+          onInputChange={handleChange}
+        />
 
-      <div className="flex flex-col gap-3">
-        <FileInput onChange={(files) => handleInputChange('photo', files)} />
-        <HashtagInput onChange={(tags) => handleInputChange('tags', tags)} />
-        {selectedCategory === '유저팁' && (
-          <input
-            type="text"
-            placeholder="제목을 입력해주세요"
-            name="title"
-            onChange={(e) => handleInputChange('title', e.target.value)}
-            className="pretendard h-[2.8125rem] w-full rounded-xl border border-solid border-gray-200 px-5 py-2 text-[0.875rem] font-normal not-italic leading-5 placeholder:text-gray-200"
+        <div className="flex flex-col gap-3">
+          <FileInput onChange={(files) => handleInputChange('photo', files)} />
+          <HashtagInput onChange={(tags) => handleInputChange('tags', tags)} />
+          {selectedCategory === '유저팁' && (
+            <input
+              type="text"
+              placeholder="제목을 입력해주세요"
+              name="title"
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              className="pretendard h-[2.8125rem] w-full rounded-xl border border-solid border-gray-200 px-5 py-2 text-[0.875rem] font-normal not-italic leading-5 placeholder:text-gray-200"
+            />
+          )}
+          <textarea
+            placeholder="본문을 입력하세요"
+            name="content"
+            onChange={(e) => handleInputChange('content', e.target.value)}
+            className="mb-3 h-[25rem] rounded-xl border border-gray-200 p-5 font-[Pretendard] text-[0.875rem] font-normal not-italic leading-5 placeholder:text-gray-200"
+          ></textarea>
+        </div>
+        {error && (
+          <Alert
+            type={'error'}
+            subtext={error}
+            title={''}
+            onClose={handleClose}
           />
         )}
-        <textarea
-          placeholder="본문을 입력하세요"
-          name="content"
-          onChange={(e) => handleInputChange('content', e.target.value)}
-          className="mb-3 h-[25rem] resize-none overflow-hidden overflow-ellipsis whitespace-nowrap rounded-xl border border-gray-200 p-5 font-[Pretendard] text-[0.875rem] font-normal not-italic leading-5 placeholder:text-gray-200"
-        ></textarea>
-      </div>
-      {error && (
-        <Alert
-          type={'error'}
-          subtext={error}
-          title={''}
-          onClose={handleClose}
-        />
-      )}
-      <button
-        type="submit"
-        className="inline-block w-full rounded-full bg-mainblue px-3 py-2.5 text-button text-white shadow-shadow-blue hover:bg-white hover:text-mainblue"
-        disabled={isLoading}
-      >
-        {isLoading && !error ? '게시 중...' : '게시하기'}
-      </button>
-    </form>
+        <button
+          type="submit"
+          className="inline-block w-full rounded-full bg-mainblue px-3 py-2.5 text-button text-white shadow-shadow-blue hover:bg-white hover:text-mainblue"
+          disabled={isLoading}
+        >
+          {isLoading && !error ? '게시 중...' : '게시하기'}
+        </button>
+      </form>
+    </>
   );
 };
 

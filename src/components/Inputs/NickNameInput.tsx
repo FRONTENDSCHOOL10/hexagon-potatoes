@@ -1,6 +1,7 @@
 // zustand import
 import React, { useState, useId } from 'react';
-import { validateNickname } from '@/utils/validate';
+import { validateId, validateNickname } from '@/utils/validate';
+import { checkDuplicate } from '@/utils/checkDuplicate';
 
 interface PropTypes {
   inputName: string;
@@ -16,20 +17,26 @@ const NicknameInput = ({
   onValidChange,
 }: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
+  const [isDuplicate, setIsDuplicate] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
   const inputId = useId();
 
   const inputStyle = (isValid: boolean) =>
-    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored'}`;
+    `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border  outline-1 ${(isValid && isDuplicate) || !isEnteredVal ? 'outline-mainblue border-gray-200' : 'outline-errored border-errored'}`;
 
-  const validateMessage = !isValid
-    ? '사용할 수 없는 닉네임 입니다.'
-    : '사용할 수 있는 닉네임 입니다.';
-
-  const validateInputVal = (val: string) => {
-    setIsValid(validateNickname(val));
-    onValidChange(validateNickname(val));
+  const validationMessage = () => {
+    if (!isEnteredVal) return '';
+    if (!isValid)
+      return `2~10자의 공백을 제외하고 입력해주세요. (모든 기호 가능)`;
+    if (!isDuplicate) return '중복된 닉네임입니다.';
+  };
+  const validateInputVal = async (val: string) => {
+    const isValidInput = validateNickname(val);
+    const isDuplicate = await checkDuplicate('nickname', val);
+    setIsValid(isValidInput);
+    setIsDuplicate(isDuplicate);
+    onValidChange(isValidInput && isDuplicate);
   };
 
   const checkInputFilled = (val: string) => {
@@ -54,11 +61,14 @@ const NicknameInput = ({
     <div
       role="group"
       aria-label="닉네임 입력 필드"
-      className="flex flex-col gap-y-1"
+      className="relative flex flex-col gap-y-1"
     >
       <label className="text-button" htmlFor={inputId}>
         닉네임
       </label>
+      <p className="absolute right-0 top-1 text-sub-2 text-mainblue">
+        2~10자 공백 제외 모든 기호 가능
+      </p>
       <input
         id={inputId}
         type="text"
@@ -70,14 +80,10 @@ const NicknameInput = ({
         onKeyDown={handlePressEnter}
         onChange={handleChangeInput}
       />
-      {/* 이미 있는 닉네임일 경우 안내 문구 뜨게 */}
 
       {isEnteredVal && (
-        <p
-          role="alert"
-          className={`text-xs font-normal ${isValid ? 'text-mainblue' : 'text-errored'}`}
-        >
-          {validateMessage}
+        <p role="alert" className="text-xs font-normal text-errored">
+          {validationMessage()}
         </p>
       )}
     </div>

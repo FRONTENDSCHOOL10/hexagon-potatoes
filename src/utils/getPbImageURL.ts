@@ -12,7 +12,7 @@ const getPbImageURL = (
   fileName: string = 'photo'
 ): string => {
   return item[fileName]
-    ? `${url}/api/files/${item.collectionId}/${item.id}/${item[fileName]}`
+    ? `${url}api/files/${item.collectionId}/${item.id}/${item[fileName]}`
     : '';
 };
 

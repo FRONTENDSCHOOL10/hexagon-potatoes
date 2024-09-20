@@ -1,7 +1,7 @@
 import axios from 'axios';
 import pb from '@/utils/pocketbase'; // PocketBase 인스턴스 import
 
-const baseUrl = `${pb.baseUrl}/api/collections/party/records`;
+const baseUrl = `${pb.baseUrl}api/collections/party/records`;
 
 // 사용자 ID를 통해 파티 이름을 조회하는 함수
 async function getPartyNameByUserId(userId: string): Promise<string> {

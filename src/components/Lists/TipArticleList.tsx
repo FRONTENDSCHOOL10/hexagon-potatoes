@@ -1,6 +1,7 @@
 import Article from './Article';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import pb from '@/utils/pocketbase';
 
 interface PropTypes {
   data: {
@@ -26,26 +27,24 @@ interface PropTypes {
 }
 
 const TipArticleList = ({ data }: PropTypes) => {
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+  const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
   const defaultProfileImage = DefaultProfileSVG; // 기본 프로필 이미지 URL
 
-  const tipUrl = `https://hexagon-potatoes.pockethost.io`;
+  const url = `${pb.baseUrl}`;
 
   console.log(data);
   return (
     <ul className="flex w-full flex-col gap-y-3" aria-label="팁 목록">
-      {data?.slice(0, 3).map((item, index) => (
+      {data?.map((item, index) => (
         <Article
           key={item.id} // 리스트 항목에 대한 고유 키
           type={'tip'} // 'tip'으로 고정
           content_title={item.title} // 팁 제목
-          content_img={
-            item.photo ? getPbImageURL(tipUrl, item) : defaultTipImage
-          } // 팁 이미지
+          content_img={item.photo ? getPbImagesURL(0, item) : defaultTipImage} // 팁 이미지
           subtitle={item.content} // 팁 내용
           profile_photo={
             item?.expand?.author_id?.profile_photo
-              ? getPbImageURL(tipUrl, item.expand?.author_id, 'profile_photo')
+              ? getPbImageURL(url, item.expand?.author_id, 'profile_photo')
               : defaultProfileImage
           } // 작성자 프로필 사진
           nickname={item.expand?.author_id?.nickname} // 작성자 닉네임

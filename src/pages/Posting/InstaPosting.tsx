@@ -2,6 +2,10 @@ import LabelList from '@/components/Label/LabelList';
 import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import pb from '@/utils/pocketbase';
 
 interface PocketBaseRecord {
   id: string;
@@ -32,14 +36,9 @@ interface PropTypes {
 }
 
 const InstaPosting = ({ item }: PropTypes) => {
-  const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
+  const url = `${pb.baseUrl}`;
   if (!item) return null;
   const authorId = item.expand?.author_id;
-
-  const handleLike = () => {
-    // 좋아요 처리 로직
-    console.log('좋아요 클릭');
-  };
 
   const handleBookmark = () => {
     // 북마크 처리 로직
@@ -58,18 +57,32 @@ const InstaPosting = ({ item }: PropTypes) => {
           name={authorId.nickname}
           profileImg={
             authorId.profile_photo
-              ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
+              ? getPbImageURL(url, authorId, 'profile_photo')
               : null
           }
           type="followingText"
         />
       )}
+
       {item.photo && (
-        <img
-          className="h-[20.9rem] w-[21rem] bg-[#F2F2F2] object-cover"
-          src={getPbImagesURL(0, item)}
-          alt=""
-        />
+        <Swiper
+          pagination={{
+            dynamicBullets: true,
+          }}
+          modules={[Pagination]}
+          slidesPerView="auto"
+          className="mySwiper"
+        >
+          {item.photo.map((key, index) => (
+            <SwiperSlide key={key}>
+              <img
+                className="h-[20.9rem] w-[21rem] bg-[#F2F2F2] object-cover"
+                src={getPbImagesURL(index, item)}
+                alt=""
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       )}
       <p className="w-[21rem] text-body-2">{item.content}</p>
       {Array.isArray(item.tag) && item.tag.length > 0 && (
@@ -78,10 +91,10 @@ const InstaPosting = ({ item }: PropTypes) => {
 
       <PostActionBar
         postId={item.id}
-        onLike={handleLike}
         onBookmark={handleBookmark}
         onShare={handleShare}
         date={item.created}
+        type="boast"
       />
     </article>
   );

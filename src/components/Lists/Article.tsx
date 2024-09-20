@@ -44,7 +44,7 @@ const Article = ({
         <img
           src={content_img} // 아티클의 이미지
           alt={type === 'party' ? '파티' : '팁'} // 이미지에 대한 대체 텍스트
-          className="h-28 w-20 rounded-lg object-cover"
+          className={`${type === 'party' ? 'h-19 w-20 rounded-xl border object-contain' : 'h-28 w-20 shrink-0 rounded-lg object-cover'} `}
         />
         <div role="group" className="flex min-w-0 flex-col">
           <Heading className="mb-[0.19rem] w-full overflow-hidden text-ellipsis whitespace-nowrap text-sub-1">
