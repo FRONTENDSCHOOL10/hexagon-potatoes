@@ -47,10 +47,11 @@ const WritePost = () => {
 
   const compressImage = async (file: File) => {
     const options = {
-      maxSizeMB: 0.5,
+      maxSizeMB: 0.3,
       maxWidthOrHeight: 1280,
       useWebWorker: true,
-      initialQuality: 0.7,
+      initialQuality: 0.6,
+      fileType: 'image/webp',
     };
     try {
       return await imageCompression(file, options);
