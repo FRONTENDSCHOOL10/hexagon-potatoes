@@ -5,9 +5,6 @@ import pb from '@/utils/pocketbase';
 import PartyLeader from './PartyLeader';
 import getPbImageURL from '@/utils/getPbImageURL';
 
-const partyBaseUrl = `${pb.baseUrl}api/collections/party/records`;
-const url = `${pb.baseUrl}`;
-
 interface User {
   id: string;
   profile_photo?: string;
@@ -38,6 +35,9 @@ interface PropTypes {
   type?: 'party' | 'user';
   reloadCount: number;
 }
+
+const partyBaseUrl = `${pb.baseUrl}api/collections/party/records`;
+const url = `${pb.baseUrl}`;
 
 // 이달의 우수 파티장 => 현재 파티를 진행하고 있는 파티리더중 별점이 4점 이상인 리더
 // 추천 파티 리스트 => 파티리더중 별점이 4점이상인 리더가 현재 진행중인 파티
