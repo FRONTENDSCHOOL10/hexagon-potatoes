@@ -6,24 +6,10 @@ import Article from '@/components/Lists/Article';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
 const baseTipUrl = `${pb.baseUrl}api/collections/tip/records`;
-const baseUserUrl = `${pb.baseUrl}api/collections/users/records`;
+const url = 'https://hexagon-potatoes.pockethost.io';
 
 const getTipImageUrl = (tip: any): string => {
   return tip.photo ? getPbImagesURL(0, tip) : '';
-};
-
-const fetchAuthorData = async (authorId: any) => {
-  try {
-    const response = await axios.get(baseUserUrl, {
-      params: {
-        filter: `id="${authorId}"`,
-      },
-    });
-    return response.data.items.length > 0 ? response.data.items[0] : null;
-  } catch (error) {
-    console.error(`해당 아이디로 정보 못 찾음 ${authorId}`, error);
-    return null;
-  }
 };
 
 const RandomTip = () => {
@@ -32,11 +18,21 @@ const RandomTip = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    //AbortController를 도입하여 요청 관리를 개선
+    const abortController = new AbortController();
+
     const fetchRandomTip = async () => {
       try {
-        const response = await axios.get(baseTipUrl);
-        const tips = response.data.items;
+        const response = await axios.get(baseTipUrl, {
+          signal: abortController.signal,
+          // 팁 쿼리에 작성자 정보 확장(expand) 적용하여 별도 작성자 조회 제거
+          params: {
+            expand: 'author_id',
+          },
+        });
 
+        const tips = response.data.items;
+        console.log(tips[1].expand);
         if (tips.length === 0) {
           throw new Error('팁이 없습니다.');
         }
@@ -45,17 +41,16 @@ const RandomTip = () => {
         const selectedTip = tips[randomIndex];
 
         const tipImg = getTipImageUrl(selectedTip);
-        const authorData = selectedTip.author_id
-          ? await fetchAuthorData(selectedTip.author_id)
-          : null;
+        const authorData = selectedTip?.expand?.author_id;
 
         setRandomTip({
           id: selectedTip.id,
           content_title: selectedTip.title,
           content_img: tipImg,
           subtitle: selectedTip.content,
-          profile_photo: authorData?.profile_photo || DefaultProfileSVG,
+          profile_photo: authorData?.profile_photo ? authorData : '',
           nickname: authorData?.nickname || '',
+          authorData: authorData,
         });
         setLoading(false);
       } catch (error) {
@@ -80,7 +75,11 @@ const RandomTip = () => {
           content_title={randomTip.content_title}
           content_img={randomTip.content_img}
           subtitle={randomTip.subtitle}
-          profile_photo={randomTip.profile_photo}
+          profile_photo={
+            randomTip.profile_photo
+              ? getPbImageURL(url, randomTip?.authorData, 'profile_photo')
+              : DefaultProfileSVG
+          }
           nickname={randomTip.nickname}
           id={randomTip.id}
           label={[]} // 필요에 따라 라벨 추가
