@@ -19,6 +19,7 @@ const UserTip = () => {
 
   return (
     <>
+
       <Helmet>
         <title>유저 팁 | Shipmate</title>
         <meta
@@ -27,7 +28,10 @@ const UserTip = () => {
         />
         <meta name="keywords" content="유저 팁, 공유, 쉽메이트" />
       </Helmet>
-      {tipData?.map((d: any) => <BlogPosting key={d.id} item={d} />)}
+      {tipData?.map((d: any) => (
+        <BlogPosting key={d.id} item={d} type={'tip'} />
+      ))}
+
     </>
   );
 };

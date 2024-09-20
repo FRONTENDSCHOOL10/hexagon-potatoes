@@ -27,9 +27,10 @@ const TipDetail = () => {
         />
         <meta name="keywords" content="유저팁, 쉽메이트, 게시물" />
       </Helmet>
-      {data ? <BlogPosting item={data} /> : null}
+      {data ? <BlogPosting item={data} type={'tip'} /> : null}
     </>
   );
+
 };
 
 export default TipDetail;

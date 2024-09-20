@@ -118,10 +118,10 @@ const BlogPosting = ({ item, type }: PropTypes) => {
 
         <PostActionBar
           postId={item.id}
-          onLike={handleLike}
           onBookmark={handleBookmark}
           onShare={handleShare}
           date={item.created}
+          type={type}
         />
       </div>
     </article>
