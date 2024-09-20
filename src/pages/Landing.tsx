@@ -26,7 +26,7 @@ const Landing = () => {
       <main className="flex h-screen flex-col items-center justify-start gap-3 bg-white p-3">
         <img
           className="h-[33.5625rem] w-[21.375rem] rounded-[1.875rem]"
-          src="/assets/landinglogo.png"
+          src="/assets/landinglogo.webp"
           alt="SHIPMATE 메인 이미지"
         />
         <Button
