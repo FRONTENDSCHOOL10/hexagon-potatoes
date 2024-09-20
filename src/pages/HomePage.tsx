@@ -6,8 +6,28 @@ import BestPartyLeader from '@/components/Lists/BestPartyLeaderRandom';
 import BestPartyRandom from '@/components/Lists/BestPartyRandom';
 import RandomTip from '@/components/Lists/RandomTip';
 import { Helmet } from 'react-helmet-async';
+import { useCallback, useState } from 'react';
+import ReloadButton from '../components/Buttons/ReloadButton';
+
+const headStyle = ` mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium`;
+const headerSectionStyle = `flex flex-row items-center justify-between`;
+const MAX_RELOADS = 5;
 
 const HomePage = () => {
+  const [reloadCounts, setReloadCounts] = useState({
+    bestUser: 0,
+    bestParty: 0,
+    userBoast: 0,
+    userTips: 0,
+    // 다른 섹션 추가 가능
+  });
+  const handleReload = useCallback(async (id: keyof typeof reloadCounts) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setReloadCounts((prevCounts) => ({
+      ...prevCounts,
+      [id]: prevCounts[id] + 1,
+    }));
+  }, []);
   return (
     <>
       <Helmet>
@@ -22,16 +42,12 @@ const HomePage = () => {
         <h1 className="sr-only">홈페이지</h1>
         <GoSearch />
         <section>
-          <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
-            매거진
-          </h2>
+          <h2 className={headStyle}>매거진</h2>
           {/* 다른 페이지 다녀오고 새로고침 여러번 해도 오류 안 나는 거 확인 */}
           <MagazineList />
         </section>
         <section>
-          <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
-            국가 리스트
-          </h2>
+          <h2 className={headStyle}>국가 리스트</h2>
           <div className="flex flex-wrap justify-between gap-[10px_0px]">
             <SelectCountryButton
               buttonContent={'미국'}
@@ -56,28 +72,59 @@ const HomePage = () => {
           </div>
         </section>
         <section>
-          <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
-            이달의 우수 파티장
-          </h2>
-          <BestPartyLeader />
+          <div className={headerSectionStyle}>
+            <h2 className={headStyle}>이달의 우수 파티장</h2>
+            <ReloadButton
+              id={'bestUser'}
+              onReload={handleReload}
+              disabled={reloadCounts.bestUser >= MAX_RELOADS}
+              count={reloadCounts.bestUser}
+              maxCount={MAX_RELOADS}
+            />
+          </div>
+          <BestPartyRandom reloadCount={reloadCounts.bestUser} />
         </section>
         <section>
-          <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
-            추천 파티 리스트
-          </h2>
-          <BestPartyRandom />
+          <div className={headerSectionStyle}>
+            <h2 className={headStyle}>추천 파티 리스트</h2>
+            <ReloadButton
+              id={'bestParty'}
+              onReload={handleReload}
+              disabled={reloadCounts.bestParty >= MAX_RELOADS}
+              count={reloadCounts.bestParty}
+              maxCount={MAX_RELOADS}
+            />
+          </div>
+          <BestPartyRandom
+            type={'party'}
+            reloadCount={reloadCounts.bestParty}
+          />
         </section>
         <section>
-          <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
-            직구 자랑
-          </h2>
-          <PostingRandom />
+          <div className={headerSectionStyle}>
+            <h2 className={headStyle}>직구 자랑</h2>
+            <ReloadButton
+              id={'userBoast'}
+              onReload={handleReload}
+              disabled={reloadCounts.userBoast >= MAX_RELOADS}
+              count={reloadCounts.userBoast}
+              maxCount={MAX_RELOADS}
+            />
+          </div>
+          <PostingRandom reloadCount={reloadCounts.userBoast} />
         </section>
         <section>
-          <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
-            유저들의 팁
-          </h2>
-          <RandomTip />
+          <div className={headerSectionStyle}>
+            <h2 className={headStyle}>유저들의 팁</h2>
+            <ReloadButton
+              id={'userTips'}
+              onReload={handleReload}
+              disabled={reloadCounts.userTips >= MAX_RELOADS}
+              count={reloadCounts.userTips}
+              maxCount={MAX_RELOADS}
+            />
+          </div>
+          <RandomTip reloadCount={reloadCounts.userTips} />
         </section>
       </div>
     </>

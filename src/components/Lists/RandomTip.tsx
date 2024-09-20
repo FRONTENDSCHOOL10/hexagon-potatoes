@@ -5,19 +5,20 @@ import pb from '@/utils/pocketbase';
 import Article from '@/components/Lists/Article';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
+interface PropTypes {
+  reloadCount: number;
+}
+
 const baseTipUrl = `${pb.baseUrl}api/collections/tip/records`;
 const baseUserUrl = `${pb.baseUrl}api/collections/users/records`;
 
-const getTipImageUrl = (tip: any): string => {
-  return tip.photo ? getPbImagesURL(0, tip) : '';
-};
+const getTipImageUrl = (tip: any): string =>
+  tip.photo ? getPbImagesURL(0, tip) : '';
 
-const fetchAuthorData = async (authorId: any) => {
+const fetchAuthorData = async (authorId: string) => {
   try {
     const response = await axios.get(baseUserUrl, {
-      params: {
-        filter: `id="${authorId}"`,
-      },
+      params: { filter: `id="${authorId}"` },
     });
     return response.data.items.length > 0 ? response.data.items[0] : null;
   } catch (error) {
@@ -26,13 +27,15 @@ const fetchAuthorData = async (authorId: any) => {
   }
 };
 
-const RandomTip = () => {
-  const [randomTip, setRandomTip] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const RandomTip = ({ reloadCount }: PropTypes) => {
+  const [randomTip, setRandomTip] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRandomTip = async () => {
+      setError(null);
+      setLoading(true);
       try {
         const response = await axios.get(baseTipUrl);
         const tips = response.data.items;
@@ -57,19 +60,19 @@ const RandomTip = () => {
           profile_photo: authorData?.profile_photo || DefaultProfileSVG,
           nickname: authorData?.nickname || '',
         });
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching random tip:', error);
         setError('팁을 불러오는 데 실패했습니다.');
+      } finally {
         setLoading(false);
       }
     };
 
     fetchRandomTip();
-  }, []);
+  }, [reloadCount]);
 
-  if (loading) return <p>로딩 중...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p aria-live="polite">로딩 중...</p>;
+  if (error) return <p aria-live="assertive">{error}</p>;
 
   return (
     <ul>
@@ -83,7 +86,6 @@ const RandomTip = () => {
           profile_photo={randomTip.profile_photo}
           nickname={randomTip.nickname}
           id={randomTip.id}
-          label={[]} // 필요에 따라 라벨 추가
         />
       )}
     </ul>
