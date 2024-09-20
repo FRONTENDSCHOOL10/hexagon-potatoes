@@ -4,6 +4,7 @@ import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/pagination';
+import 'swiper/css';
 import { Pagination } from 'swiper/modules';
 import pb from '@/utils/pocketbase';
 
@@ -51,7 +52,7 @@ const InstaPosting = ({ item }: PropTypes) => {
   };
 
   return (
-    <article className="mb-[2.56rem] flex flex-col gap-3 p-3">
+    <article className="mb-[2.56rem] flex flex-col gap-3 px-3 pb-3">
       {authorId && (
         <NameCard
           name={authorId.nickname}
