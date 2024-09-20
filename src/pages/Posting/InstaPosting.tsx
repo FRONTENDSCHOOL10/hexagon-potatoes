@@ -5,6 +5,7 @@ import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
+import pb from '@/utils/pocketbase';
 
 interface PocketBaseRecord {
   id: string;
@@ -35,7 +36,7 @@ interface PropTypes {
 }
 
 const InstaPosting = ({ item }: PropTypes) => {
-  const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
+  const url = `${pb.baseUrl}`;
   if (!item) return null;
   const authorId = item.expand?.author_id;
 
@@ -56,7 +57,7 @@ const InstaPosting = ({ item }: PropTypes) => {
           name={authorId.nickname}
           profileImg={
             authorId.profile_photo
-              ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
+              ? getPbImageURL(url, authorId, 'profile_photo')
               : null
           }
           type="followingText"

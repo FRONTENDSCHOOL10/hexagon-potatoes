@@ -26,6 +26,7 @@ interface RandomTipData {
 }
 const baseTipUrl = `${pb.baseUrl}api/collections/tip/records`;
 const url = `${pb.baseUrl}`;
+const url = `${pb.baseUrl}`;
 
 const getTipImageUrl = (tip: any): string => {
   return tip.photo ? getPbImagesURL(0, tip) : '';
@@ -42,6 +43,14 @@ const RandomTip = ({ reloadCount }: PropTypes) => {
     setLoading(true);
     const fetchRandomTip = async () => {
       try {
+        const response = await axios.get(baseTipUrl, {
+          signal: abortController.signal,
+          // 팁 쿼리에 작성자 정보 확장(expand) 적용하여 별도 작성자 조회 제거
+          params: {
+            expand: 'author_id',
+          },
+        });
+
         const response = await axios.get(baseTipUrl, {
           signal: abortController.signal,
           // 팁 쿼리에 작성자 정보 확장(expand) 적용하여 별도 작성자 조회 제거
@@ -68,7 +77,9 @@ const RandomTip = ({ reloadCount }: PropTypes) => {
           content_img: tipImg,
           subtitle: selectedTip.content,
           profile_photo: authorData?.profile_photo ? authorData : '',
+          profile_photo: authorData?.profile_photo ? authorData : '',
           nickname: authorData?.nickname || '',
+          authorData: authorData,
           authorData: authorData,
         });
         setLoading(false);
@@ -99,6 +110,11 @@ const RandomTip = ({ reloadCount }: PropTypes) => {
           content_title={randomTip.content_title}
           content_img={randomTip.content_img}
           subtitle={randomTip.subtitle}
+          profile_photo={
+            randomTip.profile_photo
+              ? getPbImageURL(url, randomTip?.authorData, 'profile_photo')
+              : DefaultProfileSVG
+          }
           profile_photo={
             randomTip.profile_photo
               ? getPbImageURL(url, randomTip?.authorData, 'profile_photo')
