@@ -29,7 +29,7 @@ const PostingCard = ({
   label,
   data,
 }: PropTypes) => {
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+  const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
   return (
     <article className="mx-auto h-auto w-[21rem] justify-between rounded-[0.9375rem] bg-[#FFF] shadow-shadow-blue">
       <header className="flex h-12 flex-row items-center justify-between p-3">

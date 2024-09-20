@@ -5,7 +5,7 @@ import pb from '@/utils/pocketbase';
 import { Helmet } from 'react-helmet-async';
 
 const PopularPost = () => {
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+  const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
   const url = `${pb.baseUrl}`;
   const postingUrl = `${url}api/collections/posting/records`;
 

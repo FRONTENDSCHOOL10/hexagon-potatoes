@@ -9,7 +9,7 @@ interface PropTypes {
 }
 
 const MiniPostingCard = ({ nickname, content, id, photo }: PropTypes) => {
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+  const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
 
   return (
     <Link to={`/home/community/boast/${id}`}>

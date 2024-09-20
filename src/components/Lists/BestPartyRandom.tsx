@@ -136,7 +136,7 @@ const BestPartyRandom = React.memo(
         case '일본':
           return '/assets/country/japan-flag.webp';
         default:
-          return '/assets/shipmatelogo.png';
+          return '/assets/shipmatelogo.webp';
       }
     };
 

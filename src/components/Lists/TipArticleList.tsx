@@ -27,7 +27,7 @@ interface PropTypes {
 }
 
 const TipArticleList = ({ data }: PropTypes) => {
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+  const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
   const defaultProfileImage = DefaultProfileSVG; // 기본 프로필 이미지 URL
 
   const url = `${pb.baseUrl}`;
