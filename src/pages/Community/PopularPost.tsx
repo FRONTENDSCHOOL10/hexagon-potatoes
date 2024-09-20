@@ -5,12 +5,15 @@ import pb from '@/utils/pocketbase';
 import { Helmet } from 'react-helmet-async';
 
 const PopularPost = () => {
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
   const url = `${pb.baseUrl}`;
   const postingUrl = `${url}api/collections/posting/records`;
 
   const { data, error, status } = useFetch(postingUrl, 'author_id');
-  const PostData = data?.items;
+  const postData = data?.items;
+
+  const sortedPostData = Array.isArray(postData)
+    ? [...postData].sort((a, b) => (b.like || 0) - (a.like || 0))
+    : [];
 
   return (
     <>
@@ -23,7 +26,7 @@ const PopularPost = () => {
         <meta name="keywords" content="인기 게시물, 게시판, 쉽메이트" />
       </Helmet>
       <section className="mt-3 flex flex-col gap-3">
-        {PostData?.map((d: any, index: number) => (
+        {sortedPostData?.map((d: any, index: number) => (
           <PostingCard
             key={d.id}
             profileImg={
