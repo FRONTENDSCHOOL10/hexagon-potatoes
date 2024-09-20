@@ -106,10 +106,7 @@ const BlogPosting = ({ item, type }: PropTypes) => {
               ) : (
                 <img
                   className="w-[21rem] object-cover object-center"
-                  src={getPbImagesURL(
-                    index === 1 ? index - 1 : index - 2,
-                    item
-                  )}
+                  src={getPbImagesURL(Math.floor(index / 2), item)}
                   alt={`게시물 이미지 ${index - 1}`}
                 />
               )}
