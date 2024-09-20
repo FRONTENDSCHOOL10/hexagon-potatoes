@@ -119,8 +119,13 @@ const BestPartyRandom = React.memo(
       fetchRandomPartyAndLeader();
     }, [fetchRandomPartyAndLeader, reloadCount]);
 
-    if (loading) return <p>로딩 중...</p>;
-    if (error) return <p>{error}</p>;
+    if (loading) {
+      return <div aria-live="polite">로딩 중...</div>;
+    }
+
+    if (error) {
+      return <div aria-live="assertive">{error || '데이터가 없습니다.'}</div>;
+    }
 
     const countryImg = (country: string): string => {
       switch (country) {

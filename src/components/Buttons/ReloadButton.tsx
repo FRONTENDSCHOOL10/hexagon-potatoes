@@ -29,7 +29,7 @@ const ReloadButton = React.memo(
         <button
           onClick={handleClick}
           disabled={disabled || isLoading}
-          className={`bg-blue flex gap-1 rounded-md bg-blue-200 px-2 py-1 ${style}`}
+          className={`bg-blue flex gap-1 rounded-md ${disabled || isLoading ? 'bg-gray-100' : 'bg-blue-200'} px-2 py-1 ${style} cursor-pointer`}
           aria-label={
             isLoading
               ? '데이터를 새로고침하는 중입니다'

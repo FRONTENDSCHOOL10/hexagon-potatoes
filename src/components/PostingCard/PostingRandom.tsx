@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import useFetch from '@/hooks/useFetch';
 import getPbImageURL from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
@@ -15,10 +15,13 @@ const PostingRandom = ({ reloadCount }: PropTypes) => {
   const [randomPosting, setRandomPosting] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchRandomPosting = () => {
+  const fetchRandomPosting = useCallback(async () => {
+    const controller = new AbortController();
+    setLoading(true);
+
+    try {
       if (status === 'loading') {
-        setLoading(true);
+        return;
       } else if (status === 'success' && data?.items.length > 0) {
         const postings = data.items;
         const randomIndex = Math.floor(Math.random() * postings.length);
@@ -38,18 +41,30 @@ const PostingRandom = ({ reloadCount }: PropTypes) => {
           profileImg: profileImg,
           data: selectedPosting,
         });
+      } else if (status === 'error') {
+        throw new Error('포스팅 데이터를 가져오는 중 오류가 발생했습니다.');
       }
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    } finally {
       setLoading(false); // 로딩 완료
+    }
+    return () => {
+      controller.abort();
     };
+  }, [status, data]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
 
     fetchRandomPosting();
 
-    // 에러 처리
-    if (status === 'error') {
-      console.error('포스팅 데이터를 가져오는 중 오류가 발생했습니다:', error);
-      setLoading(false);
-    }
-  }, [reloadCount, status, data]);
+    return () => {
+      abortController.abort(); // 컴포넌트 언마운트 시 요청 취소
+    };
+  }, [reloadCount, fetchRandomPosting]);
 
   if (loading) {
     return <div aria-live="polite">로딩 중...</div>;
