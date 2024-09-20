@@ -59,13 +59,13 @@ const HomePage = () => {
           <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
             이달의 우수 파티장
           </h2>
-          <BestPartyLeader />
+          <BestPartyRandom />
         </section>
         <section>
           <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
             추천 파티 리스트
           </h2>
-          <BestPartyRandom />
+          <BestPartyRandom type={'party'} />
         </section>
         <section>
           <h2 className="mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium">
