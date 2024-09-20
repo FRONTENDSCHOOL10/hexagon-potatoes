@@ -41,7 +41,6 @@ const BestPartyLeader = () => {
           ...user,
           partyCount: partyResponses[index].data.items.length,
         }));
-
         const validUsers = usersWithParties.filter(
           (user) => user.partyCount > 0
         );
@@ -56,9 +55,11 @@ const BestPartyLeader = () => {
         // 프로필 사진 URL 가져오기
         const profilePhotoUrl = getPbImageURL(
           pb.baseUrl,
-          users,
+          selectedUser,
           'profile_photo'
         );
+
+        console.log(profilePhotoUrl);
 
         setBestUser({
           ...selectedUser,

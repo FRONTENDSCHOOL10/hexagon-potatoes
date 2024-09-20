@@ -20,7 +20,7 @@ const UserNameInput = ({
 
   const inputId = useId();
 
-  const inputStyle = `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored border-errored'}`;
+  const inputStyle = `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue border-gray-200 ' : 'outline-errored border-errored'}`;
 
   const validateMessage = '최소 2자 이상의 한글로 입력해주세요.';
 

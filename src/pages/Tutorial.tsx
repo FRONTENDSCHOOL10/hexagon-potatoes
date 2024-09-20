@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Button from '@/components/Buttons/Button';
+import { Helmet } from 'react-helmet-async';
 
 // 튜토리얼 슬라이드 데이터
 const TUTORIAL_SLIDES = [
@@ -127,40 +128,50 @@ const Tutorial = () => {
   }, [navigate]);
 
   return (
-    <div className="relative flex justify-center">
-      {showSkipButton && (
-        <button
-          type="button"
-          onClick={handleCompleteTutorial}
-          className="absolute right-4 top-6 z-10 cursor-pointer px-4 py-2 text-sm text-black"
-        >
-          건너뛰기
-        </button>
-      )}
-      <Swiper
-        keyboard={{ enabled: true }}
-        ref={swiperRef}
-        pagination={showPagination ? { clickable: true } : false}
-        navigation={true}
-        modules={[Keyboard, Pagination, Navigation]}
-      >
-        {TUTORIAL_SLIDES.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <TutorialSlide {...slide} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      {showStartButton && (
-        <div className="absolute bottom-5 z-20 w-[21rem]">
-          <Button
-            buttonContent="시작하기"
-            isActive={true}
+    <>
+      <Helmet>
+        <title>튜토리얼 | Shipmate</title>
+        <meta
+          name="description"
+          content="쉽메이트 튜토리얼 페이지에서 배송비 절약 및 공동 구매 방법을 배워보세요."
+        />
+        <meta name="keywords" content="튜토리얼, 배송비, 공동 구매, 쉽메이트" />
+      </Helmet>
+      <div className="relative flex justify-center">
+        {showSkipButton && (
+          <button
+            type="button"
             onClick={handleCompleteTutorial}
-            type={'button'}
-          />
-        </div>
-      )}
-    </div>
+            className="absolute right-4 top-6 z-10 cursor-pointer px-4 py-2 text-sm text-black"
+          >
+            건너뛰기
+          </button>
+        )}
+        <Swiper
+          keyboard={{ enabled: true }}
+          ref={swiperRef}
+          pagination={showPagination ? { clickable: true } : false}
+          navigation={true}
+          modules={[Keyboard, Pagination, Navigation]}
+        >
+          {TUTORIAL_SLIDES.map((slide, index) => (
+            <SwiperSlide key={index}>
+              <TutorialSlide {...slide} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        {showStartButton && (
+          <div className="absolute bottom-5 z-20 w-[21rem]">
+            <Button
+              buttonContent="시작하기"
+              isActive={true}
+              onClick={handleCompleteTutorial}
+              type={'button'}
+            />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

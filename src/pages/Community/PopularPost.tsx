@@ -1,6 +1,7 @@
 import PostingCard from '@/components/PostingCard/PostingCard';
 import useFetch from '@/hooks/useFetch';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import { Helmet } from 'react-helmet-async';
 
 const PopularPost = () => {
   const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
@@ -12,6 +13,14 @@ const PopularPost = () => {
 
   return (
     <section className="mt-3 flex flex-col gap-3">
+      <Helmet>
+        <title>인기 게시물 | Shipmate</title>
+        <meta
+          name="description"
+          content="현재 인기 있는 게시물을 확인해보세요."
+        />
+        <meta name="keywords" content="인기 게시물, 게시판, 쉽메이트" />
+      </Helmet>
       {PostData?.map((d: any, index: number) => (
         <PostingCard
           key={d.id}

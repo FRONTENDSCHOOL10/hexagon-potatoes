@@ -46,7 +46,7 @@ const SearchBar = () => {
         onKeyDown={handleKeyDown} // 엔터 키 이벤트 처리
         value={query}
         type="text"
-        placeholder="검색어를 입력해 주세요"
+        placeholder="검색어를 입력해 주세요 (파티 이름, 소개, 닉네임, 국가)"
       />
       <button
         className="absolute px-3"
