@@ -35,9 +35,9 @@ interface InstaPostingItem extends PocketBaseRecord {
 interface PropTypes {
   item: InstaPostingItem;
 }
+const url = `${pb.baseUrl}`;
 
 const InstaPosting = ({ item }: PropTypes) => {
-  const url = `${pb.baseUrl}`;
   if (!item) return null;
   const authorId = item.expand?.author_id;
 

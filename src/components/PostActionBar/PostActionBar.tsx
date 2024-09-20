@@ -2,7 +2,7 @@ import formatCurrency from '@/utils/currencyFormat';
 import { formatDateShort, formatDateString } from '@/utils/dateFormatter';
 import pb from '@/utils/pocketbase';
 import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
@@ -180,4 +180,4 @@ const PostActionBar = ({
   );
 };
 
-export default PostActionBar;
+export default memo(PostActionBar);

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 // profileImg가 없을 경우 기본 프로필 컴포넌트
 const DefaultProfileSVG = ({ size }: { size: number }) => {
   return (
@@ -18,4 +20,4 @@ const DefaultProfileSVG = ({ size }: { size: number }) => {
   );
 };
 
-export default DefaultProfileSVG;
+export default memo(DefaultProfileSVG);

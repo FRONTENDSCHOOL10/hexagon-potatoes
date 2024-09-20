@@ -2,6 +2,7 @@ import Article from './Article';
 import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
+import React, { memo } from 'react';
 
 interface PropTypes {
   data: {
@@ -25,14 +26,11 @@ interface PropTypes {
     };
   }[];
 }
+const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+const defaultProfileImage = DefaultProfileSVG; // 기본 프로필 이미지 URL
+const url = `${pb.baseUrl}`;
 
 const TipArticleList = ({ data }: PropTypes) => {
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
-  const defaultProfileImage = DefaultProfileSVG; // 기본 프로필 이미지 URL
-
-  const url = `${pb.baseUrl}`;
-
-  console.log(data);
   return (
     <ul className="flex w-full flex-col gap-y-3" aria-label="팁 목록">
       {data?.map((item, index) => (
@@ -40,7 +38,7 @@ const TipArticleList = ({ data }: PropTypes) => {
           key={item.id} // 리스트 항목에 대한 고유 키
           type={'tip'} // 'tip'으로 고정
           content_title={item.title} // 팁 제목
-          content_img={item.photo ? getPbImagesURL(0, item) : defaultTipImage} // 팁 이미지
+          content_img={item.photo ? getPbImagesURL(0, item) : DefaultProfileSVG} // 팁 이미지
           subtitle={item.content} // 팁 내용
           profile_photo={
             item?.expand?.author_id?.profile_photo
@@ -57,4 +55,4 @@ const TipArticleList = ({ data }: PropTypes) => {
   );
 };
 
-export default TipArticleList;
+export default memo(TipArticleList);

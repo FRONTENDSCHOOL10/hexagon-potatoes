@@ -25,6 +25,7 @@ const PopularPost = () => {
         />
         <meta name="keywords" content="인기 게시물, 게시판, 쉽메이트" />
       </Helmet>
+      <h1 className="sr-only">인기포스트</h1>
       <section className="mt-3 flex flex-col gap-3">
         {sortedPostData?.map((d: any, index: number) => (
           <PostingCard

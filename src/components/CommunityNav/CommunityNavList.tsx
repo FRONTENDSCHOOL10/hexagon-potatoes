@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface PropTypes {
@@ -23,4 +24,4 @@ const CommunityNavList = ({ path, children }: PropTypes) => {
   );
 };
 
-export default CommunityNavList;
+export default memo(CommunityNavList);
