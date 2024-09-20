@@ -16,7 +16,13 @@ const UserTip = () => {
     return <div>No data available</div>;
   }
 
-  return <>{tipData?.map((d: any) => <BlogPosting key={d.id} item={d} />)}</>;
+  return (
+    <>
+      {tipData?.map((d: any) => (
+        <BlogPosting key={d.id} item={d} type={'tip'} />
+      ))}
+    </>
+  );
 };
 
 export default UserTip;

@@ -1,22 +1,75 @@
+import formatCurrency from '@/utils/currencyFormat';
 import { formatDateShort, formatDateString } from '@/utils/dateFormatter';
+import pb from '@/utils/pocketbase';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
 interface PropTypes {
   postId: string | number;
-  onLike: () => void;
   onBookmark: () => void;
   onShare: () => void;
   date: string;
+  type: 'tip' | 'magazine' | 'boast';
 }
 
 const PostActionBar = ({
   postId,
-  onLike,
   onBookmark,
   onShare,
   date,
+  type,
 }: PropTypes) => {
+  const [likes, setLikes] = useState<number | null>(null);
+  const [views, setViews] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getUrl = useCallback(() => {
+    switch (type) {
+      case 'boast':
+        return `${pb.baseUrl}api/collections/posting/records/${postId}`;
+      case 'magazine':
+        return `${pb.baseUrl}api/collections/magazine/records/${postId}`;
+      case 'tip':
+        return `${pb.baseUrl}api/collections/tip/records/${postId}`;
+      default:
+        throw new Error(`Invalid type: ${type}`);
+    }
+  }, [type, postId]);
+
+  const fetchLikes = useCallback(async () => {
+    try {
+      const url = getUrl();
+      const response = await axios.get(url);
+      setLikes(response.data.like);
+    } catch (error) {
+      console.error('좋아요 수 가져오기 실패:', error);
+    }
+  }, [getUrl]);
+
+  useEffect(() => {
+    const calViews = formatCurrency(Math.floor(Math.random() * 3000) + 1);
+    setViews(calViews);
+    fetchLikes();
+  }, [fetchLikes]);
+
+  const onLike = async () => {
+    if (isLoading || likes === null) return;
+    setIsLoading(true);
+    setLikes((prevLikes) => (prevLikes !== null ? prevLikes + 1 : 1));
+    try {
+      const url = getUrl();
+      const response = await axios.patch(url, { like: likes + 1 });
+      if (response.status === 200) {
+        console.log('좋아요 업데이트 성공');
+      }
+    } catch (error) {
+      console.error('좋아요 업데이트 실패:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       <div className="font-[Pretendard] text-[0.75rem] font-normal not-italic leading-[1.0625rem] text-[#626871]">
@@ -25,8 +78,8 @@ const PostActionBar = ({
           {'\u00A0'}
         </time>
         {/* 좋아요, 조회수는 하드코딩으로 넣기 */}
-        <span> 좋아요 3 </span>
-        <span> 조회 1,000</span>
+        <span> 좋아요 {likes !== 0 && likes} </span>
+        <span> 조회 {views}</span>
       </div>
       <div className="flex h-[1.5625rem] items-center gap-4">
         <button
