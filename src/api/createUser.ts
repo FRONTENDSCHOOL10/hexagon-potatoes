@@ -6,6 +6,7 @@ const createUser = async (userData: {
   name: string;
   username: string;
   user_email: string;
+  email: string;
   nickname: string;
   phone_number: string;
   password: string;

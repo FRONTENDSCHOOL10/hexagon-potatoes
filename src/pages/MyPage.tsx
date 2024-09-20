@@ -4,6 +4,7 @@ import PartyResult from '@/components/PartyResult/PartyResult';
 import NameCard from '@/components/NameCard/NameCard';
 import MypageNoticeList from '@/components/MypageNoticeList/MypageNoticeList';
 import SavingMoneyCard from '@/components/SavingMoneyCard/SavingMoneyCard';
+import { Helmet } from 'react-helmet-async';
 
 const MyPage = () => {
   const [activeButton, setActiveButton] = useState('파티장');
@@ -28,47 +29,62 @@ const MyPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="my-[1.5rem]">
-        <NameCard
-          name="닉네임"
-          subtext="user@example.com"
-          type="editProfile"
-        />
-      </div>
-      
-      <SavingMoneyCard nickname={'닉네임'} />
-      
-      <div className="flex gap-4 mt-4">
-        <MiniButton
-          buttonContent="파티장"
-          onClick={() => handleButtonClick('파티장')}
-        />
-        <MiniButton
-          buttonContent="파티원"
-          onClick={() => handleButtonClick('파티원')}
-        />
-      </div>
+    <>
+      <Helmet>
+        <title>마이 페이지 | Shipmate</title>
+        <meta name="description" content="사용자 프로필 및 파티 관리 페이지" />
+        <meta name="keywords" content="마이페이지, 프로필, 파티장, 파티원" />
+      </Helmet>
+      <div className="flex flex-col items-center">
+        <div className="my-[1.5rem]">
+          <NameCard
+            name="닉네임"
+            subtext="user@example.com"
+            type="editProfile"
+          />
+        </div>
 
-      <div className="mt-6">
-        {activeButton === '파티장' && (
-          <div>
-            <PartyResult />
-            {noticeListData['파티장'].map((section, index) => (
-              <MypageNoticeList key={index} title={section.title} items={section.items} />
-            ))}
-          </div>
-        )}
+        <SavingMoneyCard nickname={'닉네임'} />
 
-        {activeButton === '파티원' && (
-          <div>
-            {noticeListData['파티원'].map((section, index) => (
-              <MypageNoticeList key={index} title={section.title} items={section.items} />
-            ))}
-          </div>
-        )}
+        <div className="mt-4 flex gap-4">
+          <MiniButton
+            buttonContent="파티장"
+            onClick={() => handleButtonClick('파티장')}
+          />
+          <MiniButton
+            buttonContent="파티원"
+            onClick={() => handleButtonClick('파티원')}
+          />
+        </div>
+
+        <div className="mt-6">
+          {activeButton === '파티장' && (
+            <div>
+              <PartyResult />
+              {noticeListData['파티장'].map((section, index) => (
+                <MypageNoticeList
+                  key={index}
+                  title={section.title}
+                  items={section.items}
+                />
+              ))}
+            </div>
+          )}
+
+          {activeButton === '파티원' && (
+            <div>
+              {noticeListData['파티원'].map((section, index) => (
+                <MypageNoticeList
+                  key={index}
+                  title={section.title}
+                  items={section.items}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

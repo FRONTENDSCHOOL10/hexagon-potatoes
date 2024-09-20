@@ -24,7 +24,7 @@ const IdInput = ({
   const inputId = useId();
 
   const inputStyle = (isValid: boolean) =>
-    `text-sub-2 relative px-5 py-2 h-[2.8125rem] rounded-xl w-full border border-gray-200 outline-1 ${(isValid && isDuplicate) || !isEnteredVal ? 'outline-mainblue' : 'outline-errored border-errored'}`;
+    `text-sub-2 relative px-5 py-2 h-[2.8125rem] rounded-xl w-full border outline-1 ${(isValid && isDuplicate) || !isEnteredVal ? 'outline-mainblue border-gray-200' : 'outline-errored border-errored'}`;
 
   const validationMessage = () => {
     if (!isEnteredVal) return '';

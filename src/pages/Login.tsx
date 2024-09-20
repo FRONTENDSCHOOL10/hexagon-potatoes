@@ -7,6 +7,7 @@ import SimpleLogin from '@/components/SimpleLogin/SimpleLogin';
 import LoginNavi from '@/components/LoginNavi/LoginNavi';
 import { loginUser } from '@/api/auth';
 import Alert from '@/components/Alert/Alert';
+import { Helmet } from 'react-helmet-async';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,50 +31,64 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col gap-3 p-3">
-      <form onSubmit={handleLogin} className="flex flex-col gap-3">
-        <img
-          className="h-[5.9375rem] w-[21rem] self-center"
-          src="/assets/loginsignuplogo.png"
-          alt="SHIPMATE 작은 로고"
+    <>
+      <Helmet>
+        <title>로그인 | Shipmate</title>
+        <meta
+          name="description"
+          content="Shipmate에 로그인하여 해외직구의 새로운 경험을 시작하세요. 안전하고 간편한 로그인으로 원하시는 상품을 쉽게 구매하세요."
         />
-        <IdInput
-          inputName="username"
-          onIdChange={(name) => (value) => {
-            setUsername(value as string);
-          }}
-          onValidChange={() => {}}
-          validateOnChange={false}
+        <meta
+          name="keywords"
+          content="로그인, 해외직구, 쇼핑, 아이디, 비밀번호, 회원가입"
         />
-        <PwdInput
-          inputName="password"
-          onPwdChange={(name) => (value) => {
-            setPassword(value as string);
-          }}
-          onValidChange={() => {}}
-          validateOnChange={false}
-        />
-        <Button
-          type="submit"
-          buttonContent="로그인"
-          isActive
-          onClick={() => {}}
-        />
-        {error && <p className="text-errored">{error}</p>}
-        <SimpleLogin />
-        <LoginNavi />
-        {alertVisible && (
-          <Alert
-            type={'error'}
-            title={'로그인 실패'}
-            subtext={alertMessage}
-            onClose={() => {
-              setAlertVisible(false);
-            }}
+      </Helmet>
+      <div className="flex flex-col gap-3 p-3">
+        <form onSubmit={handleLogin} className="flex flex-col gap-3">
+          <img
+            className="h-[5.9375rem] w-[21rem] self-center"
+            src="/assets/loginsignuplogo.png"
+            alt="SHIPMATE 작은 로고"
           />
-        )}
-      </form>
-    </div>
+          <IdInput
+            inputName="username"
+            onIdChange={(name) => (value) => {
+              setUsername(value as string);
+            }}
+            onValidChange={() => {}}
+            validateOnChange={false}
+          />
+          <PwdInput
+            inputName="password"
+            onPwdChange={(name) => (value) => {
+              setPassword(value as string);
+            }}
+            onValidChange={() => {}}
+            validateOnChange={false}
+            onEnter={handleLogin}
+          />
+          <Button
+            type="submit"
+            buttonContent="로그인"
+            isActive
+            onClick={() => {}}
+          />
+          {error && <p className="text-errored">{error}</p>}
+          <SimpleLogin />
+          <LoginNavi />
+          {alertVisible && (
+            <Alert
+              type={'error'}
+              title={'로그인 실패'}
+              subtext={alertMessage}
+              onClose={() => {
+                setAlertVisible(false);
+              }}
+            />
+          )}
+        </form>
+      </div>
+    </>
   );
 };
 

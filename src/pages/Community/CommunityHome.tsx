@@ -2,6 +2,7 @@ import TipArticleList from '@/components/Lists/TipArticleList';
 import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 import useFetch from '@/hooks/useFetch';
 import getRandomItems from '@/utils/getRandomItems';
+import { Helmet } from 'react-helmet-async';
 
 const CommunityHome = () => {
   const tipUrl = `${import.meta.env.VITE_PB_URL}/api/collections/tip/records`;
@@ -26,6 +27,14 @@ const CommunityHome = () => {
 
   return (
     <>
+      <Helmet>
+        <title>커뮤니티 홈 | Shipmate</title>
+        <meta
+          name="description"
+          content="쉽메이트 커뮤니티에서 다양한 정보를 공유하고 소통하세요."
+        />
+        <meta name="keywords" content="커뮤니티, 쉽메이트, 소통, 정보 공유" />
+      </Helmet>
       <section className="mb-3 flex w-[22.5rem] flex-col items-center justify-center gap-2 self-stretch px-3 py-[0rem]">
         <h2 className="self-stretch pt-3 text-heading-1 text-[black]">
           유저들의 팁

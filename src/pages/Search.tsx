@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '@/components/SearchBar/SearchBar';
+import { Helmet } from 'react-helmet-async';
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,7 +21,15 @@ const Search = () => {
   };
 
   return (
-    <div>
+    <>
+      <Helmet>
+        <title>검색 | Shipmate</title>
+        <meta
+          name="description"
+          content="파티 이름이나 파티장의 닉네임 혹은 궁금한 국가를 검색해 보세요."
+        />
+        <meta name="keywords" content="검색, 상품, 정보, 인기 검색어" />
+      </Helmet>
       <SearchBar />
       <section className="mt-3">
         <h2>최근 검색어</h2>
@@ -40,7 +49,7 @@ const Search = () => {
       <section className="mt-3 h-56">
         <h2>실시간 인기 검색어</h2>
       </section>
-    </div>
+    </>
   );
 };
 
