@@ -16,7 +16,7 @@ interface PropTypes {
 }
 
 const PartyArticleList = ({ data }: PropTypes) => {
-  const defaultPartyImage = '/assets/shipmatelogo.png';
+  const defaultPartyImage = '/assets/shipmatelogo.webp';
   const defaultProfileImage = DefaultProfileSVG;
 
   const processedData = data.map((item) => ({
