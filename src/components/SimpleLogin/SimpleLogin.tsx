@@ -33,7 +33,7 @@ const SimpleLogin = () => {
           type="button"
         >
           <svg className="h-10 w-10">
-            <use href="/assets/google.svg#google" />
+            <use href="/assets/login/google.svg#google" />
           </svg>
         </button>
         <Tooltip
@@ -56,7 +56,7 @@ const SimpleLogin = () => {
           type="button"
         >
           <svg className="h-10 w-10">
-            <use href="/assets/kakao.svg#kakao" />
+            <use href="/assets/login/kakao.svg#kakao" />
           </svg>
         </button>
         <Tooltip
@@ -79,7 +79,7 @@ const SimpleLogin = () => {
           type="button"
         >
           <svg className="h-10 w-10">
-            <use href="/assets/apple.svg#apple" />
+            <use href="/assets/login/apple.svg#apple" />
           </svg>
         </button>
         <Tooltip

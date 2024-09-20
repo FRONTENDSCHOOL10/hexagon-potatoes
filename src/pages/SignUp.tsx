@@ -110,7 +110,7 @@ const SignUp = () => {
       >
         <img
           className="mx-auto h-[5.9375rem] w-[21rem]"
-          src="/assets/loginsignuplogo.webp"
+          src="/assets/tutorial/loginsignuplogo.webp"
           alt="SHIPMATE 작은 로고"
         />
         <UserNameInput
