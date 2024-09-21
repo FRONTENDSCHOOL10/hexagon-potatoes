@@ -11,6 +11,7 @@ import RootLayout from '@/layout/RootLayout';
 import { checkAuthId } from '@/api/auth';
 import Alert from '@/components/Alert/Alert';
 import { PageLoadingSpinner } from '@/components/LoadingSpinner';
+import ChatRoom from '@/pages/ChatRoom';
 
 // 레이지 로딩
 const Tutorial = lazy(() => import('@/pages/Tutorial'));
@@ -216,6 +217,10 @@ const routes = [
       {
         path: 'my-profile',
         element:  <ProtectedSuspenseRoute component={MyProfile} />,
+      },
+      {
+        path: '/home/chat/:chatId',
+        element: <ProtectedSuspenseRoute component={ChatRoom} />,
       },
       {
         path: 'setting',
