@@ -16,7 +16,7 @@ interface ChatType {
   };
   party_id: string;
   party_leader: string;
-  chat_member_id: string;
+  chat_member_id: string[];
   last_message: string;
   last_message_time: string;
 }
@@ -54,9 +54,12 @@ const ChatHome = () => {
           expand: 'party_id.party_leader',
         });
 
-        const userChats = response.items.filter(
-          (chat) => chat.chat_member_id === currentUserId
-        );
+        const userChats = response.items.filter((chat) => {
+          if (Array.isArray(chat.chat_member_id)) {
+            return chat.chat_member_id.includes(currentUserId || '');
+          }
+          return false;
+        });
 
         const chatsWithMessages = await Promise.all(
           userChats.map(async (chat) => {
@@ -90,7 +93,6 @@ const ChatHome = () => {
           })
         );
 
-        // 최신 메시지 순으로 정렬
         const sortedChats = chatsWithMessages.sort(
           (a, b) =>
             new Date(b.last_message_time).getTime() -
@@ -139,7 +141,7 @@ const ChatHome = () => {
                 )}
                 <div className="flex-1 ml-4">
                   <p className="text-lg font-semibold">
-                    {leader?.nickname|| '알 수 없음'}
+                    {leader?.nickname || '알 수 없음'}
                   </p>
                   <p className="text-sm">{chat.last_message}</p>
                   <p className="text-sm text-gray-400">
