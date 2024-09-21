@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NameCard from '@/components/NameCard/NameCard';
-import MyprofileFollwer from '@/components/MyprofileFollower/MyprofileFollower';
+import MyprofileFollower from '@/components/MyprofileFollower/MyprofileFollower';
 import PartyArticleList from '@/components/Lists/PartyArticleList';
 import SquarePostingCard from '@/components/PostingCard/SquarePostingCard';
 import getPbImageURL from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
+import getUserById from '@/api/getUserById';
+import getPartyByKeyword from '@/api/getPartyByKeyword';
+import axios from 'axios';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 interface PocketBaseRecord {
   id: string;
@@ -21,7 +25,6 @@ interface ProfileType extends PocketBaseRecord {
   user_email: string;
 }
 
-
 interface PostType extends PocketBaseRecord {
   author_id: string;
   photo: string;
@@ -33,36 +36,65 @@ interface PostType extends PocketBaseRecord {
 const MyProfile = () => {
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [posts, setPosts] = useState<PostType[]>([]);
+  const [parties, setParties] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const url = `${pb.baseUrl}`; 
+  const url = `${pb.baseUrl}`;
 
   useEffect(() => {
+    // 프로필 데이터 가져오기
     const fetchProfileData = async () => {
       try {
-        console.log('Fetching profile data...');
         setLoading(true);
         setError(null);
 
-        pb.autoCancellation(false);
-
-        const profileResponse = await pb.collection('users').getList<ProfileType>(1, 1);
-        console.log('Profile Response:', profileResponse);
-        if (profileResponse.items.length > 0) {
-          setProfile(profileResponse.items[0]);
+        const localUserId = localStorage.getItem('authId') ?? '아이디없음';
+        const userResponse = await getUserById(localUserId);
+        if (userResponse) {
+          setProfile(userResponse);
+          await fetchPosts(userResponse.id);
+          await fetchPartyData(userResponse.nickname);
         } else {
-          setError('No profile data found. Please check if the "users" collection has records.');
+          setError('유저 정보가 없습니다');
         }
-
-        const postsResponse = await pb.collection('posting').getList<PostType>(1, 50);
-        console.log('Posting Response:', postsResponse);
-        setPosts(postsResponse.items);
       } catch (err: any) {
-        console.error('Error fetching data:', err);
-        setError(`데이터를 가져오는 중 문제가 발생했습니다: ${err.message}`); 
+        setError(`데이터를 가져오는 중 문제가 발생했습니다: ${err.message}`);
       } finally {
         setLoading(false);
+      }
+    };
+
+    // 게시물 데이터 가져오기
+    const fetchPosts = async (userId: string) => {
+      try {
+        const response = await axios.get(
+          `${pb.baseUrl}api/collections/posting/records`,
+          {
+            params: {
+              filter: `author_id='${userId}'`,
+            },
+          }
+        );
+        setPosts(response.data.items);
+      } catch (err: any) {
+        setError(`게시물을 가져오는 중 문제가 발생했습니다: ${err.message}`);
+      }
+    };
+
+    // 파티 데이터 가져오기
+    const fetchPartyData = async (nickname: string) => {
+      try {
+        const partyData = await getPartyByKeyword(nickname);
+        if (partyData) {
+          setParties(partyData.items);
+        } else {
+          setError('파티 정보를 가져오는 데 문제가 발생했습니다.');
+        }
+      } catch (err: any) {
+        setError(
+          `파티 데이터를 가져오는 중 문제가 발생했습니다: ${err.message}`
+        );
       }
     };
 
@@ -74,27 +106,36 @@ const MyProfile = () => {
       <NameCard
         name={profile.nickname}
         subtext={profile.user_desc}
-        profileImg={profile.profile_photo ? getPbImageURL(url, profile, 'profile_photo') : ''}
+        profileImg={
+          profile.profile_photo
+            ? getPbImageURL(url, profile, 'profile_photo')
+            : ''
+        }
         type="editProfile"
         id={profile.id}
       />
     );
 
-  const renderPartyList = () =>
-    parties.length > 0 ? <PartyArticleList data={parties} /> : <p>No parties available.</p>;
+  const renderPartyList = () => {
+    return parties.length > 0 ? (
+      <PartyArticleList data={parties} />
+    ) : (
+      <p>파티가 없습니다.</p>
+    );
+  };
 
   const renderPosts = () => (
     <ul className="grid grid-cols-3 gap-4">
       {posts.length > 0 ? (
         posts.map((post) => <SquarePostingCard key={post.id} data={post} />)
       ) : (
-        <p>No posts available.</p>
+        <p>게시물이 없습니다.</p>
       )}
     </ul>
   );
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner className="h-72 w-full" />;
   }
 
   if (error) {
@@ -102,9 +143,9 @@ const MyProfile = () => {
   }
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="space-y-4 p-4">
       {renderProfileHeader()}
-      <MyprofileFollwer />
+      <MyprofileFollower />
       <section className="mt-4">
         <h2 className="text-xl font-bold">내 파티 목록</h2>
         {renderPartyList()}
