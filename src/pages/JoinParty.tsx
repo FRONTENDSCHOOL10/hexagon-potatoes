@@ -57,7 +57,7 @@ const JoinPartyPage = () => {
 
   const uuid = uuidv4();
   const navigate = useNavigate();
-  // const { partyId } = useLocation().state as { partyId: string };
+  const { partyId } = useLocation().state as { partyId: string };
 
   useEffect(() => {
     const id = localStorage.getItem('authId');
@@ -73,11 +73,11 @@ const JoinPartyPage = () => {
       : ''
   );
 
-  // const { data: partyData } = useFetch(
-  //   authUserData.id
-  //     ? `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`
-  //     : ''
-  // );
+  const { data: partyData } = useFetch(
+    authUserData.id
+      ? `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`
+      : ''
+  );
 
   const handleRemoveImg = (id: string) => {
     const updatedData = data.item_photo.filter((photo) => photo.id !== id);
@@ -183,10 +183,10 @@ const JoinPartyPage = () => {
         formData
       );
 
-      // await axios.patch(
-      // `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`,
-      // { member_ids: [...(partyData?.member_ids || []), member.data.id] }
-      // );
+      await axios.patch(
+        `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`,
+        { member_ids: [...(partyData?.member_ids || []), member.data.id] }
+      );
     } catch (error) {
       console.error(error);
     }
