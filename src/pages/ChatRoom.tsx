@@ -107,7 +107,7 @@ const ChatRoom = () => {
         <title>{nickname ? `${nickname}와의 채팅방` : `${chatId}와의 채팅방`}</title>
       </Helmet>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 p-4 pb-12">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -146,7 +146,7 @@ const ChatRoom = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="sticky bottom-12 bg-white flex items-center gap-2 pb-5">
+      <div className="sticky bottom-12 flex items-center gap-2 pb-5">
         <input
           type="text"
           value={message}
@@ -157,7 +157,7 @@ const ChatRoom = () => {
         />
         <button
           onClick={handleSendMessage}
-          className="w-10 h-10 p-3 bg-mainblue text-white rounded-full"
+          className="w-12 h-12 bg-mainblue text-white rounded-full"
         >
           ↑
         </button>
