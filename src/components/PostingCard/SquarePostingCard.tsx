@@ -7,7 +7,7 @@ interface PropTypes {
 
 const SquarePostingCard = ({ data }: PropTypes) => {
   const ENDPOINT = `https://hexagon-potatoes.pockethost.io/`;
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
+  const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
 
   return (
     <li className="[list-style:none]">

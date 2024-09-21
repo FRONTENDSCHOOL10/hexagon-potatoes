@@ -9,6 +9,7 @@ import UserNameInput from '@/components/Inputs/UserNameInput';
 import ItemsList from '@/components/Lists/ItemList';
 import Payment from '@/components/Payment/Payment';
 import Button from '@/components/Buttons/Button';
+import { Helmet } from 'react-helmet-async';
 
 // 아이템 데이터 타입
 interface ItemData {
@@ -152,6 +153,7 @@ const OrderDetailPage = () => {
     setIsValid(valid);
   };
 
+<<<<<<< HEAD
   const createFormData = () => {
     const formData = new FormData();
     formData.set('name', data.name);
@@ -193,36 +195,75 @@ const OrderDetailPage = () => {
           onUserNameChange={handleChangeInput}
           onValidChange={handleValidChange}
           value={loginUserData?.name || ''}
+=======
+  return (
+    <>
+      <Helmet>
+        <title>주문 상세 페이지 | Shipmate</title>
+        <meta
+          name="description"
+          content="주문 상세 정보를 확인하고 결제하세요."
+        />
+        <meta name="keywords" content="주문, 결제, 해외 직구" />
+      </Helmet>
+      <section className="flex flex-col gap-y-3">
+        <h1>주문 상세 페이지</h1>
+
+        <UserNameInput
+          inputName="name"
+          onUserNameChange={handleChangeInput}
+          defaultValue={leaderData.name}
+          onValidChange={handleValidChange}
+          isValid={isValid}
+>>>>>>> dba4cfeb6749497d9fe564c430abb1d73af9cb55
         />
         <AddressInput
           addressInputName="address"
           detailAddressInputName="detail_address"
           onAddressChange={handleChangeInput}
+<<<<<<< HEAD
           addressValue={loginUserData?.address || ''}
           detailAddressValue={loginUserData?.detail_address || ''}
         />
         {joinedPartyData?.party_leader === loginUserData?.id && (
+=======
+        />
+        {partyData.party_leader === loginUserData.loginUserId && (
+>>>>>>> dba4cfeb6749497d9fe564c430abb1d73af9cb55
           <>
             <StandardInput
               type="number"
               inputLabel="개인통관고유부호"
               placeholder="개인통관고유부호"
               inputName="personal_code"
+<<<<<<< HEAD
               value={loginUserData?.personal_code || ''}
               onInputChange={handleChangeInput}
             />
             <ItemsList data={itemsData} />
+=======
+              onInputChange={handleChangeInput}
+            />
+>>>>>>> dba4cfeb6749497d9fe564c430abb1d73af9cb55
           </>
         )}
         <Payment />
         <Button
           type="submit"
           buttonContent="최종 결제하기"
+<<<<<<< HEAD
           isActive={isActive && isValid}
           onClick={handleClickPaymentBtn}
         />
       </section>
     )
+=======
+          isActive={isActive}
+          onClick={handleClickPaymentBtn}
+        />
+      </section>
+    </>
+>>>>>>> dba4cfeb6749497d9fe564c430abb1d73af9cb55
   );
 };
 

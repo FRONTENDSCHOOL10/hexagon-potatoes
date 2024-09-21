@@ -3,23 +3,27 @@ import axios from 'axios';
 import PartyLeader from './PartyLeader';
 import pb from '@/utils/pocketbase';
 import getRandomItems from '@/utils/getRandomItems';
-import getPbImageURL from '@/utils/getPbImageURL'; // 추가
+import getPbImageURL from '@/utils/getPbImageURL';
+
+interface PropTypes {
+  reloadCount: number;
+}
 
 const baseUrl = `${pb.baseUrl}api/collections/users/records`;
 const partyBaseUrl = `${pb.baseUrl}api/collections/party/records`;
 
-const BestPartyLeader = () => {
+const BestPartyLeader = ({ reloadCount }: PropTypes) => {
   const [bestUser, setBestUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBestUsersAndParties = async () => {
+      setError(null);
+      setLoading(true);
       try {
         const response = await axios.get(baseUrl, {
-          params: {
-            filter: 'rating=4 || rating=5',
-          },
+          params: { filter: 'rating=4 || rating=5' },
         });
 
         const users = response.data.items;
@@ -30,9 +34,7 @@ const BestPartyLeader = () => {
 
         const partyPromises = users.map((user) =>
           axios.get(partyBaseUrl, {
-            params: {
-              filter: `party_leader="${user.id}"`, // 유저 ID로 파티 필터링
-            },
+            params: { filter: `party_leader="${user.id}"` },
           })
         );
 
@@ -45,6 +47,7 @@ const BestPartyLeader = () => {
         const validUsers = usersWithParties.filter(
           (user) => user.partyCount > 0
         );
+
         if (validUsers.length === 0) {
           throw new Error('유효한 파티가 있는 유저가 없습니다.');
         }
@@ -53,36 +56,31 @@ const BestPartyLeader = () => {
         const randomUsers = getRandomItems(validUsers, 1);
         const selectedUser = randomUsers[0];
 
-        // 프로필 사진 URL 가져오기
         const profilePhotoUrl = getPbImageURL(
           pb.baseUrl,
-          users,
+          selectedUser,
           'profile_photo'
         );
 
-        setBestUser({
-          ...selectedUser,
-          profile_photo: profilePhotoUrl,
-        });
-        setLoading(false);
+        setBestUser({ ...selectedUser, profile_photo: profilePhotoUrl });
       } catch (err) {
         console.error('유저 정보를 가져오는 데 실패했습니다:', err);
         setError('데이터를 가져오는 데 실패했습니다.');
+      } finally {
         setLoading(false);
       }
     };
 
     fetchBestUsersAndParties();
-  }, []);
+  }, [reloadCount]);
 
-  if (loading) return <p>로딩 중...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p aria-live="polite">로딩 중...</p>;
+  if (error) return <p aria-live="assertive">{error}</p>;
 
   return (
     <div>
       {bestUser ? (
         <PartyLeader
-          key={bestUser.id}
           profile_photo={bestUser.profile_photo}
           nickname={bestUser.nickname}
           rating={bestUser.rating}

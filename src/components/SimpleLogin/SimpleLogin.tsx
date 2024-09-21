@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import Alert from '@/components/Alert/Alert'; // Alert 컴포넌트 임포트
 import { Tooltip } from 'react-tooltip';
+
 const SimpleLogin = () => {
   const [alert, setAlert] = useState<{
     type: 'notice' | 'error';
     title: string;
     subtext: string;
   } | null>(null);
+
   const handleSimpleLogin = () => {
     setAlert({
       type: 'error',
@@ -14,7 +16,9 @@ const SimpleLogin = () => {
       subtext: '간편 로그인은 열심히 구현중입니다! 🐑💨',
     });
   };
+
   const handleCloseAlert = () => setAlert(null);
+
   return (
     <div className="flex flex-col items-center">
       <div className="text-gray300 mb-3 text-center text-xs font-normal leading-5">
@@ -29,7 +33,7 @@ const SimpleLogin = () => {
           type="button"
         >
           <svg className="h-10 w-10">
-            <use href="/assets/google.svg#google" />
+            <use href="/assets/login/google.svg#google" />
           </svg>
         </button>
         <Tooltip
@@ -52,7 +56,7 @@ const SimpleLogin = () => {
           type="button"
         >
           <svg className="h-10 w-10">
-            <use href="/assets/kakao.svg#kakao" />
+            <use href="/assets/login/kakao.svg#kakao" />
           </svg>
         </button>
         <Tooltip
@@ -75,7 +79,7 @@ const SimpleLogin = () => {
           type="button"
         >
           <svg className="h-10 w-10">
-            <use href="/assets/apple.svg#apple" />
+            <use href="/assets/login/apple.svg#apple" />
           </svg>
         </button>
         <Tooltip

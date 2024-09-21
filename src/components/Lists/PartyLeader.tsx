@@ -36,6 +36,13 @@ const PartyLeader = ({ item }) => {
           <p className="mr-1.5 place-content-center text-sub-1">
             {item.nickname}
           </p>
+          <img
+            // src={profile_photo || 'assets/shipmatelogo.webp'}
+            // alt={itemImgAlt}
+            className="absolute right-3 size-14"
+          />
+          {/* 더 적절한 label을 쓰고 싶다 */}
+
           {/* 사용자 등급 db 필요 */}
           <span
             className="place-content-center pr-1 text-caption text-gray-200"
@@ -48,9 +55,9 @@ const PartyLeader = ({ item }) => {
             <use href="/assets/sprite-sheet.svg#goldship"></use>
           </svg>
           <img
-            src={imgUrl || 'assets/shipmatelogo.png'}
-            alt={item.itemImgAlt}
-            className="col-start-4 row-start-1 row-end-4 ml-2 size-14 rounded-xl"
+            // src={gradeImg || 'assets/shipmatelogo.webp'}
+            className="w-4 self-center"
+            alt="사용자 등급"
           />
           <p className="col-span-3 row-span-2 mt-[0.38rem] line-clamp-2 text-ellipsis break-all text-body-2 text-gray-300">
             {item.user_desc}

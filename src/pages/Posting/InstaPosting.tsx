@@ -5,6 +5,7 @@ import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
+import pb from '@/utils/pocketbase';
 
 interface PocketBaseRecord {
   id: string;
@@ -35,14 +36,9 @@ interface PropTypes {
 }
 
 const InstaPosting = ({ item }: PropTypes) => {
-  const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
+  const url = `${pb.baseUrl}`;
   if (!item) return null;
   const authorId = item.expand?.author_id;
-
-  const handleLike = () => {
-    // 좋아요 처리 로직
-    console.log('좋아요 클릭');
-  };
 
   const handleBookmark = () => {
     // 북마크 처리 로직
@@ -61,7 +57,7 @@ const InstaPosting = ({ item }: PropTypes) => {
           name={authorId.nickname}
           profileImg={
             authorId.profile_photo
-              ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
+              ? getPbImageURL(url, authorId, 'profile_photo')
               : null
           }
           type="followingText"
@@ -77,8 +73,8 @@ const InstaPosting = ({ item }: PropTypes) => {
           slidesPerView="auto"
           className="mySwiper"
         >
-          {item.photo.map((_, index) => (
-            <SwiperSlide>
+          {item.photo.map((key, index) => (
+            <SwiperSlide key={key}>
               <img
                 className="h-[20.9rem] w-[21rem] bg-[#F2F2F2] object-cover"
                 src={getPbImagesURL(index, item)}
@@ -95,10 +91,10 @@ const InstaPosting = ({ item }: PropTypes) => {
 
       <PostActionBar
         postId={item.id}
-        onLike={handleLike}
         onBookmark={handleBookmark}
         onShare={handleShare}
         date={item.created}
+        type="boast"
       />
     </article>
   );

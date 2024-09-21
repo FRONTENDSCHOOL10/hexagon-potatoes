@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import NotificationList from '@/components/NotificationList/NotificationList';
+import { Helmet } from 'react-helmet-async';
 
 interface Notification {
   id: string;
@@ -36,7 +37,7 @@ const fetchUserNotifications = async (
 };
 
 const Notifications = () => {
-  const defaultTipImage = '/assets/shipmatelogo.png';
+  const defaultTipImage = '/assets/shipmatelogo.webp';
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -100,27 +101,37 @@ const Notifications = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <ul className="flex flex-col px-3 pb-3">
-      {notifications.length !== 0 ? (
-        notifications.map((item) => (
-          <NotificationList
-            key={item.id}
-            id={item.id}
-            type={item.type}
-            partyName={item.expand.party_id.party_name}
-            handleDelete={handleDelete}
-            handleReadStatusChange={handleReadStatusChange}
-            time={item.created}
-            isRead={item.read}
-          />
-        ))
-      ) : (
-        <div className="flex flex-col items-center justify-center text-gray-700">
-          <img src={defaultTipImage} alt="Default tip" />
-          <span>받은 알림이 없어요</span>
-        </div>
-      )}
-    </ul>
+    <>
+      <Helmet>
+        <title>알림 | Shipmate</title>
+        <meta
+          name="description"
+          content="사용자의 알림 목록을 확인하고, 알림을 관리하세요."
+        />
+        <meta name="keywords" content="알림, 쉽메이트, 관리, 사용자" />
+      </Helmet>
+      <ul className="flex flex-col px-3 pb-3">
+        {notifications.length !== 0 ? (
+          notifications.map((item) => (
+            <NotificationList
+              key={item.id}
+              id={item.id}
+              type={item.type}
+              partyName={item.expand.party_id.party_name}
+              handleDelete={handleDelete}
+              handleReadStatusChange={handleReadStatusChange}
+              time={item.created}
+              isRead={item.read}
+            />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center text-gray-700">
+            <img src={defaultTipImage} alt="Default tip" />
+            <span>받은 알림이 없어요</span>
+          </div>
+        )}
+      </ul>
+    </>
   );
 };
 

@@ -16,7 +16,7 @@ const countryImg = (country: string) => {
     case '일본':
       return '/assets/country/japan-flag.webp';
     default:
-      return '/assets/shipmatelogo.png';
+      return '/assets/shipmatelogo.webp';
   }
 };
 // 파티 이름, 파티 소개, 파티장의 닉네임, 국가 중 하나라도 키워드가 포함된 파티 반환

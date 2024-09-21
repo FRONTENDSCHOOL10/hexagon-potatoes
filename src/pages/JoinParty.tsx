@@ -10,6 +10,7 @@ import Button from '@/components/Buttons/Button';
 import AddressInput from '@/components/Inputs/AddressInput';
 import AddImage from '@/components/AddImage/AddImage';
 import { categories } from '@/components/Dropdown/DropdownList';
+import { Helmet } from 'react-helmet-async';
 
 interface ItemData {
   item_category: string;
@@ -138,6 +139,8 @@ const JoinPartyPage = () => {
     formData.append('item_link', data.item_link);
     formData.append('address', data.address);
     formData.append('detail_address', data.detail_address);
+    formData.append('name', loginUserData.name);
+    formData.append('nickname', loginUserData.nickname);
 
     const compressedImages = await Promise.all(
       data.item_photo.map(async (photo) => {
@@ -195,70 +198,80 @@ const JoinPartyPage = () => {
   };
 
   return (
-    <section className="flex flex-col gap-y-3">
-      <h1 className="sr-only">파티 참여 페이지</h1>
-      <form className="flex flex-col gap-y-3">
-        <AddImage
-          onInputChange={handleImgInputChange}
-          onClickDeleteBtn={handleRemoveImg}
-          imgData={data.item_photo}
+    <>
+      <Helmet>
+        <title>파티 참여 | Shipmate</title>
+        <meta name="description" content="파티 참여 페이지입니다." />
+        <meta
+          name="keywords"
+          content="해외 직구, 직구, 파티, 참여, 상품, 사진, 쇼핑"
         />
-        <StandardInput
-          inputName="item_name"
-          type="text"
-          inputLabel="구매 상품명"
-          placeholder="상품 이름"
-          onInputChange={handleChangeInput}
-        />
-        <StandardInput
-          inputName="item_price"
-          type="number"
-          inputLabel="상품 가격"
-          placeholder="상품 가격"
-          onInputChange={handleChangeInput}
-        />
-        <Dropdown
-          dropdownName="item_category"
-          label="카테고리"
-          list={categories}
-          defaultMsg="상품의 카테고리를 선택해 주세요"
-          onInputChange={handleChangeInput}
-        />
-        <StandardInput
-          inputName="item_weight"
-          type="number"
-          inputLabel="상품 무게"
-          placeholder="상품 무게"
-          onInputChange={handleChangeInput}
-        />
-        <StandardInput
-          inputName="item_size"
-          type="text"
-          inputLabel="상품 사이즈"
-          placeholder="상품 사이즈"
-          onInputChange={handleChangeInput}
-        />
-        <StandardInput
-          inputName="item_link"
-          type="url"
-          inputLabel="상품 링크"
-          placeholder="상품 링크"
-          onInputChange={handleChangeInput}
-        />
-        <AddressInput
-          addressInputName="address"
-          detailAddressInputName="detail_address"
-          onAddressChange={handleChangeInput}
-        />
-      </form>
+      </Helmet>
+      <section className="flex flex-col gap-y-3">
+        <h1 className="sr-only">파티 참여 페이지</h1>
+        <form className="flex flex-col gap-y-3">
+          <AddImage
+            onInputChange={handleImgInputChange}
+            onClickDeleteBtn={handleRemoveImg}
+            imgData={data.item_photo}
+          />
+          <StandardInput
+            inputName="item_name"
+            type="text"
+            inputLabel="구매 상품명"
+            placeholder="상품 이름"
+            onInputChange={handleChangeInput}
+          />
+          <StandardInput
+            inputName="item_price"
+            type="number"
+            inputLabel="상품 가격"
+            placeholder="상품 가격"
+            onInputChange={handleChangeInput}
+          />
+          <Dropdown
+            dropdownName="item_category"
+            label="카테고리"
+            list={categories}
+            defaultMsg="상품의 카테고리를 선택해 주세요"
+            onInputChange={handleChangeInput}
+          />
+          <StandardInput
+            inputName="item_weight"
+            type="number"
+            inputLabel="상품 무게"
+            placeholder="상품 무게"
+            onInputChange={handleChangeInput}
+          />
+          <StandardInput
+            inputName="item_size"
+            type="text"
+            inputLabel="상품 사이즈"
+            placeholder="상품 사이즈"
+            onInputChange={handleChangeInput}
+          />
+          <StandardInput
+            inputName="item_link"
+            type="url"
+            inputLabel="상품 링크"
+            placeholder="상품 링크"
+            onInputChange={handleChangeInput}
+          />
+          <AddressInput
+            addressInputName="address"
+            detailAddressInputName="detail_address"
+            onAddressChange={handleChangeInput}
+          />
+        </form>
 
-      <Button
-        type="submit"
-        buttonContent="파티 참여하기"
-        isActive={isActive}
-        onClick={handleClickCreatePartyBtn}
-      />
-    </section>
+        <Button
+          type="submit"
+          buttonContent="파티 참여하기"
+          isActive={isActive}
+          onClick={handleClickCreatePartyBtn}
+        />
+      </section>
+    </>
   );
 };
 
