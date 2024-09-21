@@ -25,7 +25,7 @@ const PartyInfoList = ({
         {current_members} / {customs_limit}
       </PartyInfo>
       <PartyInfo title="관세 한도 달성률">{dutiesLimit}%</PartyInfo>
-      <PartyInfo title="무게 한도">{String(weight)}kg</PartyInfo>
+      <PartyInfo title="무게 한도(인당)">{String(weight)}g</PartyInfo>
     </ul>
   );
 };

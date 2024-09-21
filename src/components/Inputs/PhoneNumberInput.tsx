@@ -1,6 +1,7 @@
 // zustand import
 import React, { useState, useId } from 'react';
 import { validatePhoneNumber } from '@/utils/validate';
+import checkDuplicate from '@/utils/checkDuplicate';
 
 interface PropTypes {
   inputName: string;
@@ -17,16 +18,24 @@ const PhoneNumberInput = ({
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
+  const [isDuplicate, setIsDuplicate] = useState(true);
   const inputId = useId();
 
   const inputStyle = (isValid: boolean) =>
-    `text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue' : 'outline-errored'}`;
+    `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 ${(isValid && isDuplicate) || !isEnteredVal ? 'outline-mainblue' : 'outline-errored border-errored'}`;
 
-  const validateMessage = '휴대폰 번호를 올바르게 입력해 주세요.';
+  const validationMessage = () => {
+    if (!isEnteredVal) return '';
+    if (!isValid) return '010은 고정, 이하 8자리 숫자로 입력해주세요.';
+    if (!isDuplicate) return '중복된 번호입니다.';
+  };
 
-  const validateInputVal = (val: string) => {
-    setIsValid(validatePhoneNumber(val));
-    onValidChange(validatePhoneNumber(val));
+  const validateInputVal = async (val: string) => {
+    const isValidInput = validatePhoneNumber(val);
+    const isDuplicate = await checkDuplicate('phone_number', val);
+    setIsValid(isValidInput);
+    setIsDuplicate(isDuplicate);
+    onValidChange(isValidInput && isDuplicate);
   };
 
   const checkInputFilled = (val: string) => {
@@ -51,11 +60,14 @@ const PhoneNumberInput = ({
     <div
       role="group"
       aria-label="휴대폰 번호 입력 필드"
-      className="flex flex-col gap-y-1"
+      className="relative flex flex-col gap-y-1"
     >
       <label className="text-button" htmlFor={inputId}>
         휴대폰 번호
       </label>
+      <p className="absolute right-0 top-1 text-sub-2 text-mainblue">
+        010은 고정, 이하 8자리 숫자
+      </p>
       <input
         id={inputId}
         type="tel"
@@ -68,9 +80,9 @@ const PhoneNumberInput = ({
         onChange={handleChangeInput}
       />
 
-      {isEnteredVal && !isValid && (
-        <p role="alert" className={`text-xs font-normal text-errored`}>
-          {validateMessage}
+      {isEnteredVal && (
+        <p role="alert" className="text-xs font-normal text-errored">
+          {validationMessage()}
         </p>
       )}
     </div>

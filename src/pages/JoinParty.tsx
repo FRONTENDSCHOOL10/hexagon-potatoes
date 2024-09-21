@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import imageCompression from 'browser-image-compression';
@@ -11,7 +11,30 @@ import AddressInput from '@/components/Inputs/AddressInput';
 import AddImage from '@/components/AddImage/AddImage';
 import { categories } from '@/components/Dropdown/DropdownList';
 
-const itemData = {
+interface ItemData {
+  item_category: string;
+  item_name: string;
+  item_price: string;
+  item_weight: string;
+  item_size: string;
+  item_link: string;
+  item_photo: ImageFile[];
+  address: string;
+  detail_address: string;
+}
+
+interface ImageFile {
+  url: string;
+  id: string;
+  file: File;
+}
+
+interface AuthUserData {
+  id: string;
+  token: string;
+}
+
+const itemData: ItemData = {
   item_category: '',
   item_name: '',
   item_price: '',
@@ -23,49 +46,54 @@ const itemData = {
   detail_address: '',
 };
 
-// 로그인된 사용자 아이디 가져오기
-
 const JoinPartyPage = () => {
-  const [data, setData] = useState(itemData);
+  const [data, setData] = useState<ItemData>(itemData);
   const [isActive, setIsActive] = useState(false);
+  const [authUserData, setAuthUserData] = useState<AuthUserData>({
+    id: '',
+    token: '',
+  });
+
   const uuid = uuidv4();
   const navigate = useNavigate();
+  const { partyId } = useLocation().state as { partyId: string };
 
-  const {} = useFetch(
-    'https://hexagon-potatoes.pockethost.io/api/collections/party_member/records'
+  useEffect(() => {
+    const id = localStorage.getItem('authId');
+    const token = localStorage.getItem('authToken');
+    if (id && token) {
+      setAuthUserData({ id, token });
+    }
+  }, []);
+
+  const { data: loginUserData } = useFetch(
+    authUserData.id
+      ? `${import.meta.env.VITE_PB_URL}api/collections/users/records/${authUserData.id}`
+      : ''
   );
 
-  const getAuthData = async () => {
-    try {
-      const res = await localStorage.getItem('authToken');
-      await localStorage.getItem('authId');
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+  const { data: partyData } = useFetch(
+    authUserData.id
+      ? `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`
+      : ''
+  );
+
+  const handleRemoveImg = (id: string) => {
+    const updatedData = data.item_photo.filter((photo) => photo.id !== id);
+    setData((prevData) => ({ ...prevData, item_photo: updatedData }));
+    checkInputFilled({ ...data, item_photo: updatedData });
   };
 
-  const handleRemoveImg = (id: number) => {
-    const updatedData = data.item_photo.filter((data) => data.id !== id);
-    const updatedFormData = {
-      ...data,
-      ['item_photo']: updatedData,
-    };
-    setData(updatedFormData);
-    checkInputFilled(updatedFormData);
-  };
-
-  const checkInputFilled = (data: typeof data) => {
-    // 모든 인풋이 채워져 있는지 확인
-    const isFilled = Object.values(data).every((d) => {
-      if (Array.isArray(d)) return d.length !== 0;
-      return d !== undefined && d !== null && d !== '';
+  const checkInputFilled = (updatedData: ItemData) => {
+    const isFilled = Object.entries(updatedData).every(([key, value]) => {
+      if (Array.isArray(value)) return value.length !== 0;
+      if (key === 'detail_address') return true;
+      return value !== undefined && value !== '';
     });
     setIsActive(isFilled);
   };
 
   const handleChangeInput = (inputName: string) => (value: string | number) => {
-    // 데이터 받아와서 업데이트
     const updatedData = { ...data, [inputName]: value };
     setData(updatedData);
     checkInputFilled(updatedData);
@@ -73,35 +101,35 @@ const JoinPartyPage = () => {
 
   const handleImgInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
-
     if (fileList) {
-      const updatedPhotos = [...(data.item_photo || [])];
-      const newPhotos = Array.from(fileList).map((file) => {
-        const objectURL = URL.createObjectURL(file);
-        return { url: objectURL, id: uuid, file: file };
-      });
-      setData({ ...data, ['item_photo']: updatedPhotos.concat(newPhotos) });
+      const newPhotos = Array.from(fileList).map((file) => ({
+        url: URL.createObjectURL(file),
+        id: uuid,
+        file,
+      }));
+      setData((prevData) => ({
+        ...prevData,
+        item_photo: [...prevData.item_photo, ...newPhotos],
+      }));
     }
   };
 
-  const compressImg = async (imageFile: Blob) => {
+  const compressImg = async (imageFile: File) => {
     const options = {
       maxSizeMB: 1,
       maxWidthOrHeight: 1920,
       useWebWorker: true,
     };
-
     try {
       const compressedFile = await imageCompression(imageFile, options);
       return compressedFile;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const createFormData = async () => {
     const formData = new FormData();
-
     formData.append('item_category', data.item_category);
     formData.append('item_name', data.item_name);
     formData.append('item_price', data.item_price);
@@ -112,39 +140,58 @@ const JoinPartyPage = () => {
     formData.append('detail_address', data.detail_address);
 
     const compressedImages = await Promise.all(
-      data.item_photo.map(async (photo: any) => {
+      data.item_photo.map(async (photo) => {
         const compressedFile = await compressImg(photo.file);
         return compressedFile;
       })
     );
 
     compressedImages.forEach((file) => {
-      formData.append('item_photo', file);
+      if (file) formData.append('item_photo', file);
     });
 
     return formData;
   };
 
   const fetchData = async () => {
-    const formData = await createFormData();
-    await axios
-      .post(
-        'https://hexagon-potatoes.pockethost.io/api/collections/party_member/records',
+    try {
+      const formData = await createFormData();
+      const { address, detail_address } = data;
+
+      await axios.patch(
+        `${import.meta.env.VITE_PB_URL}api/collections/users/records/${authUserData.id}`,
+        {
+          address,
+          detail_address,
+          participate_party: [
+            ...(loginUserData?.participating_party || []),
+            partyId,
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authUserData.token}`,
+          },
+        }
+      );
+
+      const member = await axios.post(
+        `${import.meta.env.VITE_PB_URL}api/collections/party_member/records`,
         formData
-      )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      );
+
+      await axios.patch(
+        `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`,
+        { member_ids: [...(partyData?.member_ids || []), member.data.id] }
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleClickCreatePartyBtn = () => {
-    fetchData();
-    getAuthData();
-
-    // navigate('/home/party/${party_id}');
+  const handleClickCreatePartyBtn = async () => {
+    await fetchData();
+    navigate(`/home/party/${partyId}`);
   };
 
   return (
@@ -198,7 +245,6 @@ const JoinPartyPage = () => {
           placeholder="상품 링크"
           onInputChange={handleChangeInput}
         />
-        {/* <AddressInput inputName="address" onInputChange={handleChangeInput} /> */}
         <AddressInput
           addressInputName="address"
           detailAddressInputName="detail_address"
@@ -208,8 +254,8 @@ const JoinPartyPage = () => {
 
       <Button
         type="submit"
-        buttonContent="파티 생성하기"
-        // isActive={isActive}
+        buttonContent="파티 참여하기"
+        isActive={isActive}
         onClick={handleClickCreatePartyBtn}
       />
     </section>

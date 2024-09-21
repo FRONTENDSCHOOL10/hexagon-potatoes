@@ -5,7 +5,7 @@ import pb from '@/utils/pocketbase';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 import PostingCard from '@/components/PostingCard/PostingCard';
 
-const basePostingUrl = `${pb.baseUrl}/api/collections/posting/records`;
+const basePostingUrl = `${pb.baseUrl}api/collections/posting/records`;
 
 // 랜덤 포스팅 선택 및 렌더링
 const PostingRandom = () => {
@@ -15,14 +15,10 @@ const PostingRandom = () => {
   useEffect(() => {
     if (status === 'success' && data?.items.length > 0) {
       // 랜덤 포스팅 선택
-      const postings = data.items;
+      const postings = data?.items;
       const randomIndex = Math.floor(Math.random() * postings.length);
       const selectedPosting = postings[randomIndex];
 
-      const postingImg =
-        selectedPosting.photo.length !== 0
-          ? getPbImagesURL(0, selectedPosting)
-          : '';
       const profileImg = getPbImageURL(
         pb.baseUrl,
         selectedPosting.expand.author_id,
@@ -33,8 +29,9 @@ const PostingRandom = () => {
         user: selectedPosting.expand.author_id.nickname,
         content: selectedPosting.content,
         label: selectedPosting.tag,
-        postingImg: postingImg,
+        postingImg: selectedPosting.photo,
         profileImg: profileImg,
+        data: selectedPosting,
       });
     }
   }, [status, data]);
@@ -62,6 +59,7 @@ const PostingRandom = () => {
       postingImg={randomPosting.postingImg}
       profileImg={randomPosting.profileImg}
       label={randomPosting.label}
+      data={randomPosting.data}
     />
   );
 };

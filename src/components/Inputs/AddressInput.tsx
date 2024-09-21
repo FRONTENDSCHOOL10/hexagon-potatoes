@@ -1,8 +1,8 @@
 interface PropTypes {
   addressInputName: string;
   detailAddressInputName: string;
-  defaultAddressVal: string;
-  defaultDetailAddressVal: string;
+  detailAddressValue?: string;
+  addressValue?: string;
   onAddressChange: (name: string) => (val: string | number) => void;
 }
 
@@ -51,24 +51,20 @@ export { Postcode };
 const AddressInput = ({
   addressInputName,
   detailAddressInputName,
-  defaultAddressVal,
-  defaultDetailAddressVal,
+  addressValue,
+  detailAddressValue,
   onAddressChange,
 }: PropTypes) => {
-  const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [addressInputVal, setAddressInputVal] = useState('');
-  const [detailAddressInputVal, setDetailAddressInputVal] = useState('');
+  const [addressInputVal, setAddressInputVal] = useState(addressValue || '');
+  const [detailAddressInputVal, setDetailAddressInputVal] = useState(
+    detailAddressValue || ''
+  );
 
   const addressInputId = useId();
   const detailAddressInputId = useId();
 
-  const inputStyle =
-    'text-sub-2 relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-mainblue';
-
-  const checkInputFilled = (val: string) => {
-    val.trim() !== '' ? setIsEnteredVal(true) : setIsEnteredVal(false);
-  };
+  const inputStyle = `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border border-gray-200 outline-1 active:outline-mainblue outline-mainblue  `;
 
   const handleTogglePostPopup = () => {
     setIsOpen((prev) => !prev);
@@ -78,8 +74,6 @@ const AddressInput = ({
     const inputVal = e.target.value;
     // console.log(inputVal);
     setAddressInputVal(inputVal);
-    checkInputFilled(inputVal);
-    onAddressChange(addressInputName)(inputVal);
   };
 
   const handleDetailAddressChange = (
@@ -88,7 +82,6 @@ const AddressInput = ({
     const inputVal = e.target.value;
     console.log(inputVal);
     setDetailAddressInputVal(inputVal);
-    checkInputFilled(inputVal);
     onAddressChange(detailAddressInputName)(inputVal);
   };
 
@@ -114,11 +107,12 @@ const AddressInput = ({
         placeholder="주소를 입력해 주세요."
         name={addressInputName}
         className={inputStyle}
-        // onChange={handleAddressChange}
+        onChange={handleAddressChange}
         onClick={handleTogglePostPopup}
         required
         readOnly
       />
+
       <label className="mt-2 text-button" htmlFor={detailAddressInputId}>
         상세 주소(선택)
       </label>

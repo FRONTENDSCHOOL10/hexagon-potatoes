@@ -50,6 +50,7 @@ const MagazineList = () => {
         {magazineData.map((item: any) => (
           <SwiperSlide key={item.id} aria-label={`Slide ${item.id}`}>
             <Magazine
+              id={item.id}
               label={item.label}
               title={item.title}
               content={item.content}

@@ -9,50 +9,32 @@ import PostingCard from '@/components/PostingCard/PostingCard';
 import Standard from '@/components/Lists/Standard';
 import Shipstate from '@/components/shipstate/Shipstate';
 
-// 파티 데이터 받기
-// 파티 리더 데이터 받기
-// 파티원 데이터 받아서 구매한 물품 렌더링하기
-// 현재 유저 데이터 받아오기
-const userId = {
-  participating_party: [4785698425, 4785698545],
-};
-
-const partyInfo = {
-  _id: 4785698425,
-  party_status: 'completed',
-};
-
-// const partyData = {
-//   country: '일본',
-//   customs_limit: '10',
-//   current_members: ['주비', '재명', '소현', '진'],
-//   // 관세 한도 달성률
-//   dutiesLimit: '80',
-//   // 무게 한도
-//   weight: '5',
-// };
+interface UserData {
+  id: string;
+  [key: string]: any; // To account for additional user data fields
+}
 
 const PartyDetail = () => {
-  const [partyLeaderData, setPartyLeaderData] = useState<AxiosResponse | null>(
-    null
-  );
+  const [partyLeaderData, setPartyLeaderData] = useState<UserData | null>(null);
+  const [loginUserId, setLoginUserId] = useState<string>('');
   const navigate = useNavigate();
-  const { partyId } = useParams();
+  const { partyId } = useParams<{ partyId: string }>();
 
   const {
     status: partyStatus,
     data: partyData,
     error: partyErr,
   } = useFetch(
-    `https://hexagon-potatoes.pockethost.io/api/collections/party/records/${partyId}`
+    `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`
   );
 
+  // Fetch party leader data
   useEffect(() => {
     const fetchPartyLeader = async (): Promise<void> => {
-      if (partyStatus === 'success') {
+      if (partyStatus === 'success' && partyData) {
         try {
-          const response = await axios.get(
-            `https://hexagon-potatoes.pockethost.io/api/collections/users/records/${partyData.party_leader}`
+          const response = await axios.get<AxiosResponse>(
+            `${import.meta.env.VITE_PB_URL}api/collections/users/records/${partyData.party_leader}`
           );
           setPartyLeaderData(response.data);
         } catch (err) {
@@ -61,30 +43,24 @@ const PartyDetail = () => {
       }
     };
     fetchPartyLeader();
-  }, [partyData]);
-
-  console.log(partyLeaderData);
+  }, [partyData, partyStatus]);
 
   useEffect(() => {
-    const getAuthData = async () => {
-      try {
-        console.log(localStorage.getItem('authToken'));
-        console.log(localStorage.getItem('authId'));
-      } catch (error) {
-        console.log(error);
-      }
+    const getAuthData = () => {
+      const id = localStorage.getItem('authId');
+      setLoginUserId(id);
     };
     getAuthData();
-  }, [partyData]);
+  }, []);
 
   const handleClickJoinPartyBtn = () => {
-    // 파티 참여 확인 팝업 뜨기
+    navigate('/home/JoinParty', { state: { partyId } });
   };
 
   return (
-    // 전체 flex 후 gap-y-3.5 주는게 좋을 거 같음
     <section>
       <h1 className="sr-only">파티 상세 페이지</h1>
+
       {partyStatus === 'success' && partyLeaderData && (
         <>
           <article className="flex flex-col gap-y-3.5">
@@ -92,36 +68,38 @@ const PartyDetail = () => {
             <PartyLeader item={partyLeaderData} />
           </article>
 
+          {/* Party Information Section */}
           <article className="flex flex-col gap-y-3.5">
             <h2 className="mt-4 text-heading-1">공구 정보</h2>
             <PartyInfoList
               country={partyData.country}
-              customs_limit={partyData.customs_limit}
-              dutiesLimit={partyData.dutiesLimit}
+              customs_limit={partyData.target_members}
+              dutiesLimit={partyData.dutiesLimit || '0'}
               weight={partyData.weight}
-              current_members={String(partyData.member_id ?? length) || '0'}
+              current_members={String(partyData.member_ids.length) || '0'}
             />
           </article>
 
-          {partyInfo.party_status === 'completed' && (
+          {partyData.party_status === 'completed' && (
             <article>
               <h2 className="mt-4 text-heading-1">배송 진행 상황</h2>
               <Shipstate step={1} />
             </article>
           )}
+
           <div
             aria-label="버튼 영역"
             role="group"
             className="my-4 flex flex-row gap-x-3.5"
           >
-            {/* {partyLeaderData.id ===  && (
+            {partyLeaderData.id === loginUserId && (
               <Button
                 type="button"
                 isActive
                 onClick={() => navigate('/home/chatHome')}
                 buttonContent="파티 리더와 채팅"
               />
-            )} */}
+            )}
             <Button
               type="button"
               isActive
@@ -134,7 +112,14 @@ const PartyDetail = () => {
             <h2 className="mt-4 text-heading-1">
               파티원들은 이런 물품을 구매했어요
             </h2>
-            <PostingCard />
+            <PostingCard
+              profileImg={}
+              user={}
+              postingImg={}
+              content={}
+              label={}
+              data={}
+            />
           </article>
 
           <article className="flex flex-col gap-y-3.5">

@@ -4,7 +4,7 @@ import pb from '@/utils/pocketbase';
 import getUserById from './getUserById';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
-const baseTipUrl = `${pb.baseUrl}/api/collections/tip/records`;
+const baseTipUrl = `${pb.baseUrl}api/collections/tip/records`;
 
 // getUserById로 팁 레코드에 있는 userid를 가지고 유저 컬렉션에 가서 닉네임 가져와서 넣어줌
 // getPbImageURL 써서 이미지 링크 전달 + 팁에 이미지 없으면 기본 이미지 반영하도록 해둠

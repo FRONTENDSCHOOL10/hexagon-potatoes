@@ -1,14 +1,30 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useFetch from '@/hooks/useFetch';
 import axios from 'axios';
+import pb from '@/utils/pocketbase';
+import useFetch from '@/hooks/useFetch';
 import StandardInput from '@/components/Inputs/StandardInput';
 import Button from '@/components/Buttons/Button';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import { countries } from '@/components/Dropdown/DropdownList';
 
-const partyData = {
+interface PartyData {
+  party_name: string;
+  party_about: string;
+  party_notice: string;
+  personal_code: string;
+  target_members: string;
+  weight: string;
+  country: string;
+  participation_deadline: string;
+}
+
+interface AuthUserData {
+  id: string | null;
+  token: string | null;
+}
+
+const initialPartyData: PartyData = {
   party_name: '',
   party_about: '',
   party_notice: '',
@@ -20,29 +36,41 @@ const partyData = {
 };
 
 const PartyCollect = () => {
-  const [data, setData] = useState(partyData);
+  const [data, setData] = useState<PartyData>(initialPartyData);
+  const [authUserData, setAuthUserData] = useState<AuthUserData>({
+    id: null,
+    token: null,
+  });
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
 
-  const checkInputFilled = (data: typeof data) => {
-    // 모든 인풋이 채워져 있는지 확인
-    const isFilled = Object.values(data).every(
-      (d) => d !== undefined && d !== null && d !== ''
+  useEffect(() => {
+    try {
+      const id = localStorage.getItem('authId');
+      const token = localStorage.getItem('authToken');
+      setAuthUserData({ id, token });
+    } catch (error) {
+      console.error('Error fetching auth data from localStorage:', error);
+    }
+  }, []);
+
+  const checkInputFilled = (updatedData: PartyData) => {
+    const isFilled = Object.values(updatedData).every(
+      (value) => value !== undefined && value !== null && value !== ''
     );
     setIsActive(isFilled);
   };
 
   const handleChangeInput = (inputName: string) => (value: string | number) => {
-    // 데이터 받아와서 업데이트
     const updatedData = { ...data, [inputName]: value };
     setData(updatedData);
     checkInputFilled(updatedData);
   };
 
-  // 보낼 데이터 만들기
   const createFormData = () => {
     const formData = new FormData();
     formData.append('party_name', data.party_name);
+    formData.append('party_leader', authUserData.id || '');
     formData.append('country', data.country);
     formData.append('participation_deadline', data.participation_deadline);
     formData.append('party_about', data.party_about);
@@ -55,26 +83,28 @@ const PartyCollect = () => {
   };
 
   const fetchData = async () => {
-    const formData = await createFormData();
+    const formData = createFormData();
     try {
-      await axios.post(
-        'https://hexagon-potatoes.pockethost.io/api/collections/party/records',
+      const response = await axios.post(
+        `${import.meta.env.VITE_PB_URL}api/collections/party/records`,
         formData
       );
+      const partyId = response.data.id;
+      navigate(`/home/JoinParty`, { state: { partyId } });
     } catch (error) {
-      console.log(error);
+      console.error('Error creating party:', error);
     }
   };
 
+  // Handle next button click
   const handleClickNextBtn = async () => {
-    // 모든 인풋이 채워졌는지 확인
-    fetchData();
-    navigate('/home/JoinParty');
+    await fetchData();
   };
 
   return (
     <section className="flex flex-col gap-y-3">
       <h1>파티 모집 페이지</h1>
+
       <StandardInput
         type="text"
         inputLabel="파티 이름"
@@ -82,27 +112,31 @@ const PartyCollect = () => {
         inputName="party_name"
         onInputChange={handleChangeInput}
       />
+
       <StandardInput
         type="text"
         inputLabel="파티 소개"
-        inputName="party_about"
         placeholder="파티 소개"
+        inputName="party_about"
         onInputChange={handleChangeInput}
       />
+
       <StandardInput
         type="text"
         inputLabel="공지사항"
+        placeholder="공지 사항을 입력해 주세요"
         inputName="party_notice"
         onInputChange={handleChangeInput}
-        placeholder="공지 사항을 입력해 주세요"
       />
+
       <StandardInput
         type="number"
         inputLabel="개인통관고유부호"
+        placeholder="개인통관고유부호"
         inputName="personal_code"
         onInputChange={handleChangeInput}
-        placeholder="개인통관고유부호"
       />
+
       <Dropdown
         list={countries}
         label="직구할 국가"
@@ -114,24 +148,27 @@ const PartyCollect = () => {
       <StandardInput
         type="number"
         inputLabel="모집 인원"
+        placeholder="모집 인원"
         inputName="target_members"
         onInputChange={handleChangeInput}
-        placeholder="모집 인원"
       />
+
       <StandardInput
         type="number"
         inputLabel="무게 입력"
+        placeholder="물건 당 최대 무게 (kg)"
         inputName="weight"
         onInputChange={handleChangeInput}
-        placeholder="물건 당 최대 무게 (kg)"
       />
+
       <StandardInput
         type="date"
         inputLabel="참여 마감일"
+        placeholder="참여 마감일"
         inputName="participation_deadline"
         onInputChange={handleChangeInput}
-        placeholder="참여 마감일"
       />
+
       <Button
         type="button"
         buttonContent="다음으로"

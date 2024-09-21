@@ -14,6 +14,7 @@ import UserTip from '@/pages/Community/UserTip';
 import PartyListPage from '@/pages/PartyList';
 import JoinPartyPage from '@/pages/JoinParty';
 import OrderDetailPage from '@/pages/OrderDetail';
+import MagazineDetail from './pages/MagazineDetail';
 
 // 동적 로딩할 컴포넌트 설정
 const PartyCollect = lazy(() => import('@/pages/PartyCollect'));
@@ -30,11 +31,22 @@ const Setting = lazy(() => import('@/pages/Setting'));
 const Notifications = lazy(() => import('@/pages/Notifications'));
 const WritePost = lazy(() => import('@/pages/WritePost'));
 const EmptyPage = lazy(() => import('@/pages/EmptyPage'));
+const NotificationSettings = lazy(() => import('@/pages/NotificationSettings'));
+const DoNotDisturbSettings = lazy(() => import('@/pages/DoNotDisturbSettings'));
+const AccountSettings = lazy(() => import('@/pages/AccountSettings'));
+const BlockedUsers = lazy(() => import('@/pages/BlockedUsers'));
+const OtherSettings = lazy(() => import('@/pages/OtherSettings'));
+const Announcements = lazy(() => import('@/pages/Announcements'));
+const ChangeCountry = lazy(() => import('@/pages/ChangeCountry'));
+const ClearCache = lazy(() => import('@/pages/ClearCache'));
+const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
 
 // 튜토리얼 완료 상태 확인
 const isTutorialCompleted = () => {
   const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
-  return tutorialCompleted ? JSON.parse(tutorialCompleted) : false;
+  const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
+  const isPass = tutorialCompleted || isAlreadyLogin;
+  return isPass ? true : false;
 };
 
 // 로딩 중 표시할 컴포넌트
@@ -178,6 +190,14 @@ const routes = [
         ),
       },
       {
+        path: 'community/magazine/:magazineId',
+        element: (
+          <SuspenseWrapper>
+            <MagazineDetail />
+          </SuspenseWrapper>
+        ),
+      },
+      {
         path: 'community/boast/:boastId',
         element: (
           <SuspenseWrapper>
@@ -200,6 +220,78 @@ const routes = [
             <Setting />
           </SuspenseWrapper>
         ),
+        children: [
+          {
+            path: 'notification',
+            element: (
+                <NotificationSettings />
+            ),
+          },
+          {
+            path: 'account',
+            element: (
+
+                <AccountSettings />
+
+            ),
+          },
+          {
+            path: 'do-not-disturb',
+            element: (
+
+                <DoNotDisturbSettings />
+
+            ),
+          },
+          {
+            path: 'blocked-users',
+            element: (
+
+                <BlockedUsers />
+
+            ),
+          },
+          {
+            path: 'other-settings',
+            element: (
+
+                <OtherSettings />
+
+            ),
+          },
+          {
+            path: 'announcements',
+            element: (
+    
+                <Announcements />
+             
+            ),
+          },
+          {
+            path: 'change-country',
+            element: (
+              
+                <ChangeCountry />
+           
+            ),
+          },
+          {
+            path: 'clear-cache',
+            element: (
+          
+                <ClearCache />
+    
+            ),
+          },
+          {
+            path: 'update-version',
+            element: (
+           
+                <UpdateVersion />
+        
+            ),
+          },
+        ],
       },
       {
         path: 'partyCollect',

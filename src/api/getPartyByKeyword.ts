@@ -5,9 +5,20 @@ import getUserById from '@/api/getUserById';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 import getUserIdByNickName from './getUserIdByNickName';
 
-const baseUrl = `${pb.baseUrl}/api/collections/party/records`;
-const usersBaseUrl = `${pb.baseUrl}/api/collections/users/records`;
-
+const baseUrl = `${pb.baseUrl}api/collections/party/records`;
+const usersBaseUrl = `${pb.baseUrl}api/collections/users/records`;
+const countryImg = (country: string) => {
+  switch (country) {
+    case '미국':
+      return '/assets/country/american-flag.webp';
+    case '중국':
+      return '/assets/country/china-flag.webp';
+    case '일본':
+      return '/assets/country/japan-flag.webp';
+    default:
+      return '/assets/shipmatelogo.png';
+  }
+};
 // 파티 이름, 파티 소개, 파티장의 닉네임, 국가 중 하나라도 키워드가 포함된 파티 반환
 async function getPartyByKeyword(keyword: string) {
   try {
@@ -43,9 +54,11 @@ async function getPartyByKeyword(keyword: string) {
     if (parties.length > 0) {
       const partyWithLeaders = await Promise.all(
         parties.map(async (party: any) => {
-          const partyImg = party.party_img
-            ? getPbImageURL(pb.baseUrl, party, 'party_img')
-            : '';
+          // const partyImg = party.party_img
+          //   ? getPbImageURL(pb.baseUrl, party, 'party_img')
+          //   : '';
+
+          const partyImg = countryImg(party.country);
 
           const leader = party.party_leader
             ? await getUserById(party.party_leader)

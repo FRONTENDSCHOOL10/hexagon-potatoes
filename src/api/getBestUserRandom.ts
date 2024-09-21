@@ -4,8 +4,7 @@ import pb from '@/utils/pocketbase';
 import getUserById from '@/api/getUserById'; // 실제 경로로 수정하세요
 import getPartyByUserId from './getPartyByUserId';
 
-const baseUserUrl = `${pb.baseUrl}/api/collections/_pb_users_auth_/records`;
-const basePartyUrl = `${pb.baseUrl}/api/collections/parties/records`;
+const baseUrl = `${pb.baseUrl}api/collections/users/records`;
 
 // 유저가 리더인 파티 개수 가져오기
 const fetchPartyCount = async (userId: string): Promise<number> => {
@@ -21,7 +20,7 @@ const fetchPartyCount = async (userId: string): Promise<number> => {
 // 평점이 5인 유저 목록 가져오기
 const fetchTopRatedUsers = async () => {
   try {
-    const response = await axios.get(baseUserUrl, {
+    const response = await axios.get(baseUrl, {
       params: {
         filter: 'rating=4' || 'rating = 5',
       },

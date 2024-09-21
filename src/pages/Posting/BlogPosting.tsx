@@ -2,7 +2,9 @@ import LabelList from '@/components/Label/LabelList';
 import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import { formatDateLong, formatDateString } from '@/utils/dateFormatter';
-import getPbImageURL from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import interleaveContent from '@/utils/seperateTextAndImages';
+import React from 'react';
 
 interface PocketBaseRecord {
   id: string;
@@ -17,7 +19,7 @@ interface PocketBaseRecord {
 interface InstaPostingItem extends PocketBaseRecord {
   photo: string;
   content: string;
-  expand?: {
+  expand: {
     author_id: {
       id: string;
       profile_photo: string;
@@ -31,13 +33,13 @@ interface InstaPostingItem extends PocketBaseRecord {
 // 컴포넌트 props 타입 정의
 interface PropTypes {
   item: InstaPostingItem;
+  type?: 'magazine' | 'tip';
 }
 
-const BlogPosting = ({ item }: PropTypes) => {
+const BlogPosting = ({ item, type }: PropTypes) => {
   const ENDPOINT = 'https://hexagon-potatoes.pockethost.io/';
   if (!item) return null;
   const authorId = item.expand?.author_id;
-  const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
 
   const handleLike = () => {
     // 좋아요 처리 로직
@@ -53,47 +55,67 @@ const BlogPosting = ({ item }: PropTypes) => {
     // 공유 처리 로직
     console.log('공유 클릭');
   };
+
+  const interleavedContent = interleaveContent(item.content, item.photo);
+
   return (
-    <article className="mb-[2.56rem] flex flex-col pb-[0.75rem]">
+    <article className="pretendard mb-[2.56rem] flex flex-col pb-[0.75rem]">
       <header className="flex min-h-[11.38rem] flex-col bg-[#D9D9D9] px-[0.75rem] pb-[0.62rem] pt-[2.81rem] [box-shadow:0px_0px_6px_0px_rgba(0,_0,_0,_0.12)]">
         <h2 className="mb-[0.38rem] text-h1 text-black">{item.title}</h2>
-        {/* 아래 날짜 들어와야됌 */}
         <time
           aria-label="작성날짜"
-          className="mb-[1.31rem] h-[1.0625rem] text-sub-2 font-light leading-[1.0625rem] text-gray-300"
+          className="mb-[1.31rem] h-[1.0625rem] text-sub-2 leading-[1.0625rem] text-gray-300"
           dateTime={formatDateString(item.created)}
         >
           {formatDateLong(item.created)}
         </time>
-        {/* 관리자 프로필 넣고 싶으면 수정 */}
-        {authorId ? (
-          <NameCard
-            name={authorId.nickname}
-            subtext={authorId.user_email}
-            profileImg={
-              authorId.profile_photo
-                ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
-                : null
-            }
-            type={'followingText'}
-            id={''}
-          />
-        ) : (
-          ''
-        )}
+        <NameCard
+          name={authorId.nickname}
+          subtext={authorId.user_email}
+          profileImg={
+            authorId.profile_photo
+              ? getPbImageURL(ENDPOINT, authorId, 'profile_photo')
+              : null
+          }
+          type={'followingText'}
+          id={''}
+        />
       </header>
 
       <div className="flex flex-col gap-3 px-[0.75rem]">
         <LabelList data={item.tag} />
-        {item.photo && (
-          <img
-            className="w-[21rem] object-cover object-center"
-            // 이미지 높이값 따로 안정함
-            src={getPbImageURL(ENDPOINT, item)}
-            alt="게시물" //적절한 alt 속성값을 찾지 못함
-          />
+        {/* 매거진에 들어가는 블로그 포스팅일때는 이미지가 한장이라서 일반적인 이미지 - 텍스트 형식으로 렌더링 */}
+        {type === 'magazine' ? (
+          <>
+            {item.photo && (
+              <img
+                className="w-[21rem] object-cover object-center"
+                src={getPbImageURL(ENDPOINT, item)}
+                alt="게시물"
+              />
+            )}
+            <p className="text-body-2">{item.content}</p>
+          </>
+        ) : (
+          // 유저팁에 들어가는 블로그 포스팅은 이미지 - 텍스트 적절히 교차 배열되서 랜더링됌
+          interleavedContent.map((contentItem, index) => (
+            <React.Fragment key={index}>
+              {contentItem.type === 'text' ? (
+                <p className="text-body-2">{contentItem.content}</p>
+              ) : (
+                <img
+                  className="w-[21rem] object-cover object-center"
+                  src={getPbImagesURL(
+                    index === 1 ? index - 1 : index - 2,
+                    item
+                  )}
+                  alt={`게시물 이미지 ${index - 1}`}
+                />
+              )}
+            </React.Fragment>
+          ))
         )}
-        <p className="text-body-2">{item.content}</p>
+
         <PostActionBar
           postId={item.id}
           onLike={handleLike}

@@ -2,7 +2,7 @@ import axios from 'axios';
 import pb from '@/utils/pocketbase';
 import getPbImageURL from '@/utils/getPbImageURL'; // getPbImageURL의 경로는 실제 경로로 수정하세요
 
-const baseUrl = `${pb.baseUrl}/api/collections/_pb_users_auth_/records`;
+const baseUrl = `${pb.baseUrl}api/collections/users/records`;
 
 // 리더 정보를 가져오는 함수
 async function getUserById(userId: string) {
