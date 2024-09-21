@@ -9,6 +9,7 @@ import getUserById from '@/api/getUserById';
 import getPartyByKeyword from '@/api/getPartyByKeyword';
 import axios from 'axios';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import getAllPartyByUserId from '@/api/getAllPartyByUserId';
 
 interface PocketBaseRecord {
   id: string;
@@ -85,7 +86,7 @@ const MyProfile = () => {
     // 파티 데이터 가져오기
     const fetchPartyData = async (nickname: string) => {
       try {
-        const partyData = await getPartyByKeyword(nickname);
+        const partyData = await getAllPartyByUserId(nickname);
         if (partyData) {
           setParties(partyData.items);
         } else {
