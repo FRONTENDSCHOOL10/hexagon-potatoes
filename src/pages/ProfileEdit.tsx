@@ -3,6 +3,23 @@ import NicknameInput from '@/components/Inputs/NickNameInput';
 import EmailInput from '@/components/Inputs/EmailInput';
 import Button from '@/components/Buttons/Button';
 import NameCard from '@/components/NameCard/NameCard';
+import getPbImageURL from '@/utils/getPbImageURL';
+import pb from '@/utils/pocketbase';
+
+interface PocketBaseRecord {
+  id: string;
+  created: string;
+  updated: string;
+  collectionId: string;
+  collectionName: string;
+  [key: string]: any;
+}
+
+interface ProfileType extends PocketBaseRecord {
+  profile_photo: string;
+  nickname: string;
+  user_email: string;
+}
 
 const ProfileEdit = () => {
   const [nickname, setNickname] = useState('John Doe');

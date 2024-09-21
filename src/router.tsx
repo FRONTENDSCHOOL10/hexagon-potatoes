@@ -50,6 +50,8 @@ const PartyListPage = lazy(() => import('@/pages/PartyList'));
 const JoinPartyPage = lazy(() => import('@/pages/JoinParty'));
 const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'));
 const MagazineDetail = lazy(() => import('@/pages/MagazineDetail'));
+const ProfileEdit = lazy(() => import('@/pages/ProfileEdit'));
+const MyProfile = lazy(() => import('@/pages/MyProfile'));
 
 interface PropTypes {
   children: ReactNode;
@@ -205,6 +207,14 @@ const routes = [
       {
         path: 'mypage',
         element: <ProtectedSuspenseRoute component={MyPage} />,
+      },
+      {
+        path: 'profile-edit',
+        element:  <ProtectedSuspenseRoute component={ProfileEdit} />,
+      },
+      {
+        path: 'my-profile',
+        element:  <ProtectedSuspenseRoute component={MyProfile} />,
       },
       {
         path: 'setting',

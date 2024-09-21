@@ -38,9 +38,9 @@ const MyPage = () => {
       <div className="flex flex-col items-center">
         <div className="my-[1.5rem]">
           <NameCard
-            name="닉네임"
+            name="  "
             subtext="user@example.com"
-            type="editProfile"
+            type="viewProfile"
           />
         </div>
 
