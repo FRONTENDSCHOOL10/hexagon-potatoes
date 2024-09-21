@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Dropdown from '@/components/Dropdown/Dropdown';
-import FileInput from '@/components/FileInput';
+import FileInput from '@/components/FileInput/FileInput';
 import HashtagInput from '@/components/HashtagInput/HashtagInput';
 import { useState, FormEvent, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
