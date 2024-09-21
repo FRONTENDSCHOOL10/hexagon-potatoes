@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import getPbImageURL from '@/utils/getPbImageURL';
 
 // 데이터 가져오기
 interface PropTypes {
@@ -14,50 +15,52 @@ interface PropTypes {
   party_number: number;
 }
 
-const PartyLeader = ({
-  profile_photo,
-  nickname,
-  itemImgAlt,
-  rating,
-  member_grade,
-  member_description,
-  user_id,
-  gradeImg,
-  party_number,
-}: PropTypes) => {
+const PartyLeader = ({ item }) => {
+  const imgUrl = getPbImageURL(
+    'https://hexagon-potatoes.pockethost.io',
+    item,
+    'profile_photo'
+  );
+
   return (
     <li
       aria-labelledby=""
       className="relative list-none rounded-md p-3 shadow-shadow-blue"
     >
-      <Link to={`/${user_id}`} className="flex flex-col gap-3.5">
+      <Link to={`/${item.id}`} className="flex flex-col gap-3.5">
         <div
           aria-label="사용자 프로필"
           role="group"
-          className="grid h-16 grid-cols-[auto_auto_minmax(30px,_1fr)] border-b border-b-gray-100 pb-3.5"
+          className="grid grid-cols-[auto_auto_minmax(30px,_1fr)_auto] border-b border-b-gray-100 pb-[0.88rem]"
         >
+          <p className="mr-1.5 place-content-center text-sub-1">
+            {item.nickname}
+          </p>
           <img
-            src={profile_photo || 'assets/shipmatelogo.webp'}
-            alt={itemImgAlt}
+            // src={profile_photo || 'assets/shipmatelogo.webp'}
+            // alt={itemImgAlt}
             className="absolute right-3 size-14"
           />
           {/* 더 적절한 label을 쓰고 싶다 */}
-          <p className="mr-1.5 place-content-center text-sub-1">{nickname}</p>
+
           {/* 사용자 등급 db 필요 */}
           <span
-            className="place-content-center text-caption text-gray-200"
+            className="place-content-center pr-1 text-caption text-gray-200"
             aria-label="사용자 등급"
           >
-            {member_grade}
+            GOLD
           </span>
+          <svg className="h-4 w-4 self-center" aria-labelledby="icon-alt">
+            <title id="icon-alt">사용자 등급 아이콘</title>
+            <use href="/assets/sprite-sheet.svg#goldship"></use>
+          </svg>
           <img
-            src={gradeImg || 'assets/shipmatelogo.webp'}
+            // src={gradeImg || 'assets/shipmatelogo.webp'}
             className="w-4 self-center"
             alt="사용자 등급"
           />
-          {/* 자기 소개 db 필요 */}
-          <p className="col-span-3 text-body-2 text-gray-300">
-            {member_description}
+          <p className="col-span-3 row-span-2 mt-[0.38rem] line-clamp-2 text-ellipsis break-all text-body-2 text-gray-300">
+            {item.user_desc}
           </p>
         </div>
         <div
@@ -70,11 +73,11 @@ const PartyLeader = ({
           </svg>
 
           <span aria-label="사용자 평점" className="mr-2 text-gray-300">
-            {rating}
+            {item.rating}
           </span>
           <span aria-label="진행중인 파티" className="text-mainblue">
-            {party_number > 0
-              ? `현재 진행중인 파티 ${party_number}개`
+            {item.participating_party.length > 0
+              ? `현재 진행중인 파티 ${item.participating_party.length}개`
               : '모집중인 파티 없음'}
           </span>
         </div>

@@ -2,7 +2,7 @@ import { useState, useId } from 'react';
 
 interface PropTypes {
   inputName: string;
-  defaultValue: string;
+  value?: string;
   inputLabel: string;
   placeholder: string;
   type: 'date' | 'file' | 'number' | 'text' | 'url';
@@ -12,12 +12,12 @@ interface PropTypes {
 const StandardInput = ({
   type,
   inputName,
-  defaultValue,
+  value,
   onInputChange,
   inputLabel,
   placeholder,
 }: PropTypes) => {
-  const [inputVal, setInputVal] = useState<string | number>('');
+  const [inputVal, setInputVal] = useState<string | number>(value || '');
 
   const today = new Date();
   const todayString = today.toISOString().slice(0, 10);
@@ -28,7 +28,7 @@ const StandardInput = ({
   const inputId = useId();
 
   const inputStyle =
-    'text-sub-2 relative pl-5 pr-5 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-mainblue';
+    'text-sub-2 h-[2.8125rem] relative pl-5 pr-12 py-2 rounded-xl w-full border border-gray-200 outline-1 outline-mainblue';
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
@@ -51,7 +51,6 @@ const StandardInput = ({
             type="text"
             value={inputVal}
             placeholder={placeholder}
-            defaultValue={defaultValue}
             className={inputStyle}
             name={inputName}
             onKeyDown={handlePressEnter}
@@ -79,7 +78,6 @@ const StandardInput = ({
             type="number"
             value={inputVal}
             placeholder={placeholder}
-            defaultValue={defaultValue}
             className={inputStyle}
             name={inputName}
             onKeyDown={handlePressEnter}
@@ -94,7 +92,6 @@ const StandardInput = ({
             type="file"
             value={inputVal}
             placeholder={placeholder}
-            defaultValue={defaultValue}
             className={inputStyle}
             name={inputName}
             onKeyDown={handlePressEnter}
@@ -107,8 +104,7 @@ const StandardInput = ({
             id={inputId}
             type="url"
             value={inputVal}
-            placeholder={placeholder}
-            defaultValue={defaultValue}
+            placeholder="https://example.com"
             className={inputStyle}
             name={inputName}
             onKeyDown={handlePressEnter}

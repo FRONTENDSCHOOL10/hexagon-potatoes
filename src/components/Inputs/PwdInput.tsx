@@ -75,9 +75,9 @@ const PwdInput = ({
       <div
         role="group"
         aria-label="비밀번호 입력 필드"
-        className="relative flex flex-col gap-y-1"
+        className="relative flex-row gap-y-1"
       >
-        <label className="text-button" htmlFor={pwdInputId}>
+        <label className="block text-button" htmlFor={pwdInputId}>
           비밀번호
         </label>
         {validateOnChange && (
@@ -90,7 +90,6 @@ const PwdInput = ({
           value={inputVal}
           id={pwdInputId}
           type="password"
-          // defaultValue=""
           placeholder="비밀번호를 입력해 주세요."
           className={inputStyle(isValid)}
           name={inputName}
@@ -100,7 +99,11 @@ const PwdInput = ({
         />
 
         {isEnteredVal && (
-          <>
+          <div
+            role="group"
+            aria-label="비밀번호 옵션 버튼 영역"
+            className="absolute right-0 top-1/2 -translate-y-1/2 transform"
+          >
             <button
               type="button"
               className="absolute right-0 top-[2.7rem] mr-10 text-sub-2"
@@ -125,7 +128,7 @@ const PwdInput = ({
                 <use href="/assets/sprite-sheet.svg#x" />
               </svg>
             </button>
-          </>
+          </div>
         )}
         {!isValid && isEnteredVal && (
           <p role="alert" className="text-xs font-normal text-errored">
