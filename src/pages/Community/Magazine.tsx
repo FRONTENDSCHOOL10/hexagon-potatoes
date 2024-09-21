@@ -7,10 +7,6 @@ const ENDPOINT = `https://hexagon-potatoes.pockethost.io/api/collections/magazin
 const Magazine = () => {
   const { status, data } = useFetch(ENDPOINT, 'author_id');
 
-  if (status === 'loading') {
-    // 로딩 스피너 만들면 넣어주기
-    return <div>Loading...</div>;
-  }
   if (status !== 'success') return null;
   const tipData = data?.items;
 
