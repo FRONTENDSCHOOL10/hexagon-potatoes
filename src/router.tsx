@@ -54,6 +54,7 @@ const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'));
 const MagazineDetail = lazy(() => import('@/pages/Posting/MagazineDetail'));
 const ProfileEdit = lazy(() => import('@/pages/ProfileEdit'));
 const MyProfile = lazy(() => import('@/pages/MyProfile'));
+const Withdraw = lazy(() => import('@/pages/Withdraw'));
 
 interface PropTypes {
   children: ReactNode;
@@ -265,6 +266,10 @@ const routes = [
           {
             path: 'update-version',
             element: <ProtectedSuspenseRoute component={UpdateVersion} />,
+          },
+          {
+            path: 'withdraw',
+            element: <ProtectedSuspenseRoute component={Withdraw} />,
           },
         ],
       },
