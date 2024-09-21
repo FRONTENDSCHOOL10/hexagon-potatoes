@@ -9,7 +9,8 @@ import {
 import { createBrowserRouter, Navigate, useNavigate } from 'react-router-dom';
 import RootLayout from '@/layout/RootLayout';
 import { checkAuthId } from '@/api/auth';
-import Alert from './components/Alert/Alert';
+import Alert from '@/components/Alert/Alert';
+import { PageLoadingSpinner } from '@/components/LoadingSpinner';
 
 // 레이지 로딩
 const Tutorial = lazy(() => import('@/pages/Tutorial'));
@@ -60,7 +61,7 @@ interface wrrraperPropTypes {
   [key: string]: any;
 }
 
-const Loading = () => <div>로딩 중...</div>;
+const Loading = () => <PageLoadingSpinner />;
 
 const PrivateRoute = ({ children }: PropTypes) => {
   const [isValidUser, setIsValidUser] = useState<boolean | null>(null);
@@ -86,7 +87,7 @@ const PrivateRoute = ({ children }: PropTypes) => {
       type={'error'}
       title={'로그인되지 않은 유저입니다.'}
       subtext={
-        '로그인 후 다시 시도해 주세요. 혹시 예상치 못한 오류로 인해 이동할 수 있습니다. 첫 화면으로 돌아갑니다.'
+        '로그인 후 다시 시도해 주세요. 혹은 예상치 못한 오류로 인해 이동할 수 있습니다. 첫 화면으로 돌아갑니다.'
       }
       onClose={() => navigate('/')}
     />
