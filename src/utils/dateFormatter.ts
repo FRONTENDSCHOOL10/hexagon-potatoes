@@ -23,16 +23,15 @@ export const formatDateString = (dateString: string): string => {
 
 // ISO 8601 형식의 날짜 문자열을 "YYYY. MM. DD HH:mm" 형식으로 변환하는 함수
 export const formatDateLong = (isoString: string): string => {
+  // ISO 문자열을 파싱하여 UTC 날짜로 변환
   const date = new Date(isoString);
 
-  // 한국 시간대로 변환 (UTC+9)
-  const koreaTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-
-  const year = koreaTime.getFullYear();
-  const month = String(koreaTime.getMonth() + 1).padStart(2, '0');
-  const day = String(koreaTime.getDate()).padStart(2, '0');
-  const hours = String(koreaTime.getHours()).padStart(2, '0');
-  const minutes = String(koreaTime.getMinutes()).padStart(2, '0');
+  // UTC 시간을 기반으로 한국 시간 계산 (UTC+9)
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String((date.getUTCHours() + 9) % 24).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
 
   const spacer = '\u2002'; // HTML 공백 문자 1개
   return `${year}. ${month}. ${day}${spacer}${hours}:${minutes}`;
