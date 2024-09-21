@@ -194,7 +194,7 @@ const JoinPartyPage = () => {
 
   const handleClickCreatePartyBtn = async () => {
     await fetchData();
-    // navigate(`/home/party/${partyId}`);
+    navigate(`/home/party/${partyId}`);
   };
 
   return (
