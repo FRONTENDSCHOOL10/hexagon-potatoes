@@ -37,8 +37,8 @@ const PartyLeader = ({ item }) => {
             {item.nickname}
           </p>
           <img
-            // src={profile_photo || 'assets/shipmatelogo.webp'}
-            // alt={itemImgAlt}
+            src={item.profile_photo || 'assets/shipmatelogo.webp'}
+            alt={item.itemImgAlt}
             className="absolute right-3 size-14"
           />
           {/* 더 적절한 label을 쓰고 싶다 */}
@@ -55,7 +55,7 @@ const PartyLeader = ({ item }) => {
             <use href="/assets/sprite-sheet.svg#goldship"></use>
           </svg>
           <img
-            // src={gradeImg || 'assets/shipmatelogo.webp'}
+            src={item.gradeImg || 'assets/shipmatelogo.webp'}
             className="w-4 self-center"
             alt="사용자 등급"
           />
