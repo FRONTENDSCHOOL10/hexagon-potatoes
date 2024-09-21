@@ -8,7 +8,7 @@ import Button from '../components/Buttons/Button';
 import PwdInput from '@/components/Inputs/PwdInput';
 import PwdConfirmInput from '@/components/Inputs/PwdConfirmInput';
 import AgreeTo from '@/components/AgreeTo/AgreeTo';
-import createUser from '@/api/createUser'; // createUser 함수 import
+import createUser from '@/api/createUser';
 import Alert from '@/components/Alert/Alert';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';

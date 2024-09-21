@@ -6,7 +6,6 @@ interface PropTypes {
 }
 const SelectCountryButton = ({ imgAlt, buttonContent, pageUrl }: PropTypes) => {
   const navigate = useNavigate();
-  // const [pageUrl, setPageUrl] = useState();
 
   const handleClick = () => {
     if (pageUrl === 'nowwedeveloping') {
@@ -45,7 +44,7 @@ const SelectCountryButton = ({ imgAlt, buttonContent, pageUrl }: PropTypes) => {
       <img
         className="mr-2 inline-block h-7 w-7 rounded-full border object-cover"
         src={countryImg(buttonContent)}
-        alt={`나라`}
+        alt={'국가'}
       />
       {buttonContent}
     </button>

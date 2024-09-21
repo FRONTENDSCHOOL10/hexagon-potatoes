@@ -48,22 +48,22 @@ const HomePage = () => {
           <div className="flex flex-wrap justify-between gap-[10px_0px]">
             <SelectCountryButton
               buttonContent={'미국'}
-              imgAlt={''}
+              imgAlt={'미국'}
               pageUrl={'미국'}
             />
             <SelectCountryButton
               buttonContent={'중국'}
-              imgAlt={''}
+              imgAlt={'중국'}
               pageUrl={'중국'}
             />
             <SelectCountryButton
               buttonContent={'일본'}
-              imgAlt={''}
+              imgAlt={'일본'}
               pageUrl={'일본'}
             />
             <SelectCountryButton
               buttonContent={'그 외 국가'}
-              imgAlt={''}
+              imgAlt={'그 외 국가'}
               pageUrl={'nowwedeveloping'}
             />
           </div>
