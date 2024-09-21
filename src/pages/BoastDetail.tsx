@@ -8,11 +8,8 @@ const BoastDetail = () => {
   const ENDPOINT = `https://hexagon-potatoes.pockethost.io/api/collections/posting/records/${boastId}`;
 
   const { error, status, data } = useFetch(ENDPOINT, 'author_id');
-  console.log(data);
-  if (status === 'loading') {
-    // 로딩 스피너 만들면 넣어주기
-    return <div>Loading...</div>;
-  }
+
+  if (status !== 'success') return null;
 
   return (
     <>
