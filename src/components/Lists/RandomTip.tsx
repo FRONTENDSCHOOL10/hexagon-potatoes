@@ -4,6 +4,7 @@ import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import Article from '@/components/Lists/Article';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 interface PropTypes {
   reloadCount: number;
@@ -84,7 +85,7 @@ const RandomTip = ({ reloadCount }: PropTypes) => {
   }, [reloadCount]);
 
   if (loading) {
-    return <div aria-live="polite">로딩 중...</div>;
+    return <LoadingSpinner className="h-[33rem] w-full" />;
   }
 
   if (error) {

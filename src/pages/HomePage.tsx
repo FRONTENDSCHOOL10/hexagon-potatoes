@@ -2,7 +2,6 @@ import SelectCountryButton from '@/components/Buttons/SelectCountryButton';
 import GoSearch from '@/components/SearchBar/GoSearch';
 import PostingRandom from '@/components/PostingCard/PostingRandom';
 import MagazineList from '@/components/Magazine/MagazineList';
-import BestPartyLeader from '@/components/Lists/BestPartyLeaderRandom';
 import BestPartyRandom from '@/components/Lists/BestPartyRandom';
 import RandomTip from '@/components/Lists/RandomTip';
 import { Helmet } from 'react-helmet-async';
@@ -19,7 +18,6 @@ const HomePage = () => {
     bestParty: 0,
     userBoast: 0,
     userTips: 0,
-    // 다른 섹션 추가 가능
   });
   const handleReload = useCallback(async (id: keyof typeof reloadCounts) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -43,7 +41,6 @@ const HomePage = () => {
         <GoSearch />
         <section>
           <h2 className={headStyle}>매거진</h2>
-          {/* 다른 페이지 다녀오고 새로고침 여러번 해도 오류 안 나는 거 확인 */}
           <MagazineList />
         </section>
         <section>
@@ -51,22 +48,22 @@ const HomePage = () => {
           <div className="flex flex-wrap justify-between gap-[10px_0px]">
             <SelectCountryButton
               buttonContent={'미국'}
-              imgAlt={''}
+              imgAlt={'미국'}
               pageUrl={'미국'}
             />
             <SelectCountryButton
               buttonContent={'중국'}
-              imgAlt={''}
+              imgAlt={'중국'}
               pageUrl={'중국'}
             />
             <SelectCountryButton
               buttonContent={'일본'}
-              imgAlt={''}
+              imgAlt={'일본'}
               pageUrl={'일본'}
             />
             <SelectCountryButton
               buttonContent={'그 외 국가'}
-              imgAlt={''}
+              imgAlt={'그 외 국가'}
               pageUrl={'nowwedeveloping'}
             />
           </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Alert from '@/components/Alert/Alert'; // Alert 컴포넌트 임포트
+import Alert from '@/components/Alert/Alert';
 import { Tooltip } from 'react-tooltip';
 
 const SimpleLogin = () => {

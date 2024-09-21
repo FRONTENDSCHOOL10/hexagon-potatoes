@@ -3,6 +3,7 @@ import useFetch from '@/hooks/useFetch';
 import getPbImageURL from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import PostingCard from '@/components/PostingCard/PostingCard';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 interface PropTypes {
   reloadCount: number;
@@ -67,7 +68,7 @@ const PostingRandom = ({ reloadCount }: PropTypes) => {
   }, [reloadCount, fetchRandomPosting]);
 
   if (loading) {
-    return <div aria-live="polite">로딩 중...</div>;
+    return <LoadingSpinner className="h-24 w-full" />;
   }
 
   if (status === 'error' || !randomPosting) {
