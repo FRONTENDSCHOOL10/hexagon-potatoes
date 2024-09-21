@@ -1,5 +1,4 @@
 import React from 'react';
-import RatingStar from '@/components/RatingStar/RatingStar';
 
 const MyprofileFollwer = () => {
   return (
@@ -7,7 +6,6 @@ const MyprofileFollwer = () => {
       <div className="flex flex-col items-center">
         <span className="">평점</span>
         <div className="flex items-center">
-          <RatingStar value={4.0} />
           <span className="">4.0</span>
         </div>
       </div>

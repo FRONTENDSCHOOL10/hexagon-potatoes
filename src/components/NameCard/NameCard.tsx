@@ -25,14 +25,14 @@ const NameCard = ({ name, subtext, profileImg, type, id }: PropTypes) => {
       case 'editProfile':
         return (
           <MiniButton
-            link={`/home/profile/edit/${id}`}
+            link={`/home/profile-edit`}
             buttonContent={'프로필 수정'}
           />
         );
       case 'viewProfile':
         return (
           <MiniButton
-            link={`/home/profile/${id}`}
+            link={`/home/my-profile`}
             buttonContent={'프로필 보기'}
           />
         );
