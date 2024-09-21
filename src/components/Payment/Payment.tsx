@@ -7,7 +7,6 @@ interface PropTypes {
   customsDuties: number;
 }
 
-//
 const COMMISSION = 1000;
 
 const Payment = ({ productPrice, shippingFee, customsDuties }: PropTypes) => {

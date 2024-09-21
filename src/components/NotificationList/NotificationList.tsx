@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 import formatRelativeTime from '@/utils/formatRelativeTime';
-import { useState } from 'react';
+import { memo, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 interface PropTypes {
   id: string;
@@ -34,16 +34,16 @@ const NotificationList = ({
   handleReadStatusChange,
   isRead,
 }: PropTypes) => {
-  const [readStatus, setReadStatus] = useState(isRead);
+  const readStatus = isRead;
   const commonClasses: string =
     'flex min-h-[3.5rem] w-[21rem] items-start border-b border-gray-200 py-3 pl-2 [list-style:none]';
   const bgColor: string = readStatus
     ? `${commonClasses} bg-slate-100`
     : commonClasses;
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     handleReadStatusChange(id, true);
-  };
+  }, []);
 
   const notificationType: NotificationType = {
     paymentRequest: {
@@ -123,4 +123,4 @@ const NotificationList = ({
   );
 };
 
-export default NotificationList;
+export default memo(NotificationList);

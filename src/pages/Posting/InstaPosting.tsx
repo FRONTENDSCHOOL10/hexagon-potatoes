@@ -2,10 +2,11 @@ import LabelList from '@/components/Label/LabelList';
 import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import pb from '@/utils/pocketbase';
+import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
-import pb from '@/utils/pocketbase';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 interface PocketBaseRecord {
   id: string;
@@ -34,9 +35,9 @@ interface InstaPostingItem extends PocketBaseRecord {
 interface PropTypes {
   item: InstaPostingItem;
 }
+const url = `${pb.baseUrl}`;
 
 const InstaPosting = ({ item }: PropTypes) => {
-  const url = `${pb.baseUrl}`;
   if (!item) return null;
   const authorId = item.expand?.author_id;
 
@@ -51,7 +52,7 @@ const InstaPosting = ({ item }: PropTypes) => {
   };
 
   return (
-    <article className="mb-[2.56rem] flex flex-col gap-3 p-3">
+    <article className="mb-[2.56rem] flex flex-col gap-3 px-3 pb-3">
       {authorId && (
         <NameCard
           name={authorId.nickname}

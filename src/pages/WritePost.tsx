@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Dropdown from '@/components/Dropdown/Dropdown';
-import FileInput from '@/components/FileInput';
+import FileInput from '@/components/FileInput/FileInput';
 import HashtagInput from '@/components/HashtagInput/HashtagInput';
 import { useState, FormEvent, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -47,10 +47,11 @@ const WritePost = () => {
 
   const compressImage = async (file: File) => {
     const options = {
-      maxSizeMB: 0.5,
+      maxSizeMB: 0.3,
       maxWidthOrHeight: 1280,
       useWebWorker: true,
-      initialQuality: 0.7,
+      initialQuality: 0.6,
+      fileType: 'image/webp',
     };
     try {
       return await imageCompression(file, options);

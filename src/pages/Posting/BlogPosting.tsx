@@ -5,7 +5,7 @@ import { formatDateLong, formatDateString } from '@/utils/dateFormatter';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import interleaveContent from '@/utils/seperateTextAndImages';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 interface PocketBaseRecord {
   id: string;
@@ -37,25 +37,21 @@ interface PropTypes {
   type?: 'magazine' | 'tip';
 }
 
+const url = `${pb.baseUrl}`;
+
 const BlogPosting = ({ item, type }: PropTypes) => {
-  const url = `${pb.baseUrl}`;
   if (!item) return null;
   const authorId = item.expand?.author_id;
 
-  const handleLike = () => {
-    // 좋아요 처리 로직
-    console.log('좋아요 클릭');
-  };
-
-  const handleBookmark = () => {
+  const handleBookmark = useCallback(() => {
     // 북마크 처리 로직
     console.log('북마크 클릭');
-  };
+  }, []);
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     // 공유 처리 로직
     console.log('공유 클릭');
-  };
+  }, []);
 
   const interleavedContent = interleaveContent(item.content, item.photo);
 
@@ -106,10 +102,7 @@ const BlogPosting = ({ item, type }: PropTypes) => {
               ) : (
                 <img
                   className="w-[21rem] object-cover object-center"
-                  src={getPbImagesURL(
-                    index === 1 ? index - 1 : index - 2,
-                    item
-                  )}
+                  src={getPbImagesURL(Math.floor(index / 2), item)}
                   alt={`게시물 이미지 ${index - 1}`}
                 />
               )}

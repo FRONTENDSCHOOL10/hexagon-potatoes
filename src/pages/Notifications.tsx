@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import NotificationList from '@/components/NotificationList/NotificationList';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 interface Notification {
@@ -42,7 +42,7 @@ const Notifications = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = useCallback(async (id: string) => {
     setNotifications((prevNotifications) =>
       prevNotifications.filter((item) => item.id !== id)
     );
@@ -54,26 +54,29 @@ const Notifications = () => {
     } catch (error) {
       console.error('Error deleting notification:', error);
     }
-  };
+  }, []);
 
-  const handleReadStatusChange = async (id: string, isRead: boolean) => {
-    try {
-      await axios.patch(
-        `${import.meta.env.VITE_PB_URL}api/collections/notification/records/${id}`,
-        {
-          read: isRead,
-        }
-      );
+  const handleReadStatusChange = useCallback(
+    async (id: string, isRead: boolean) => {
+      try {
+        await axios.patch(
+          `${import.meta.env.VITE_PB_URL}api/collections/notification/records/${id}`,
+          {
+            read: isRead,
+          }
+        );
 
-      setNotifications((prev) =>
-        prev.map((notif) =>
-          notif.id === id ? { ...notif, read: isRead } : notif
-        )
-      );
-    } catch (error) {
-      console.error('Failed to update read status:', error);
-    }
-  };
+        setNotifications((prev) =>
+          prev.map((notif) =>
+            notif.id === id ? { ...notif, read: isRead } : notif
+          )
+        );
+      } catch (error) {
+        console.error('Failed to update read status:', error);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     const fetchData = async () => {

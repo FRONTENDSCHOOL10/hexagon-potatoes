@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import CommunityNavList from './CommunityNavList';
 
 const CommunityNav = () => {
@@ -25,4 +26,4 @@ const CommunityNav = () => {
   );
 };
 
-export default CommunityNav;
+export default memo(CommunityNav);

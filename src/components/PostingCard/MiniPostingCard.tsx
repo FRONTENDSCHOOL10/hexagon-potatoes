@@ -1,3 +1,4 @@
+import React, { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { getPbImagesURL } from '@/utils/getPbImageURL';
 
@@ -8,21 +9,30 @@ interface PropTypes {
   photo: string;
 }
 
+const defaultTipImage = '/assets/shipmatelogo.webp';
+
 const MiniPostingCard = ({ nickname, content, id, photo }: PropTypes) => {
-  const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
+
+  const imageUrl = useMemo(
+    () => (photo ? getPbImagesURL(0, photo) : defaultTipImage),
+    [photo]
+  );
 
   return (
     <Link to={`/home/community/boast/${id}`}>
       <figure
         aria-labelledby={`post-title-${id}`}
-        className="flex-[1_0_0]; flex h-[13.6rem] w-40 flex-col items-center overflow-hidden rounded-md bg-[#FFF] shadow-shadow-blue"
+        className="flex h-[13.6rem] w-40 flex-[1_0_0] flex-col items-center overflow-hidden rounded-md bg-[#FFF] shadow-shadow-blue"
       >
         <img
           className="h-[10.3rem] w-full bg-[rgba(0,_0,_0,_0.05)] object-cover"
-          src={photo ? getPbImagesURL(0, photo) : defaultTipImage} // null, undefined, 빈 문자열 모두 처리
+          src={imageUrl}
           alt="포스팅 이미지"
+          loading="lazy"
+          decoding="async"
+          width="160"
+          height="165"
         />
-
         <figcaption className="flex flex-col items-start gap-1 self-stretch p-2">
           <p className="text-caption text-gray-300">{nickname}</p>
           <h3
@@ -37,4 +47,4 @@ const MiniPostingCard = ({ nickname, content, id, photo }: PropTypes) => {
   );
 };
 
-export default MiniPostingCard;
+export default memo(MiniPostingCard);

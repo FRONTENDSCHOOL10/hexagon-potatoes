@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface PropTypes {
@@ -12,7 +13,7 @@ const CommunityNavList = ({ path, children }: PropTypes) => {
         to={path}
         className={({ isActive }) =>
           isActive
-            ? 'border-b-[0.09375rem] border-mainblue pb-[0.125rem] font-[Pretendard] text-[1rem] font-bold not-italic text-[#020715]'
+            ? 'pretendard border-b-[0.09375rem] border-mainblue pb-[0.125rem] text-[1rem] font-bold not-italic text-[#020715]'
             : ''
         }
         end
@@ -23,4 +24,4 @@ const CommunityNavList = ({ path, children }: PropTypes) => {
   );
 };
 
-export default CommunityNavList;
+export default memo(CommunityNavList);

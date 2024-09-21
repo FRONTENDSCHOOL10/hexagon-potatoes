@@ -1,9 +1,10 @@
 import React, { useId, useRef, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, A11y } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { A11y, Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { v4 as uuidv4 } from 'uuid';
+import Alert from '@/components/Alert/Alert';
 
 interface FileData {
   id: string;
@@ -18,8 +19,13 @@ interface PropTypes {
 
 const FileInput = ({ onChange, maxFiles = 5 }: PropTypes) => {
   const [files, setFiles] = useState<FileData[]>([]);
+  const [modal, setModal] = useState({ open: false, message: null });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageInputId = useId();
+
+  const handleOnClose = () => {
+    setModal({ open: false, message: null });
+  };
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLLabelElement>) => {
     if (e.key === 'Enter') {
@@ -27,22 +33,34 @@ const FileInput = ({ onChange, maxFiles = 5 }: PropTypes) => {
       imageInputElem?.click();
     }
   };
-
   const handleImgInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
 
     if (fileList) {
-      const newFiles: FileData[] = Array.from(fileList).map((file) => ({
-        id: uuidv4(),
-        file,
-        previewUrl: URL.createObjectURL(file),
-      }));
+      const remainingSlots = maxFiles - files.length;
 
-      const updatedFiles = [...files, ...newFiles].slice(0, maxFiles);
+      if (fileList.length > remainingSlots) {
+        setModal({
+          open: true,
+          message: `추가로 ${remainingSlots}장만 선택할 수 있습니다. 처음 ${remainingSlots}장만 추가됩니다.`,
+        });
+      }
+
+      const newFiles: FileData[] = Array.from(fileList)
+        .slice(0, remainingSlots)
+        .map((file) => ({
+          id: uuidv4(),
+          file,
+          previewUrl: URL.createObjectURL(file),
+        }));
+
+      const updatedFiles = [...files, ...newFiles];
 
       setFiles(updatedFiles);
       onChange(updatedFiles);
       console.log(updatedFiles);
+
+      e.target.value = ''; // 파일 선택 초기화
     }
   };
 
@@ -61,8 +79,10 @@ const FileInput = ({ onChange, maxFiles = 5 }: PropTypes) => {
       <span className="text-button">사진</span>
       <label
         onKeyDown={handlePressEnter}
-        tabIndex={0}
-        className="relative flex size-[4.375rem] cursor-pointer flex-col items-center justify-center rounded-xl border-none bg-gray-100 shadow-shadow-blue"
+        tabIndex={files.length >= maxFiles ? -1 : 0}
+        className={`relative flex size-[4.375rem] cursor-pointer flex-col items-center justify-center rounded-xl border-none bg-gray-100 shadow-shadow-blue ${
+          files.length >= maxFiles ? 'cursor-not-allowed opacity-50' : ''
+        }`}
         htmlFor={imageInputId}
       >
         <svg className="size-4 text-gray-300" aria-hidden="true">
@@ -82,6 +102,7 @@ const FileInput = ({ onChange, maxFiles = 5 }: PropTypes) => {
         id={imageInputId}
         onChange={handleImgInputChange}
         aria-describedby="photo-input-description"
+        disabled={files.length >= maxFiles}
       />
       <span id="photo-input-description" className="sr-only">
         최대 {maxFiles}장의 jpg, jpeg, png 이미지를 선택할 수 있습니다.
@@ -154,6 +175,14 @@ const FileInput = ({ onChange, maxFiles = 5 }: PropTypes) => {
             </SwiperSlide>
           ))}
         </Swiper>
+      )}
+      {modal.open && (
+        <Alert
+          type={'notice'}
+          title={''}
+          subtext={modal.message}
+          onClose={handleOnClose}
+        />
       )}
     </div>
   );

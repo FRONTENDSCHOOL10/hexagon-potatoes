@@ -1,6 +1,6 @@
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import axios from 'axios';
 
 function useFetch(url: string, expandFields?: string) {
   const [state, setState] = useImmer<{

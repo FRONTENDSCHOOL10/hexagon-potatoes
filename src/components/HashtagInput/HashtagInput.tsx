@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent, KeyboardEvent } from 'react';
+import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 
 interface PropTypes {
   onChange: (tags: string[]) => void;
