@@ -140,13 +140,17 @@ const HeaderBar = ({ type, title }: PropTypes) => {
   const icon = renderIcons({ type, navigate });
 
   return (
-    <header className="relative z-[11] mb-3 flex w-[360px] items-center gap-2 px-2 py-3 shadow-[0px_0px_6px_0px_#0000001F]">
-      {/* 뒤로가기 아이콘은 타이틀 앞으로 와야하고 */}
-      {isBack && icon}
-      <div className="flex-1 text-left text-xl text-black">{title}</div>
-      {/* 다른 아이콘은 타이틀 뒤로 와야함 */}
-      {!isBack && icon}
-    </header>
+    <>
+      {/* 고정된 헤더 공간 확보용 div */}
+      <div className="h-[60px]" />
+      <header className="fixed top-0 z-[11] mb-3 flex w-[360px] items-center gap-2 bg-white px-2 py-3 shadow-[0px_0px_6px_0px_#0000001F]">
+        {/* 뒤로가기 아이콘은 타이틀 앞으로 와야하고 */}
+        {isBack && icon}
+        <div className="flex-1 text-left text-xl text-black">{title}</div>
+        {/* 다른 아이콘은 타이틀 뒤로 와야함 */}
+        {!isBack && icon}
+      </header>
+    </>
   );
 };
 
