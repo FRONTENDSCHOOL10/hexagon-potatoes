@@ -19,6 +19,7 @@ const RecommendFeed = () => {
         });
         console.log(response.data.items);
         setData(response.data.items);
+        setLoading(false);
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           if (error.name !== 'CanceledError') {
@@ -36,10 +37,7 @@ const RecommendFeed = () => {
     };
   }, []);
 
-  if (loading) {
-    // 로딩 스피너 만들면 넣어주기
-    return <div>Loading...</div>;
-  }
+  if (loading) return null;
 
   return (
     <>

@@ -100,8 +100,8 @@ const Notifications = () => {
     fetchData();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  if (loading) return null;
 
   return (
     <>
