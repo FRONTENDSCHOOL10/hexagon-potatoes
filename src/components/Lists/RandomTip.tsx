@@ -5,12 +5,9 @@ import pb from '@/utils/pocketbase';
 import Article from '@/components/Lists/Article';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
-const baseTipUrl = `${pb.baseUrl}api/collections/tip/records`;
-const url = `${pb.baseUrl}`;
-
-const getTipImageUrl = (tip: any): string => {
-  return tip.photo ? getPbImagesURL(0, tip) : '';
-};
+interface PropTypes {
+  reloadCount: number;
+}
 
 interface Author {
   id: string;
@@ -28,7 +25,13 @@ interface RandomTipData {
   authorData: Author | null;
 }
 
-const RandomTip = () => {
+const baseTipUrl = `${pb.baseUrl}api/collections/tip/records`;
+const url = `${pb.baseUrl}`;
+
+const getTipImageUrl = (tip: any): string => {
+  return tip.photo ? getPbImagesURL(0, tip) : '';
+};
+const RandomTip = ({ reloadCount }: PropTypes) => {
   const [randomTip, setRandomTip] = useState<RandomTipData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +39,8 @@ const RandomTip = () => {
   useEffect(() => {
     //AbortController를 도입하여 요청 관리를 개선
     const abortController = new AbortController();
-
+    setError(null);
+    setLoading(true);
     const fetchRandomTip = async () => {
       try {
         const response = await axios.get(baseTipUrl, {
@@ -77,10 +81,15 @@ const RandomTip = () => {
     };
 
     fetchRandomTip();
-  }, []);
+  }, [reloadCount]);
 
-  if (loading) return <p>로딩 중...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return <div aria-live="polite">로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div aria-live="assertive">{error || '포스팅이 없습니다.'}</div>;
+  }
 
   return (
     <ul>

@@ -27,7 +27,9 @@ interface PropTypes {
   }[];
 }
 
+
 const url = `${pb.baseUrl}`;
+
 
 const TipArticleList = ({ data }: PropTypes) => {
   return (

@@ -11,20 +11,20 @@ import { Helmet } from 'react-helmet-async';
 // 튜토리얼 슬라이드 데이터
 const TUTORIAL_SLIDES = [
   {
-    image: '/assets/landing-1.webp',
+    image: '/assets/tutorial/landing-1.webp',
     alt: '시작 페이지',
     title: '',
     description: '',
   },
   {
-    image: '/assets/tutorial-1.webp',
+    image: '/assets/tutorial/tutorial-1.webp',
     alt: '첫번째 소개 페이지',
     title: "배송비 걱정 그만! \n'N빵' 하면 부담 없어요",
     description:
       '배송 비용 = 물건 가격 이라 고민했다면? \n쉽메이트에서 공동 구매에 참여하고 배송비를 나눠내면 돼요',
   },
   {
-    image: '/assets/tutorial-2.webp',
+    image: '/assets/tutorial/tutorial-2.webp',
     alt: '두번째 소개 페이지',
     title: '배송 대행지? 구매대행? \n그런 거 찾지 마세요',
     description:
@@ -32,14 +32,14 @@ const TUTORIAL_SLIDES = [
     textColor: 'text-white',
   },
   {
-    image: '/assets/tutorial-3.webp',
+    image: '/assets/tutorial/tutorial-3.webp',
     alt: '세번째 소개 페이지',
     title: '복잡한 관세 계산도\n쉽메이트가 할게요',
     description:
       '물건의 종류와 가격을 입력하면\n자동으로 관세 계산을 해드릴게요',
   },
   {
-    image: '/assets/tutorial-4.webp',
+    image: '/assets/tutorial/tutorial-4.webp',
     alt: '네번째 소개 페이지',
     title: '공동 구매 파티장은\n혜택도 있어요',
     description:
@@ -161,7 +161,7 @@ const Tutorial = () => {
           ))}
         </Swiper>
         {showStartButton && (
-          <div className="absolute bottom-5 z-20 w-[21rem]">
+          <div className="absolute bottom-10 z-20 w-[21rem]">
             <Button
               buttonContent="시작하기"
               isActive={true}

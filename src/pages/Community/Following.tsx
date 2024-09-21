@@ -2,7 +2,7 @@ import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 import { Helmet } from 'react-helmet-async';
 
 const Following = () => {
-  const defaultTipImage = '/assets/shipmatelogo.png';
+  const defaultTipImage = '/assets/shipmatelogo.webp';
   return (
     <>
       <Helmet>

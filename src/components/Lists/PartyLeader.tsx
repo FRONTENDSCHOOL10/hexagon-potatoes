@@ -37,7 +37,7 @@ const PartyLeader = ({
           className="grid h-16 grid-cols-[auto_auto_minmax(30px,_1fr)] border-b border-b-gray-100 pb-3.5"
         >
           <img
-            src={profile_photo || 'assets/shipmatelogo.png'}
+            src={profile_photo || 'assets/shipmatelogo.webp'}
             alt={itemImgAlt}
             className="absolute right-3 size-14"
           />
@@ -51,7 +51,7 @@ const PartyLeader = ({
             {member_grade}
           </span>
           <img
-            src={gradeImg || 'assets/shipmatelogo.png'}
+            src={gradeImg || 'assets/shipmatelogo.webp'}
             className="w-4 self-center"
             alt="사용자 등급"
           />

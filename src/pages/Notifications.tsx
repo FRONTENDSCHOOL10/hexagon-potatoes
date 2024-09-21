@@ -37,7 +37,7 @@ const fetchUserNotifications = async (
 };
 
 const Notifications = () => {
-  const defaultTipImage = '/assets/shipmatelogo.png';
+  const defaultTipImage = '/assets/shipmatelogo.webp';
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

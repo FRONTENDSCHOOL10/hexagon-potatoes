@@ -2,14 +2,14 @@ import React, { useState, useEffect, memo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
-const FloatingMenu = memo(() => {
-  const [isClicked, setIsClicked] = useState(false);
+interface PropTypes {
+  isClicked: boolean;
+  onClick: () => void;
+}
+
+const FloatingMenu = memo(({ isClicked, onClick }: PropTypes) => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const handleClick = () => {
-    setIsClicked((prev) => !prev);
-  };
 
   const navigateToPartyPage = () => {
     navigate('/home/partyCollect');
@@ -21,14 +21,14 @@ const FloatingMenu = memo(() => {
 
   useEffect(() => {
     // 페이지 변경 시 상태 초기화
-    setIsClicked(false);
+    isClicked = false;
   }, [location]);
 
   const popBtnStyle = {
-    base: 'flex items-center gap-2',
+    base: 'flex items-center gap-2 ',
     icon: 'flex h-12 w-12 items-center justify-center rounded-full bg-blue-500',
     svg: 'h-4 w-4 fill-current text-white',
-    text: 'font-sub-1 text-[1rem] font-semibold text-black',
+    text: 'font-sub-1 text-[1rem] font-semibold text-white ',
   };
 
   return (
@@ -36,7 +36,7 @@ const FloatingMenu = memo(() => {
       {/* 플로팅 메뉴 버튼 */}
       <button
         className={`absolute bottom-8 right-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full transition-transform duration-300 ease-in-out ${isClicked ? 'rotate-45 bg-green-400' : 'bg-blue-500'} shadow-[0px_0px_15px_0px_#0A73F926]`}
-        onClick={handleClick}
+        onClick={onClick}
         aria-label={isClicked ? '작성 메뉴 열림' : '작성 메뉴 닫힘'}
         data-tooltip-id="writeTooltip"
         type="button"
@@ -56,7 +56,6 @@ const FloatingMenu = memo(() => {
           clickOutsideAnchor: false,
         }}
       />
-
       {/* 추가 버튼들 */}
       {isClicked && (
         <div className="absolute bottom-24 right-2 flex w-[10.125rem] flex-col items-end gap-2">

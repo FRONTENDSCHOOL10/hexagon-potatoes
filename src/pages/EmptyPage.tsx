@@ -20,7 +20,7 @@ const EmptyPage = () => {
       </Helmet>
       <div className="flex h-screen items-center">
         <div className="flex flex-col items-center justify-center gap-1 rounded-xl bg-gray-100 px-20 py-5">
-          <img src="/assets/shipmatelogo.png" alt="로고" />
+          <img src="/assets/shipmatelogo.webp" alt="로고" />
           <p className="font-body-1 font-bold">🐑 개발중입니다! 🐑</p>
           <Button
             type={'button'}

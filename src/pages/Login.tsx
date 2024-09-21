@@ -47,7 +47,7 @@ const Login = () => {
         <form onSubmit={handleLogin} className="flex flex-col gap-3">
           <img
             className="h-[5.9375rem] w-[21rem] self-center"
-            src="/assets/loginsignuplogo.png"
+            src="/assets/tutorial/loginsignuplogo.webp"
             alt="SHIPMATE 작은 로고"
           />
           <IdInput

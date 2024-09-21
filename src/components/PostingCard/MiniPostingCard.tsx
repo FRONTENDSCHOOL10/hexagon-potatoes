@@ -9,9 +9,10 @@ interface PropTypes {
   photo: string;
 }
 
-const defaultTipImage = '/assets/shipmatelogo.png';
+const defaultTipImage = '/assets/shipmatelogo.webp';
 
 const MiniPostingCard = ({ nickname, content, id, photo }: PropTypes) => {
+
   const imageUrl = useMemo(
     () => (photo ? getPbImagesURL(0, photo) : defaultTipImage),
     [photo]
