@@ -15,11 +15,11 @@ const Magazine = ({ id, title, label, content, img }: PropTypes) => {
       style={{
         background: `url(${img}) center /cover no-repeat`,
       }}
-      className="relative flex h-[14.5625rem] w-[10rem] flex-col overflow-hidden rounded-xl shadow-lg"
+      className="relative flex h-[14.5625rem] w-[10rem] flex-col overflow-hidden rounded-xl"
     >
       <div
         style={{
-          background: '#2727271D',
+          background: '#27272714',
           position: 'absolute',
           top: 0,
           left: 0,
@@ -37,13 +37,11 @@ const Magazine = ({ id, title, label, content, img }: PropTypes) => {
             {label}
           </span>
         ))}
-      <div className="relative z-10 flex h-full flex-col justify-end p-4 text-white">
-        <div className="flex flex-grow flex-col justify-end">
-          <h3 className="mb-1 text-xl font-bold">{title}</h3>
-          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-caption text-sm leading-tight">
-            {content}
-          </p>
-        </div>
+      <div className="relative z-10 flex w-full flex-grow flex-col justify-end p-3 text-white">
+        <h3 className="mb-1 text-xl font-bold">{title}</h3>
+        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-caption text-sm leading-tight">
+          {content}
+        </p>
       </div>
     </Link>
   );

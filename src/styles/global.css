@@ -38,3 +38,14 @@ input:checked + .checkbox-custom::before {
   font-size: 0.75rem;
   line-height: 1.25rem;
 }
+@layer components {
+  .swiper-button-next,
+  .swiper-button-prev {
+    @apply h-9 w-9 rounded-full bg-gray-100 text-blue-600 transition-colors duration-300 hover:bg-mainblue hover:text-white !important;
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    @apply text-xl font-bold !important;
+  }
+}

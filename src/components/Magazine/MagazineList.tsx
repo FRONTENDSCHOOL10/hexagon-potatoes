@@ -31,7 +31,7 @@ const MagazineList = () => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative shadow-shadow-blue">
       <Swiper
         className="mySwiper"
         modules={[Keyboard, Pagination, Navigation]}
@@ -61,16 +61,10 @@ const MagazineList = () => {
         ))}
       </Swiper>
 
-      <button
-        className="swiper-button-prev cursor-pointer rounded-full p-2 hover:bg-gray-100 focus:bg-gray-100"
-        type="button"
-      >
+      <button className="swiper-button-prev cursor-pointer" type="button">
         <span className="sr-only">이전 슬라이드</span>
       </button>
-      <button
-        className="swiper-button-next cursor-pointer rounded-full p-2 hover:bg-gray-100 focus:bg-gray-100"
-        type="button"
-      >
+      <button className="swiper-button-next cursor-pointer" type="button">
         <span className="sr-only">다음 슬라이드</span>
       </button>
     </div>
