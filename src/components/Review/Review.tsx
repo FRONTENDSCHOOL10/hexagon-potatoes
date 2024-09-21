@@ -1,5 +1,5 @@
 import RatingStar from '@/components/RatingStar/RatingStar';
-import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
+import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
 interface PropTypes {
   user: string;

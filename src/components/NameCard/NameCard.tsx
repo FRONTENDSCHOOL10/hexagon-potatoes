@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
-import MiniButton from '../Buttons/MiniButton';
+import MiniButton from '@/components/Buttons/MiniButton';
+import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 
 interface PropTypes {
   name: string;
@@ -83,7 +83,6 @@ const NameCard = ({ name, subtext, profileImg, type, id }: PropTypes) => {
         <span className="text-body-1" aria-label="사용자 닉네임">
           {name}
         </span>
-        {/* aria-label="파티 소개"라고 넣어놨는데 티어가 들어가게된다면 조건 하나더 처리해야될듯 */}
         {subtext ? (
           <span className="text-caption text-gray-300" aria-label="파티 소개">
             {subtext}

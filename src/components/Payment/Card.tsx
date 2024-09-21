@@ -1,8 +1,9 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
-const Card = ({}) => {
+const Card = () => {
   const cardFont =
-    'Pretendard text-[0.75rem] leading-[0.875rem] font-bold not-italic text-white absolute';
+    'pretendard text-[0.75rem] leading-[0.875rem] font-bold not-italic text-white absolute';
   return (
     <Swiper
       spaceBetween={17}

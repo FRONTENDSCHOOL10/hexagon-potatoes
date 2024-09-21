@@ -33,11 +33,11 @@ const Shipstate = ({ step }: PropTypes) => {
         className="h-[0.5625rem] w-full rounded-[1.9375rem] bg-[#EDF1F6]"
       >
         <div
-          className="h-[0.5625rem] rounded-[1.9375rem] bg-[#0A73F9]"
+          className="h-[0.5625rem] rounded-[1.9375rem] bg-mainblue"
           style={{ width: `${step * 25}%` }} // 동적으로 받는 스타일은 테일윈드 백틱이 안먹음
         ></div>
       </div>
-      <div className="relative flex justify-between font-[Pretendard] text-xs font-normal not-italic leading-[0.875rem] text-[#626871]">
+      <div className="pretendard relative flex justify-between text-xs font-normal not-italic leading-[0.875rem] text-[#626871]">
         <span className="absolute left-0">발송완료</span>
         <span className="absolute left-1/4">통관 중</span>
         <span className="absolute left-2/4">국내 도착</span>
@@ -45,7 +45,7 @@ const Shipstate = ({ step }: PropTypes) => {
           <span className="mb-[0.3125rem] font-semibold text-[#020715]">
             배송 중
           </span>
-          <span className="font-normal text-[#0A73F9]">배송 조회</span>
+          <span className="font-normal text-mainblue">배송 조회</span>
         </div>
       </div>
     </div>

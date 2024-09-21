@@ -2,11 +2,11 @@ import LabelList from '@/components/Label/LabelList';
 import NameCard from '@/components/NameCard/NameCard';
 import PostActionBar from '@/components/PostActionBar/PostActionBar';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css/pagination';
-import 'swiper/css';
-import { Pagination } from 'swiper/modules';
 import pb from '@/utils/pocketbase';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 interface PocketBaseRecord {
   id: string;

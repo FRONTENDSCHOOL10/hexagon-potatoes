@@ -1,8 +1,8 @@
-import Article from './Article';
-import DefaultProfileSVG from '../DefaultProfileSVG/DefaultProfileSVG';
 import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
-import React, { memo } from 'react';
+import { memo } from 'react';
+import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
+import Article from './Article';
 
 interface PropTypes {
   data: {
@@ -26,14 +26,13 @@ interface PropTypes {
     };
   }[];
 }
-const defaultTipImage = '/assets/shipmatelogo.png'; // 기본 팁 이미지 URL
-const defaultProfileImage = DefaultProfileSVG; // 기본 프로필 이미지 URL
+
 const url = `${pb.baseUrl}`;
 
 const TipArticleList = ({ data }: PropTypes) => {
   return (
     <ul className="flex w-full flex-col gap-y-3" aria-label="팁 목록">
-      {data?.map((item, index) => (
+      {data?.map((item) => (
         <Article
           key={item.id} // 리스트 항목에 대한 고유 키
           type={'tip'} // 'tip'으로 고정
@@ -43,7 +42,7 @@ const TipArticleList = ({ data }: PropTypes) => {
           profile_photo={
             item?.expand?.author_id?.profile_photo
               ? getPbImageURL(url, item.expand?.author_id, 'profile_photo')
-              : defaultProfileImage
+              : DefaultProfileSVG
           } // 작성자 프로필 사진
           nickname={item.expand?.author_id?.nickname} // 작성자 닉네임
           id={item.id} // 팁 식별자

@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
 import NotificationList from '@/components/NotificationList/NotificationList';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 interface Notification {
