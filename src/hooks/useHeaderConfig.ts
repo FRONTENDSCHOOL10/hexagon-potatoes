@@ -33,6 +33,7 @@ const headerConfigs: Record<string, HeaderConfig> = {
   '/home/mypage': { type: 'setting', title: '마이 페이지' },
   '/home/setting': { type: 'back', title: '설정' },
   '/home/nowwedeveloping': { type: 'back', title: '개발중' },
+  '/home/my-profile': { type: 'back', title: '프로필' },
 };
 
 // 동적 경로 패턴 정의
@@ -57,7 +58,10 @@ export const useHeaderConfig = (pathname: string) => {
       // 동적 경로 패턴 처리
       dynamicPathPatterns.forEach((pattern) => {
         if (pathname.startsWith(pattern)) {
-          const dynamicPart = pathname.substring(pattern.length);
+          // pathname을 '/' 기준으로 분리한 후, 제일 뒤의 값을 가져오기
+          const pathParts = pathname.split('/');
+          const dynamicPart = pathParts[pathParts.length - 1]; // 마지막 부분
+
           let titleSuffix = '';
 
           // 패턴에 맞는 동적 설정 찾기
