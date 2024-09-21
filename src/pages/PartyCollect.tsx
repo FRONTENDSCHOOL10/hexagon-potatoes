@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import pb from '@/utils/pocketbase';
-import useFetch from '@/hooks/useFetch';
 import StandardInput from '@/components/Inputs/StandardInput';
 import Button from '@/components/Buttons/Button';
 import Dropdown from '@/components/Dropdown/Dropdown';
@@ -98,7 +96,6 @@ const PartyCollect = () => {
     }
   };
 
-  // Handle next button click
   const handleClickNextBtn = async () => {
     await fetchData();
   };
@@ -144,9 +141,9 @@ const PartyCollect = () => {
         />
 
         <StandardInput
-          type="number"
+          type="text"
           inputLabel="개인통관고유부호"
-          placeholder="개인통관고유부호"
+          placeholder="P000000000000"
           inputName="personal_code"
           onInputChange={handleChangeInput}
         />
@@ -164,14 +161,16 @@ const PartyCollect = () => {
           inputLabel="모집 인원"
           placeholder="모집 인원"
           inputName="target_members"
+          step={1}
           onInputChange={handleChangeInput}
         />
 
         <StandardInput
           type="number"
           inputLabel="무게 입력"
-          placeholder="물건 당 최대 무게 (kg)"
+          placeholder="물건 당 최대 무게 (g)"
           inputName="weight"
+          step={10}
           onInputChange={handleChangeInput}
         />
 

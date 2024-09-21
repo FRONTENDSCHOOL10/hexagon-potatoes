@@ -5,6 +5,7 @@ interface PropTypes {
   value?: string;
   inputLabel: string;
   placeholder: string;
+  step?: number;
   type: 'date' | 'file' | 'number' | 'text' | 'url';
   onInputChange: (name: string) => (value: string | number) => void;
 }
@@ -16,6 +17,7 @@ const StandardInput = ({
   onInputChange,
   inputLabel,
   placeholder,
+  step,
 }: PropTypes) => {
   const [inputVal, setInputVal] = useState<string | number>(value || '');
 
@@ -83,6 +85,7 @@ const StandardInput = ({
             onKeyDown={handlePressEnter}
             onChange={handleChangeInput}
             min={1}
+            step={step}
           />
         );
       case 'file':

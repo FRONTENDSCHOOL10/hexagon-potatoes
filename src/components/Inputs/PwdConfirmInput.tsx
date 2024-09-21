@@ -40,9 +40,9 @@ const PwdConfirmInput = ({
     const value = e.target.value;
     setInputVal(value);
     checkInputFilled(value);
-    // 여기서 onConfirmedPwdChange가 제대로 호출되도록 수정
+    checkConfirmPwd(value)
     if (onConfirmedPwdChange) {
-      onConfirmedPwdChange(inputName)(value);
+    onConfirmedPwdChange(inputName)(value);
     }
   };
 
@@ -56,7 +56,7 @@ const PwdConfirmInput = ({
     }
   };
 
-  const toggleShowPwd = () => {
+  const handleToggleShowPwd = () => {
     setIsShowPwd((prev) => {
       if (inputRef.current) {
         inputRef.current.type = prev ? 'password' : 'text';
@@ -99,7 +99,7 @@ const PwdConfirmInput = ({
           <button
             type="button"
             className="absolute right-0 top-[2.7rem] mr-10 text-sub-2"
-            onClick={toggleShowPwd}
+            onClick={handleToggleShowPwd}
           >
             <svg className="size-3.5 fill-current text-gray-200">
               <use

@@ -168,7 +168,7 @@ const JoinPartyPage = () => {
           detail_address,
           participate_party: [
             ...(loginUserData?.participating_party || []),
-            partyId,
+            'uh9y0kfq4nxf1lx',
           ],
         },
         {

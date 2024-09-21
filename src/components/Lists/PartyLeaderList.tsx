@@ -7,7 +7,7 @@ const PartyLeaderList = ({ data }) => {
     <ul>
       {/* 가져온 데이터 전달 */}
       {data.map((d) => (
-        <PartyLeader key={} props={} />
+        <PartyLeader key={} item={data} />
       ))}
     </ul>
   );

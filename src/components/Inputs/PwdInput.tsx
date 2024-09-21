@@ -55,7 +55,7 @@ const PwdInput = ({
     }
   };
 
-  const handleShowPwd = (ref: React.RefObject<HTMLInputElement>) => {
+  const handleToggleShowPwd = (ref: React.RefObject<HTMLInputElement>) => {
     setIsShowPwd((prev) => {
       if (ref.current?.value) {
         !prev ? (ref.current.type = 'text') : (ref.current.type = 'password');
@@ -64,7 +64,7 @@ const PwdInput = ({
     });
   };
 
-  const handleDeleteInputVal = () => {
+  const handleClearInput = () => {
     setInputVal('');
     setIsEnteredVal(false);
     setIsValid(true);
@@ -99,15 +99,11 @@ const PwdInput = ({
         />
 
         {isEnteredVal && (
-          <div
-            role="group"
-            aria-label="비밀번호 옵션 버튼 영역"
-            className="absolute right-0 top-1/2 -translate-y-1/2 transform"
-          >
+          <>
             <button
               type="button"
-              className="absolute right-0 top-[2.7rem] mr-10 text-sub-2"
-              onClick={() => handleShowPwd(inputRef)}
+              className="absolute right-0 top-[2.46rem] mr-10 text-sub-2"
+              onClick={handleToggleShowPwd}
             >
               <svg className="size-3.5 fill-current text-gray-200">
                 <use
@@ -119,16 +115,17 @@ const PwdInput = ({
                 />
               </svg>
             </button>
+
             <button
               type="button"
-              className="absolute right-0 top-11 mr-5 text-sub-2"
-              onClick={handleDeleteInputVal}
+              className="absolute right-0 top-[2.47rem] mr-5 text-sub-2"
+              onClick={handleClearInput}
             >
               <svg className="size-3 fill-current text-gray-200">
-                <use href="/assets/sprite-sheet.svg#x" />
+                <use href={'/assets/sprite-sheet.svg#x'} />
               </svg>
             </button>
-          </div>
+          </>
         )}
         {!isValid && isEnteredVal && (
           <p role="alert" className="text-xs font-normal text-errored">
