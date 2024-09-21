@@ -1,6 +1,6 @@
 import useFetch from '@/hooks/useFetch';
 import { useParams } from 'react-router-dom';
-import BlogPosting from './Posting/BlogPosting';
+import BlogPosting from './BlogPosting';
 import { Helmet } from 'react-helmet-async';
 
 const MagazineDetail = () => {
@@ -9,10 +9,6 @@ const MagazineDetail = () => {
 
   const { status, data } = useFetch(ENDPOINT, 'author_id');
 
-  if (status === 'loading') {
-    // 로딩 스피너 만들면 넣어주기
-    return <div>Loading...</div>;
-  }
   if (status !== 'success') return null;
 
   return (
