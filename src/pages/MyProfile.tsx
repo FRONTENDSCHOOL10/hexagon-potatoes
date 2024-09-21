@@ -6,9 +6,8 @@ import SquarePostingCard from '@/components/PostingCard/SquarePostingCard';
 import getPbImageURL from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import getUserById from '@/api/getUserById';
-import getPartyByKeyword from '@/api/getPartyByKeyword';
 import axios from 'axios';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 import getAllPartyByUserId from '@/api/getAllPartyByUserId';
 
 interface PocketBaseRecord {
@@ -136,7 +135,7 @@ const MyProfile = () => {
   );
 
   if (loading) {
-    return <LoadingSpinner className="h-72 w-full" />;
+    return <Skeleton className="h-72 w-full" />;
   }
 
   if (error) {

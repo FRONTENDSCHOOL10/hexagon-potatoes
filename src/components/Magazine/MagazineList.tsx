@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 
 const MagazineList = () => {
   const baseUrl = `${pb.baseUrl}/api/collections/magazine/records`;
@@ -17,7 +17,7 @@ const MagazineList = () => {
   const magazineData = data && Array.isArray(data.items) ? data.items : [];
 
   if (status === 'loading') {
-    return <LoadingSpinner className="h-64 w-full" />;
+    return <Skeleton className="h-64 w-full" />;
   }
 
   if (status === 'error') {

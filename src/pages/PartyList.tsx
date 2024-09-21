@@ -1,6 +1,6 @@
 import getPartyByKeyword from '@/api/getPartyByKeyword';
 import PartyArticleList from '@/components/Lists/PartyArticleList';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 import getLastPath from '@/utils/getLastPath';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -36,7 +36,7 @@ const PartyListPage = () => {
   }, [country]);
 
   if (loading) {
-    return <LoadingSpinner className="h-28 w-full" />;
+    return <Skeleton className="h-28 w-full" />;
   }
 
   if (error) return <p>{error}</p>;

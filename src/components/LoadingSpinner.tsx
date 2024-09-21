@@ -44,7 +44,7 @@ export const PageLoadingSpinner = () => {
   );
 };
 
-export const LoadingSpinner = ({ className = '' }) => {
+export const Skeleton = ({ className = '' }) => {
   return (
     <div
       className={`relative rounded-md bg-gradient-to-b from-gray-200 to-transparent ${className}`} // 위에서 아래로 점점 투명하게
