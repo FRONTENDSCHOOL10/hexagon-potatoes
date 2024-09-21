@@ -4,7 +4,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/pagination';
 import 'swiper/css';
 import { Pagination } from 'swiper/modules';
-import { getPbImagesURL } from '@/utils/getPbImageURL';
+import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import pb from '@/utils/pocketbase';
 
 interface PropTypes {
   profileImg?: string;
@@ -12,6 +13,7 @@ interface PropTypes {
   postingImg?: string;
   content: string;
   label?: string[];
+  party?: boolean;
   data: {
     id: string;
     collectionId: string;
@@ -22,6 +24,8 @@ interface PropTypes {
   };
 }
 
+const url = `${pb.baseUrl}`;
+
 const PostingCard = ({
   profileImg,
   user,
@@ -29,6 +33,7 @@ const PostingCard = ({
   content,
   label,
   data,
+  party,
 }: PropTypes) => {
   const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
   return (
@@ -69,11 +74,22 @@ const PostingCard = ({
           >
             {postingImg.map((img, index) => (
               <SwiperSlide key={index}>
-                <img
-                  src={getPbImagesURL(index, data) || defaultTipImage}
-                  alt={`포스팅 이미지 ${index + 1}`}
-                  className="h-full w-full object-cover object-center"
-                />
+                {party === true ? (
+                  <img
+                    src={
+                      getPbImagesURL(index, data, 'item_photo') ||
+                      defaultTipImage
+                    }
+                    alt={`포스팅 이미지 ${index + 1}`}
+                    className="h-full w-full object-cover object-center"
+                  />
+                ) : (
+                  <img
+                    src={getPbImagesURL(index, data) || defaultTipImage}
+                    alt={`포스팅 이미지 ${index + 1}`}
+                    className="h-full w-full object-cover object-center"
+                  />
+                )}
               </SwiperSlide>
             ))}
           </Swiper>

@@ -4,7 +4,6 @@ import checkDuplicate from '@/utils/checkDuplicate';
 
 interface PropTypes {
   inputName: string;
-  defaultValue?: string;
   onEmailChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
 }
@@ -20,12 +19,7 @@ const FrequencyEmails = [
   '@kakao.com',
 ];
 
-const EmailInput = ({
-  onEmailChange,
-  onValidChange,
-  inputName,
-  defaultValue,
-}: PropTypes) => {
+const EmailInput = ({ onEmailChange, onValidChange, inputName }: PropTypes) => {
   const [isValid, setIsValid] = useState(true);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
@@ -68,9 +62,11 @@ const EmailInput = ({
   };
 
   const handleDropDownClick = (domain: string) => {
-    setInputVal(`${inputVal.split('@')[0]}${domain}`);
+    const updatedInputVal = `${inputVal.split('@')[0]}${domain}`;
+    setInputVal(updatedInputVal);
     setIsDropBox(false);
     setSelected(-1);
+    validateInputVal(updatedInputVal);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -124,7 +120,6 @@ const EmailInput = ({
         id={inputId}
         value={inputVal}
         type="email"
-        defaultValue={defaultValue}
         className={inputStyle(isValid)}
         placeholder="이메일을 입력해 주세요."
         name={inputName}

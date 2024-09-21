@@ -19,12 +19,11 @@ interface UserData {
 
 const PartyDetail = () => {
   const [partyLeaderData, setPartyLeaderData] = useState<UserData | null>(null);
-  const [partyMembersData, setPartyMembersData] = useState<UserData | null>(
-    null
-  );
+
   const [loginUserId, setLoginUserId] = useState<string>('');
   const navigate = useNavigate();
   const { partyId } = useParams<{ partyId: string }>();
+  const encodedFilter = encodeURIComponent(`(party_id='${partyId}')`);
 
   const {
     status: partyStatus,
@@ -38,7 +37,11 @@ const PartyDetail = () => {
     status: postingStatus,
     data: postingData,
     error: postingErr,
-  } = useFetch(`${import.meta.env.VITE_PB_URL}api/collections/posting/records`);
+  } = useFetch(
+    `${import.meta.env.VITE_PB_URL}api/collections/party_member/records?filter=${encodedFilter}`,
+    'member_id'
+  );
+  console.log(postingData?.items[0].item_photo);
 
   useEffect(() => {
     const fetchPartyLeader = async (): Promise<void> => {
@@ -81,7 +84,7 @@ const PartyDetail = () => {
       <section>
         <h1 className="sr-only">파티 상세 페이지</h1>
 
-        {partyStatus === 'success' && partyLeaderData && postingData && (
+        {partyStatus === 'success' && partyLeaderData && (
           <>
             <article className="flex flex-col gap-y-3.5">
               <h2 className="mt-4 text-heading-1">파티 리더 프로필</h2>
@@ -95,7 +98,7 @@ const PartyDetail = () => {
                 customs_limit={partyData.target_members}
                 dutiesLimit={partyData.dutiesLimit || '0'}
                 weight={partyData.weight}
-                current_members={String(partyData.member_ids.length) || '0'}
+                current_members={String(partyData.member_ids?.length) || '0'}
               />
             </article>
 
@@ -132,15 +135,15 @@ const PartyDetail = () => {
                 파티원들은 이런 물품을 구매했어요
               </h2>
               <ul>
-                {postingData.items.map((post) => (
+                {postingData?.items.map((post) => (
                   <li key={post.id}>
                     <PostingCard
                       profileImg={post.profile_photo}
-                      user={post.nickname}
-                      postingImg={post.photo[0]}
-                      content={post.content}
-                      label={post.tag}
-                      // data={}
+                      user={post.expand.member_id.nickname}
+                      postingImg={post.item_photo}
+                      party={true}
+                      content={post.item_name}
+                      data={post}
                     />
                   </li>
                 ))}
