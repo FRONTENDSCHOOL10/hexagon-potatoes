@@ -1,11 +1,11 @@
-import React, { memo, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { memo, useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import FloatingMenu from './FloatingMenu';
 import { Tooltip } from 'react-tooltip';
 
 const NavigationBar = memo(() => {
   const [isClicked, setIsClicked] = useState(false);
-
+  const location = useLocation();
   const defaultStyle = (isActive: boolean) => {
     return `flex flex-1 items-center justify-center ${
       isActive ? 'text-[#0A73F9]' : 'text-[#CAD4E7]'
@@ -18,6 +18,10 @@ const NavigationBar = memo(() => {
   const handleOverlayClick = () => {
     setIsClicked(false);
   };
+  useEffect(() => {
+    // 페이지 변경 시 상태 초기화
+    setIsClicked(false);
+  }, [location]);
 
   return (
     <>
