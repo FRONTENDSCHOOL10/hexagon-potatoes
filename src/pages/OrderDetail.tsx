@@ -11,7 +11,6 @@ import Payment from '@/components/Payment/Payment';
 import Button from '@/components/Buttons/Button';
 import { Helmet } from 'react-helmet-async';
 
-// 아이템 데이터 타입
 interface ItemData {
   nickname: string;
   item_photo: string;
@@ -21,7 +20,6 @@ interface ItemData {
   item_size: string;
 }
 
-// 유저 데이터 타입
 interface UserData {
   name: string;
   address: string;
@@ -29,17 +27,9 @@ interface UserData {
   personal_code: string;
 }
 
-// 인증된 사용자 데이터 타입
 interface AuthUserData {
   id: string;
   token: string;
-}
-
-// API 응답 타입
-interface ApiResponse<T> {
-  status: 'success' | 'error' | 'loading';
-  data: T | null;
-  error: string | null;
 }
 
 const itemsData: ItemData[] = [
@@ -109,13 +99,13 @@ const OrderDetailPage = () => {
     fetchAuthData();
   }, []);
 
-  const { status: loginUserStatus, data: loginUserData } = useFetch<UserData>(
+  const { status: loginUserStatus, data: loginUserData } = useFetch(
     authUserData.id
       ? `${import.meta.env.VITE_PB_URL}api/collections/users/records/${authUserData.id}`
       : ''
   );
 
-  const { status: joinedPartyStatus, data: joinedPartyData } = useFetch<any>(
+  const { status: joinedPartyStatus, data: joinedPartyData } = useFetch(
     `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`
   );
 
@@ -153,7 +143,6 @@ const OrderDetailPage = () => {
     setIsValid(valid);
   };
 
-<<<<<<< HEAD
   const createFormData = () => {
     const formData = new FormData();
     formData.set('name', data.name);
@@ -187,16 +176,6 @@ const OrderDetailPage = () => {
   };
 
   return (
-    loginUserStatus === 'success' && (
-      <section className="flex flex-col gap-y-3">
-        <h1>주문 상세 페이지</h1>
-        <UserNameInput
-          inputName="name"
-          onUserNameChange={handleChangeInput}
-          onValidChange={handleValidChange}
-          value={loginUserData?.name || ''}
-=======
-  return (
     <>
       <Helmet>
         <title>주문 상세 페이지 | Shipmate</title>
@@ -206,64 +185,45 @@ const OrderDetailPage = () => {
         />
         <meta name="keywords" content="주문, 결제, 해외 직구" />
       </Helmet>
-      <section className="flex flex-col gap-y-3">
-        <h1>주문 상세 페이지</h1>
-
-        <UserNameInput
-          inputName="name"
-          onUserNameChange={handleChangeInput}
-          defaultValue={leaderData.name}
-          onValidChange={handleValidChange}
-          isValid={isValid}
->>>>>>> dba4cfeb6749497d9fe564c430abb1d73af9cb55
-        />
-        <AddressInput
-          addressInputName="address"
-          detailAddressInputName="detail_address"
-          onAddressChange={handleChangeInput}
-<<<<<<< HEAD
-          addressValue={loginUserData?.address || ''}
-          detailAddressValue={loginUserData?.detail_address || ''}
-        />
-        {joinedPartyData?.party_leader === loginUserData?.id && (
-=======
-        />
-        {partyData.party_leader === loginUserData.loginUserId && (
->>>>>>> dba4cfeb6749497d9fe564c430abb1d73af9cb55
-          <>
-            <StandardInput
-              type="number"
-              inputLabel="개인통관고유부호"
-              placeholder="개인통관고유부호"
-              inputName="personal_code"
-<<<<<<< HEAD
-              value={loginUserData?.personal_code || ''}
-              onInputChange={handleChangeInput}
-            />
-            <ItemsList data={itemsData} />
-=======
-              onInputChange={handleChangeInput}
-            />
->>>>>>> dba4cfeb6749497d9fe564c430abb1d73af9cb55
-          </>
-        )}
-        <Payment />
-        <Button
-          type="submit"
-          buttonContent="최종 결제하기"
-<<<<<<< HEAD
-          isActive={isActive && isValid}
-          onClick={handleClickPaymentBtn}
-        />
-      </section>
-    )
-=======
-          isActive={isActive}
-          onClick={handleClickPaymentBtn}
-        />
-      </section>
+      {loginUserStatus === 'success' && (
+        <section className="flex flex-col gap-y-3">
+          <h1>주문 상세 페이지</h1>
+          <UserNameInput
+            inputName="name"
+            onUserNameChange={handleChangeInput}
+            onValidChange={handleValidChange}
+            value={loginUserData?.name || ''}
+          />
+          <AddressInput
+            addressInputName="address"
+            detailAddressInputName="detail_address"
+            onAddressChange={handleChangeInput}
+            addressValue={loginUserData?.address || ''}
+            detailAddressValue={loginUserData?.detail_address || ''}
+          />
+          {joinedPartyData?.party_leader === loginUserData?.id && (
+            <>
+              <StandardInput
+                type="number"
+                inputLabel="개인통관고유부호"
+                placeholder="개인통관고유부호"
+                inputName="personal_code"
+                value={loginUserData?.personal_code || ''}
+                onInputChange={handleChangeInput}
+              />
+              <ItemsList data={itemsData} />
+            </>
+          )}
+          <Payment />
+          <Button
+            type="submit"
+            buttonContent="최종 결제하기"
+            isActive={isActive && isValid}
+            onClick={handleClickPaymentBtn}
+          />
+        </section>
+      )}
     </>
->>>>>>> dba4cfeb6749497d9fe564c430abb1d73af9cb55
   );
 };
 
