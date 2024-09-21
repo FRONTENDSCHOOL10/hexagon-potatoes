@@ -9,7 +9,6 @@ interface PropTypes {
 
 const FloatingMenu = memo(({ isClicked, onClick }: PropTypes) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const navigateToPartyPage = () => {
     navigate('/home/partyCollect');
@@ -18,11 +17,6 @@ const FloatingMenu = memo(({ isClicked, onClick }: PropTypes) => {
   const navigateToCommunityPage = () => {
     navigate('/home/writepost');
   };
-
-  useEffect(() => {
-    // 페이지 변경 시 상태 초기화
-    isClicked = false;
-  }, [location]);
 
   const popBtnStyle = {
     base: 'flex items-center gap-2 ',
