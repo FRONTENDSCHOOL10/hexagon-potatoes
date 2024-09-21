@@ -30,6 +30,7 @@ const Dropdown = ({
     paddingRight: '40px',
     paddingLeft: '20px',
     textAlign: 'left',
+    height: '2.8125rem',
   };
 
   const handleDropdownVal = (e: React.ChangeEvent<HTMLSelectElement>) => {

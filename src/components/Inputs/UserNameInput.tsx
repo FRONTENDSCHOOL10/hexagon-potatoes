@@ -3,21 +3,20 @@ import { validateName } from '@/utils/validate';
 
 interface PropTypes {
   inputName: string;
-  defaultValue?: string;
+  value?: string;
   onUserNameChange: (name: string) => (value: string | number) => void;
   onValidChange: (validation: boolean) => void;
 }
 
 const UserNameInput = ({
   inputName,
-  defaultValue,
+  value,
   onUserNameChange,
   onValidChange,
 }: PropTypes) => {
-  const [inputVal, setInputVal] = useState(defaultValue || '');
+  const [inputVal, setInputVal] = useState(value || '');
   const [isValid, setIsValid] = useState(true);
-  const [isEnteredVal, setIsEnteredVal] = useState(!!defaultValue);
-
+  const [isEnteredVal, setIsEnteredVal] = useState(!!value);
   const inputId = useId();
 
   const inputStyle = `text-sub-2 px-5 py-2 h-[2.8125rem] relative pl-5 pr-16 py-2 rounded-xl w-full border outline-1 ${isValid || !isEnteredVal ? 'outline-mainblue border-gray-200 ' : 'outline-errored border-errored'}`;

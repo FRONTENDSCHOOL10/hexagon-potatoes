@@ -1,13 +1,32 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import pb from '@/utils/pocketbase';
+import useFetch from '@/hooks/useFetch';
 import StandardInput from '@/components/Inputs/StandardInput';
 import Button from '@/components/Buttons/Button';
 import Dropdown from '@/components/Dropdown/Dropdown';
-import { categories } from '@/components/Dropdown/DropdownList';
+
+import { countries } from '@/components/Dropdown/DropdownList';
 import { Helmet } from 'react-helmet-async';
 
-const partyData = {
+interface PartyData {
+  party_name: string;
+  party_about: string;
+  party_notice: string;
+  personal_code: string;
+  target_members: string;
+  weight: string;
+  country: string;
+  participation_deadline: string;
+}
+
+interface AuthUserData {
+  id: string | null;
+  token: string | null;
+}
+
+const initialPartyData: PartyData = {
   party_name: '',
   party_about: '',
   party_notice: '',
@@ -15,32 +34,73 @@ const partyData = {
   target_members: '',
   weight: '',
   country: '',
-  size: '',
   participation_deadline: '',
 };
 
 const PartyCollect = () => {
-  const [formData, setFormData] = useState(partyData);
+  const [data, setData] = useState<PartyData>(initialPartyData);
+  const [authUserData, setAuthUserData] = useState<AuthUserData>({
+    id: null,
+    token: null,
+  });
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
-  const handleClickNextBtn = () => {
-    // 모든 인풋이 채워졌는지 확인
-    navigate('/home/JoinParty');
-  };
 
-  const checkInputFilled = (data: typeof formData) => {
-    // 모든 인풋이 채워져 있는지 확인
-    const isFilled = Object.values(data).every(
-      (d) => d !== undefined && d !== null && d !== ''
+  useEffect(() => {
+    try {
+      const id = localStorage.getItem('authId');
+      const token = localStorage.getItem('authToken');
+      setAuthUserData({ id, token });
+    } catch (error) {
+      console.error('Error fetching auth data from localStorage:', error);
+    }
+  }, []);
+
+  const checkInputFilled = (updatedData: PartyData) => {
+    const isFilled = Object.values(updatedData).every(
+      (value) => value !== undefined && value !== null && value !== ''
     );
     setIsActive(isFilled);
   };
 
   const handleChangeInput = (inputName: string) => (value: string | number) => {
-    // 데이터 받아와서 업데이트
-    const updatedData = { ...formData, [inputName]: value };
-    setFormData(updatedData);
+    const updatedData = { ...data, [inputName]: value };
+    setData(updatedData);
     checkInputFilled(updatedData);
+  };
+
+  const createFormData = () => {
+    const formData = new FormData();
+    formData.append('party_name', data.party_name);
+    formData.append('party_leader', authUserData.id || '');
+    formData.append('country', data.country);
+    formData.append('participation_deadline', data.participation_deadline);
+    formData.append('party_about', data.party_about);
+    formData.append('party_notice', data.party_notice);
+    formData.append('personal_code', data.personal_code);
+    formData.append('target_members', data.target_members);
+    formData.append('weight', data.weight);
+
+    return formData;
+  };
+
+  const fetchData = async () => {
+    const formData = createFormData();
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_PB_URL}api/collections/party/records`,
+        formData
+      );
+      const partyId = response.data.id;
+      navigate(`/home/JoinParty`, { state: { partyId } });
+    } catch (error) {
+      console.error('Error creating party:', error);
+    }
+  };
+
+  // Handle next button click
+  const handleClickNextBtn = async () => {
+    await fetchData();
   };
 
   return (
@@ -53,11 +113,12 @@ const PartyCollect = () => {
         />
         <meta
           name="keyword"
-          content={`해외 직구, 직구, ${formData.country}, 쇼핑, 파티, 모집, 상품`}
+          content={`해외 직구, 직구, ${data.country}, 쇼핑, 파티, 모집, 상품`}
         />
       </Helmet>
       <section className="flex flex-col gap-y-3">
         <h1>파티 모집 페이지</h1>
+
         <StandardInput
           type="text"
           inputLabel="파티 이름"
@@ -65,55 +126,63 @@ const PartyCollect = () => {
           inputName="party_name"
           onInputChange={handleChangeInput}
         />
+
         <StandardInput
           type="text"
           inputLabel="파티 소개"
-          inputName="party_about"
           placeholder="파티 소개"
+          inputName="party_about"
           onInputChange={handleChangeInput}
         />
+
         <StandardInput
           type="text"
           inputLabel="공지사항"
+          placeholder="공지 사항을 입력해 주세요"
           inputName="party_notice"
           onInputChange={handleChangeInput}
-          placeholder="공지 사항을 입력해 주세요"
         />
+
         <StandardInput
           type="number"
           inputLabel="개인통관고유부호"
+          placeholder="개인통관고유부호"
           inputName="personal_code"
           onInputChange={handleChangeInput}
-          placeholder="개인통관고유부호"
         />
+
         <Dropdown
-          list={categories}
+          list={countries}
           label="직구할 국가"
           dropdownName="country"
           onInputChange={handleChangeInput}
           defaultMsg="직구할 국가를 선택해 주세요"
         />
+
         <StandardInput
           type="number"
           inputLabel="모집 인원"
+          placeholder="모집 인원"
           inputName="target_members"
           onInputChange={handleChangeInput}
-          placeholder="모집 인원"
         />
+
         <StandardInput
           type="number"
           inputLabel="무게 입력"
+          placeholder="물건 당 최대 무게 (kg)"
           inputName="weight"
           onInputChange={handleChangeInput}
-          placeholder="물건 당 최대 무게 (kg)"
         />
+
         <StandardInput
           type="date"
           inputLabel="참여 마감일"
+          placeholder="참여 마감일"
           inputName="participation_deadline"
           onInputChange={handleChangeInput}
-          placeholder="참여 마감일"
         />
+
         <Button
           type="button"
           buttonContent="다음으로"
