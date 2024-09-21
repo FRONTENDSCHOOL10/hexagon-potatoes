@@ -1,6 +1,6 @@
 import useFetch from '@/hooks/useFetch';
 import { useParams } from 'react-router-dom';
-import BlogPosting from './Posting/BlogPosting';
+import BlogPosting from './BlogPosting';
 import { Helmet } from 'react-helmet-async';
 
 const TipDetail = () => {

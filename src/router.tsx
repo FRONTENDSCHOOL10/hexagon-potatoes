@@ -28,15 +28,15 @@ const Magazine = lazy(() => import('@/pages/Community/Magazine'));
 const Following = lazy(() => import('@/pages/Community/Following'));
 const PopularPost = lazy(() => import('@/pages/Community/PopularPost'));
 const UserTip = lazy(() => import('@/pages/Community/UserTip'));
-const TipDetail = lazy(() => import('@/pages/TipDetail'));
-const BoastDetail = lazy(() => import('@/pages/BoastDetail'));
+const TipDetail = lazy(() => import('@/pages/Posting/TipDetail'));
+const BoastDetail = lazy(() => import('@/pages/Posting/BoastDetail'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const SearchPage = lazy(() => import('@/pages/Search'));
 const SearchResultPage = lazy(() => import('@/pages/SearchResult'));
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const Setting = lazy(() => import('@/pages/Setting'));
 const Notifications = lazy(() => import('@/pages/Notifications'));
-const WritePost = lazy(() => import('@/pages/WritePost'));
+const WritePost = lazy(() => import('@/pages/Posting/WritePost'));
 const EmptyPage = lazy(() => import('@/pages/EmptyPage'));
 const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 const NotificationSettings = lazy(() => import('@/pages/NotificationSettings'));
@@ -51,7 +51,7 @@ const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
 const PartyListPage = lazy(() => import('@/pages/PartyList'));
 const JoinPartyPage = lazy(() => import('@/pages/JoinParty'));
 const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'));
-const MagazineDetail = lazy(() => import('@/pages/MagazineDetail'));
+const MagazineDetail = lazy(() => import('@/pages/Posting/MagazineDetail'));
 const ProfileEdit = lazy(() => import('@/pages/ProfileEdit'));
 const MyProfile = lazy(() => import('@/pages/MyProfile'));
 
@@ -212,11 +212,11 @@ const routes = [
       },
       {
         path: 'profile-edit',
-        element:  <ProtectedSuspenseRoute component={ProfileEdit} />,
+        element: <ProtectedSuspenseRoute component={ProfileEdit} />,
       },
       {
         path: 'my-profile',
-        element:  <ProtectedSuspenseRoute component={MyProfile} />,
+        element: <ProtectedSuspenseRoute component={MyProfile} />,
       },
       {
         path: '/home/chat/:chatId',
