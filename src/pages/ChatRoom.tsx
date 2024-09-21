@@ -25,33 +25,58 @@ const ChatRoom = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [nickname, setNickname] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (pageNum: number) => {
     try {
       setLoading(true);
-      const response = await pb.collection('chat_message').getList<MessageType>(1, 50, {
+      const response = await pb.collection('chat_message').getList<MessageType>(pageNum, 20, {
         filter: `chat_id="${chatId}"`,
         expand: 'sender_id',
+        sort: '-created', 
       });
-      setMessages(response.items);
 
-      if (response.items.length > 0) {
+      if (response.items.length < 20) {
+        setHasMore(false); 
+      }
+
+      if (pageNum === 1) {
+        setMessages(response.items.reverse()); 
+        scrollToBottom(); 
+      } else {
+        setMessages((prevMessages) => [...response.items.reverse(), ...prevMessages]);
+      }
+
+      if (response.items.length > 0 && pageNum === 1) {
         setNickname(response.items[0].expand?.sender_id?.nickname || '알 수 없음');
       }
     } catch (error) {
       console.error('메시지를 가져오는 중 문제가 발생했습니다:', error);
     } finally {
       setLoading(false);
-      scrollToBottom();
     }
   };
 
   useEffect(() => {
-    fetchMessages();
+    fetchMessages(1);
 
-    const unsubscribe = pb.collection('chat_message').subscribe('*', () => {
-      fetchMessages();
+    const unsubscribe = pb.collection('chat_message').subscribe('*', async (e) => {
+      if (e.action === 'create' && e.record.chat_id === chatId) {
+        const expandedMessage = await pb.collection('chat_message').getOne<MessageType>(e.record.id, {
+          expand: 'sender_id',
+        });
+
+        setMessages((prevMessages) => {
+          const isMessageExist = prevMessages.some((msg) => msg.id === e.record.id);
+          if (!isMessageExist) {
+            return [...prevMessages, expandedMessage];
+          }
+          return prevMessages;
+        });
+        setTimeout(scrollToBottom, 100);
+      }
     });
 
     return () => {
@@ -63,6 +88,16 @@ const ChatRoom = () => {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const loadMoreMessages = () => {
+    if (hasMore) {
+      setPage((prevPage) => {
+        const nextPage = prevPage + 1;
+        fetchMessages(nextPage);
+        return nextPage;
+      });
+    }
   };
 
   const formatTimeDifference = (timestamp: string) => {
@@ -85,7 +120,7 @@ const ChatRoom = () => {
         message_content: message,
       });
       setMessage('');
-      scrollToBottom();
+      setTimeout(scrollToBottom, 100);
     } catch (error) {
       console.error('메시지 전송 중 오류가 발생했습니다:', error);
     }
@@ -97,17 +132,25 @@ const ChatRoom = () => {
     }
   };
 
-  if (loading) {
+  if (loading && page === 1) {
     return <p>Loading messages...</p>;
   }
 
   return (
     <div className="relative h-screen flex flex-col">
       <Helmet>
-        <title>{nickname ? `${nickname}와의 채팅방` : `${chatId}와의 채팅방`}</title>
+        <title>{nickname ? `${nickname} 의 채팅방` : `${chatId}와의 채팅방`}</title>
       </Helmet>
 
       <div className="flex-1 p-4 pb-12">
+        {hasMore && (
+          <button
+            onClick={loadMoreMessages}
+            className="text-blue-500 mb-4"
+          >
+            이전 메시지 더보기
+          </button>
+        )}
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -126,7 +169,9 @@ const ChatRoom = () => {
                 ) : (
                   <DefaultProfileSVG size={32} />
                 )}
-                <span className="text-xs text-gray-500">{msg.expand?.sender_id?.nickname || '알 수 없음'}</span>
+                <span className="text-xs text-gray-500">
+                  {msg.expand?.sender_id?.nickname || '알 수 없음'}
+                </span>
               </div>
             )}
             <div
@@ -138,15 +183,13 @@ const ChatRoom = () => {
             >
               <p className="text-sm">{msg.message_content}</p>
             </div>
-            <p className="text-xs text-gray-600">
-              {formatTimeDifference(msg.created)}
-            </p>
+            <p className="text-xs text-gray-600">{formatTimeDifference(msg.created)}</p>
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="sticky bottom-12 flex items-center gap-2 pb-5">
+      <div className="sticky bottom-12 flex items-center gap-2 pt-3 pb-3 bg-white z-[60]">
         <input
           type="text"
           value={message}
