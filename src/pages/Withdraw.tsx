@@ -1,13 +1,60 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StandardInput from '@/components/Inputs/StandardInput';
 import PwdInput from '@/components/Inputs/PwdInput';
 import Button from '@/components/Buttons/Button';
+import Alert from '@/components/Alert/Alert';
+import { useNavigate } from 'react-router-dom'; 
+
+interface ProfileType {
+  id: string;
+  user_email: string;
+}
 
 const Withdraw = () => {
   const [selectedReason, setSelectedReason] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showReasonInput, setShowReasonInput] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const navigate = useNavigate(); 
+
+  useEffect(() => {
+    const fetchUserEmail = async () => {
+      const userId = localStorage.getItem('authId'); 
+      const authToken = localStorage.getItem('authToken'); 
+
+      if (!userId) {
+        setError('사용자 정보를 가져올 수 없습니다. 다시 로그인 해주세요.');
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_PB_API}/collections/users/records/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`, 
+            },
+          }
+        );
+
+        if (response.data && response.data.user_email) {
+          setEmail(response.data.user_email);
+        } else {
+          setError('사용자 정보를 찾을 수 없습니다.');
+        }
+      } catch (error) {
+        console.error('Error fetching user email:', error);
+        setError('사용자 이메일을 불러오는 중 오류가 발생했습니다.');
+      }
+    };
+
+    fetchUserEmail();
+  }, []);
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
@@ -17,23 +64,14 @@ const Withdraw = () => {
     setIsPasswordValid(isValid);
   };
 
-
-  const [checkboxes, setCheckboxes] = useState({
-    notUsed: false,
-    inconvenientUI: false,
-    complicatedUse: false,
-    privacyConcerns: false,
-    appErrors: false,
-    other: false,
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const handleReasonChange = (value: string) => {
+    setSelectedReason(value);
+  };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckboxes({
-      ...checkboxes,
-      [e.target.name]: e.target.checked,
-    });
+    if (e.target.name === 'other') {
+      setShowReasonInput(e.target.checked);
+    }
   };
 
   const handleWithdraw = async (e: React.FormEvent) => {
@@ -42,35 +80,16 @@ const Withdraw = () => {
       alert('비밀번호를 입력해주세요.');
       return;
     }
-    
+
+    if (!email) {
+      alert('이메일 정보를 불러오지 못했습니다. 다시 시도해주세요.');
+      return;
+    }
+
     try {
       setIsLoading(true);
 
-      // 인증 API 엔드포인트 설정
-      const endpoint = `${import.meta.env.VITE_PB_API}/collections/users/auth-with-password`;
-      const userId = localStorage.getItem('authId');
-
-      // 비밀번호 확인 요청
-      const passwordResponse = await axios.post(endpoint, {
-        email: localStorage.getItem('authEmail'), // 인증을 위한 이메일
-        password: password, // 입력된 비밀번호
-      });
-
-      if (!passwordResponse.data) {
-        setError('비밀번호가 일치하지 않습니다.');
-        setIsLoading(false);
-        return;
-      }
-
-      // 사용자 삭제 API 엔드포인트 설정
-      const deleteEndpoint = `${import.meta.env.VITE_PB_API}/collections/users/records/${userId}`;
-      await axios.delete(deleteEndpoint);
-
-      alert('계정이 성공적으로 삭제되었습니다.');
-
-      // 로컬 스토리지 삭제 및 리디렉션
-      localStorage.clear();
-      window.location.href = '/'; // 홈 또는 로그인 페이지로 리디렉션
+      setAlertVisible(true);
     } catch (error) {
       console.error('Error during account deletion:', error);
       setError('계정 삭제 중 오류가 발생했습니다.');
@@ -79,8 +98,22 @@ const Withdraw = () => {
     }
   };
 
+  const handleCloseAlert = () => {
+    setAlertVisible(false);
+    localStorage.clear();
+    navigate('/');
+  };
+
   return (
     <div className="gap-[1rem]">
+      {alertVisible && (
+        <Alert
+          type="notice"
+          title="탈퇴 완료"
+          subtext="계정이 성공적으로 삭제되었습니다."
+          onClose={handleCloseAlert}
+        />
+      )}
       <h1 className="text-h2 text-black my-[1.25rem]">
         정말 떠나시는 건가요? <br />한 번 더 생각해 보지 않으시겠어요?
       </h1>
@@ -90,27 +123,69 @@ const Withdraw = () => {
       </p>
 
       <form onSubmit={handleWithdraw} className="space-y-4">
-        {Object.entries(checkboxes).map(([key, value]) => (
-          <div key={key}>
-            <label className="custom-checkbox">
-              <input
-                type="checkbox"
-                name={key}
-                checked={value}
-                onChange={handleCheckboxChange}
-                className="hidden"
-              />
-              <span className="checkbox-custom mr-2"></span> {key}
-            </label>
-          </div>
-        ))}
+        <div className="flex flex-col gap-2">
+          <label className="custom-checkbox">
+            <input
+              type="checkbox"
+              name="notUsed"
+              onChange={handleCheckboxChange}
+              className="hidden"
+            />
+            <span className="checkbox-custom mr-2"></span> 사용하지 않음
+          </label>
+          <label className="custom-checkbox">
+            <input
+              type="checkbox"
+              name="inconvenientUI"
+              onChange={handleCheckboxChange}
+              className="hidden"
+            />
+            <span className="checkbox-custom mr-2"></span> UI가 불편함
+          </label>
+          <label className="custom-checkbox">
+            <input
+              type="checkbox"
+              name="complicatedUse"
+              onChange={handleCheckboxChange}
+              className="hidden"
+            />
+            <span className="checkbox-custom mr-2"></span> 사용법이 복잡함
+          </label>
+          <label className="custom-checkbox">
+            <input
+              type="checkbox"
+              name="privacyConcerns"
+              onChange={handleCheckboxChange}
+              className="hidden"
+            />
+            <span className="checkbox-custom mr-2"></span> 개인정보 우려
+          </label>
+          <label className="custom-checkbox">
+            <input
+              type="checkbox"
+              name="appErrors"
+              onChange={handleCheckboxChange}
+              className="hidden"
+            />
+            <span className="checkbox-custom mr-2"></span> 앱 오류
+          </label>
+          <label className="custom-checkbox">
+            <input
+              type="checkbox"
+              name="other"
+              onChange={handleCheckboxChange}
+              className="hidden"
+            />
+            <span className="checkbox-custom mr-2"></span> 기타
+          </label>
+        </div>
 
-        {checkboxes.other && (
+        {showReasonInput && (
           <StandardInput
             type="text"
             inputName="reason"
             defaultValue=""
-            onInputChange={(value) => setSelectedReason(value)}
+            onInputChange={handleReasonChange}
             inputLabel="탈퇴 사유"
             placeholder="탈퇴 사유를 입력해주세요."
           />
@@ -118,14 +193,14 @@ const Withdraw = () => {
 
         <p className="text-errored text-sub-1">
           계정 삭제 시 회원님의 모든 콘텐츠와 활동 기록이 <br /> 삭제됩니다.
-          삭제된 정보는 복구할 수 없으니 신중하게 결정해주세요.
+          삭제된 정보는 복구할 수 없으니 <br /> 신중하게 결정해주세요.
         </p>
 
-       <PwdInput
-        inputName="password"
-        onPwdChange={handlePasswordChange}
-        onValidChange={handlePasswordValidation} 
-      />
+        <PwdInput
+          inputName="password"
+          onPwdChange={handlePasswordChange}
+          onValidChange={handlePasswordValidation}
+        />
 
         {error && <p className="text-error">{error}</p>}
 

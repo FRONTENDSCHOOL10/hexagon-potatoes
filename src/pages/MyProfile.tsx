@@ -65,7 +65,6 @@ const MyProfile = () => {
       }
     };
 
-    // 게시물 데이터 가져오기
     const fetchPosts = async (userId: string) => {
       try {
         const response = await axios.get(
@@ -82,7 +81,6 @@ const MyProfile = () => {
       }
     };
 
-    // 파티 데이터 가져오기
     const fetchPartyData = async (nickname: string) => {
       try {
         const partyData = await getAllPartyByUserId(nickname);
@@ -105,12 +103,8 @@ const MyProfile = () => {
     profile && (
       <NameCard
         name={profile.nickname}
-        subtext={profile.user_desc}
-        profileImg={
-          profile.profile_photo
-            ? getPbImageURL(url, profile, 'profile_photo')
-            : ''
-        }
+        subtext={profile.user_desc || '소개가 없습니다.'}
+        profileImg={profile.profile_photo}
         type="editProfile"
         id={profile.id}
       />
@@ -120,7 +114,7 @@ const MyProfile = () => {
     return parties.length > 0 ? (
       <PartyArticleList data={parties} />
     ) : (
-      <p>파티가 없습니다.</p>
+      <p className="text-gray-300 text-sub-2">파티가 없습니다.</p>
     );
   };
 
@@ -129,7 +123,7 @@ const MyProfile = () => {
       {posts.length > 0 ? (
         posts.map((post) => <SquarePostingCard key={post.id} data={post} />)
       ) : (
-        <p>게시물이 없습니다.</p>
+        <p className="text-gray-300 text-sub-2">게시물이 없습니다.</p>
       )}
     </ul>
   );
@@ -147,11 +141,11 @@ const MyProfile = () => {
       {renderProfileHeader()}
       <MyprofileFollower />
       <section className="mt-4">
-        <h2 className="text-xl font-bold">내 파티 목록</h2>
+        <h2 className="text-h3 text-black font-semibold pb-3">내 파티 목록</h2>
         {renderPartyList()}
       </section>
       <section className="mt-4">
-        <h2 className="text-xl font-bold">내 게시물</h2>
+        <h2 className="text-h3 text-black font-semibold pb-3">내 게시물</h2>
         {renderPosts()}
       </section>
     </div>
