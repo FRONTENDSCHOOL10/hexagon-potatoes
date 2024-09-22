@@ -12,11 +12,11 @@ const Magazine = ({ id, title, label, content, img }: PropTypes) => {
   const labelStyle = (label: any) => {
     switch (label) {
       case '이벤트':
-        return 'absolute left-3 top-3 z-10 rounded-lg  px-2 py-1 text-caption text-white bg-mainblue';
+        return 'absolute left-3 top-3 z-10 rounded-lg px-2 py-1 text-caption font-bold text-[#24FF78] bg-[#003DA3]'; // 적합
       case '공지사항':
-        return 'absolute left-3 top-3 z-10 rounded-lg  px-2 py-1 text-caption bg-maingreen text-mainblue';
+        return 'absolute left-3 top-3 z-10 rounded-lg px-2 py-1 text-caption font-bold bg-[#003DA3] text-white'; // 검정 텍스트로 변경
       default:
-        return 'absolute left-3 top-3 z-10 rounded-lg  px-2 py-1 text-caption text-white bg-mainblue';
+        return 'absolute left-3 top-3 z-10 rounded-lg px-2 py-1 text-caption font-bold text-black bg-[#24FF78]'; // 적합
     }
   };
   return (
