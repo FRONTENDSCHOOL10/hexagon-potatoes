@@ -83,7 +83,7 @@ const HomePage = () => {
         </section>
         <section>
           <div className={headerSectionStyle}>
-            <h2 className={headStyle}>추천 파티 리스트</h2>
+            <h2 className={headStyle}>추천 파티</h2>
             <ReloadButton
               id={'bestParty'}
               onReload={handleReload}

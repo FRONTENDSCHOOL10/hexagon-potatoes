@@ -132,7 +132,7 @@ const BestPartyRandom = React.memo(
       : null;
 
     return type === 'party' ? (
-      <div>
+      <div aria-label="추천 파티">
         {randomParty ? (
           <NameCard
             name={randomParty.party_name}
@@ -152,17 +152,20 @@ const BestPartyRandom = React.memo(
     ) : (
       <div>
         {randomBestLeader ? (
-          <PartyLeader
-            item={{
-              ...randomBestLeader.leaderData,
-              profile_photo: getPbImageURL(
-                url,
-                randomBestLeader.leaderData,
-                'profile_photo'
-              ),
-              participating_party: randomBestLeader.partyData,
-            }}
-          />
+          <ul aria-label="우수 파티장 프로필">
+            <PartyLeader
+              item={{
+                ...randomBestLeader.leaderData,
+                profile_photo: getPbImageURL(
+                  url,
+                  randomBestLeader.leaderData,
+                  'profile_photo'
+                ),
+                participating_party: randomBestLeader.partyData,
+                itemImgAlt: '파티장 프로필',
+              }}
+            />
+          </ul>
         ) : (
           <p>우수 파티장 정보를 불러오는 데 실패했습니다.</p>
         )}
