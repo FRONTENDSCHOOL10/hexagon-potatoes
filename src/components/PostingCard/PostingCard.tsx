@@ -103,7 +103,7 @@ const PostingCard = ({
       </figure>
 
       <footer className="flex h-auto flex-col justify-between gap-0.5 px-3 pb-0.5 pt-3">
-        <p className="text-body-1 text-black">{content}</p>
+        <p className="text-body-1 leading-[1.18rem] text-black">{content}</p>
         <LabelList data={label} />
       </footer>
     </article>
