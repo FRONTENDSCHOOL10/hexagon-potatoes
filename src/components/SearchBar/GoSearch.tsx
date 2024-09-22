@@ -9,7 +9,7 @@ const GoSearch = () => {
       className="relative flex cursor-pointer flex-row items-center justify-end"
       to={'/home/search'}
     >
-      <span className="inline-block w-full rounded-lg bg-gray-100 p-3 text-sub-2 font-semibold text-black text-gray-400 outline-mainblue">
+      <span className="inline-block w-full rounded-lg bg-gray-100 p-3 text-sub-2 font-semibold text-gray-600 outline-mainblue">
         검색어를 입력해 주세요
       </span>
       <div className="absolute px-3">

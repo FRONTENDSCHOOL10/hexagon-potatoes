@@ -12,6 +12,7 @@ import { checkAuthId } from '@/api/auth';
 import Alert from '@/components/Alert/Alert';
 import { PageLoadingSpinner } from '@/components/LoadingSpinner';
 import ChatRoom from '@/pages/ChatRoom';
+import PaymentDetail from './pages/PaymentDetail';
 
 // 레이지 로딩
 const Tutorial = lazy(() => import('@/pages/Tutorial'));
@@ -28,15 +29,15 @@ const Magazine = lazy(() => import('@/pages/Community/Magazine'));
 const Following = lazy(() => import('@/pages/Community/Following'));
 const PopularPost = lazy(() => import('@/pages/Community/PopularPost'));
 const UserTip = lazy(() => import('@/pages/Community/UserTip'));
-const TipDetail = lazy(() => import('@/pages/TipDetail'));
-const BoastDetail = lazy(() => import('@/pages/BoastDetail'));
+const TipDetail = lazy(() => import('@/pages/Posting/TipDetail'));
+const BoastDetail = lazy(() => import('@/pages/Posting/BoastDetail'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const SearchPage = lazy(() => import('@/pages/Search'));
 const SearchResultPage = lazy(() => import('@/pages/SearchResult'));
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const Setting = lazy(() => import('@/pages/Setting'));
 const Notifications = lazy(() => import('@/pages/Notifications'));
-const WritePost = lazy(() => import('@/pages/WritePost'));
+const WritePost = lazy(() => import('@/pages/Posting/WritePost'));
 const EmptyPage = lazy(() => import('@/pages/EmptyPage'));
 const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
 const NotificationSettings = lazy(() => import('@/pages/NotificationSettings'));
@@ -51,9 +52,10 @@ const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
 const PartyListPage = lazy(() => import('@/pages/PartyList'));
 const JoinPartyPage = lazy(() => import('@/pages/JoinParty'));
 const OrderDetailPage = lazy(() => import('@/pages/OrderDetail'));
-const MagazineDetail = lazy(() => import('@/pages/MagazineDetail'));
+const MagazineDetail = lazy(() => import('@/pages/Posting/MagazineDetail'));
 const ProfileEdit = lazy(() => import('@/pages/ProfileEdit'));
 const MyProfile = lazy(() => import('@/pages/MyProfile'));
+const Withdraw = lazy(() => import('@/pages/Withdraw'));
 
 interface PropTypes {
   children: ReactNode;
@@ -66,6 +68,13 @@ interface wrrraperPropTypes {
 
 const Loading = () => <PageLoadingSpinner />;
 
+const isTutorialCompleted = () => {
+  const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
+  const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
+  const isPass = tutorialCompleted || isAlreadyLogin;
+  return isPass ? true : false;
+};
+const isComplete = isTutorialCompleted();
 const PrivateRoute = ({ children }: PropTypes) => {
   const [isValidUser, setIsValidUser] = useState<boolean | null>(null);
   const navigate = useNavigate();
@@ -124,11 +133,27 @@ const PublicSuspenseRoute = ({
 const routes = [
   {
     path: '/tutorial',
-    element: <PublicSuspenseRoute component={Tutorial} />,
+    Component: () => {
+      const isComplete = isTutorialCompleted();
+
+      if (isComplete) {
+        return <Navigate to="/" replace />;
+      }
+
+      return <PublicSuspenseRoute component={Tutorial} />;
+    },
   },
   {
     path: '/',
-    element: <PublicSuspenseRoute component={Landing} />,
+    Component: () => {
+      const isComplete = isTutorialCompleted();
+
+      if (!isComplete) {
+        return <Navigate to="/tutorial" replace />;
+      }
+
+      return <PublicSuspenseRoute component={Landing} />;
+    },
   },
   {
     path: '/login',
@@ -212,11 +237,11 @@ const routes = [
       },
       {
         path: 'profile-edit',
-        element:  <ProtectedSuspenseRoute component={ProfileEdit} />,
+        element: <ProtectedSuspenseRoute component={ProfileEdit} />,
       },
       {
         path: 'my-profile',
-        element:  <ProtectedSuspenseRoute component={MyProfile} />,
+        element: <ProtectedSuspenseRoute component={MyProfile} />,
       },
       {
         path: '/home/chat/:chatId',
@@ -266,6 +291,10 @@ const routes = [
             path: 'update-version',
             element: <ProtectedSuspenseRoute component={UpdateVersion} />,
           },
+          {
+            path: 'withdraw',
+            element: <ProtectedSuspenseRoute component={Withdraw} />,
+          },
         ],
       },
       {
@@ -281,7 +310,7 @@ const routes = [
         element: <ProtectedSuspenseRoute component={PartyListPage} />,
       },
       {
-        path: 'orderDetail',
+        path: 'orderDetail/:partyId',
         element: <ProtectedSuspenseRoute component={OrderDetailPage} />,
       },
       {
@@ -295,6 +324,10 @@ const routes = [
       {
         path: 'search/:keyword',
         element: <ProtectedSuspenseRoute component={SearchResultPage} />,
+      },
+      {
+        path: 'payment/:partyMemberId',
+        element: <ProtectedSuspenseRoute component={PaymentDetail} />,
       },
     ],
   },

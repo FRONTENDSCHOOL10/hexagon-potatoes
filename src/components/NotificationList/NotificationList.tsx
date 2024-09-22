@@ -11,6 +11,7 @@ interface PropTypes {
   isRead: boolean;
   handleReadStatusChange: (id: string, isRead: boolean) => void;
   time: string;
+  partyId: string;
 }
 
 interface NotificationTypeIcon {
@@ -28,6 +29,7 @@ interface NotificationType {
 const NotificationList = ({
   id,
   type,
+  partyId,
   partyName,
   time,
   handleDelete,
@@ -58,12 +60,12 @@ const NotificationList = ({
         </svg>
       ),
       msg: '파티 모집 완료! 추가 정보를 입력하시고 결제를 진행해주세요.',
-      path: `/home/orderDetail/${id}`,
+      path: `/home/orderDetail/${partyId}`,
     },
     joined: {
       icon: <DefaultProfileSVG size={40} />,
       msg: '파티 참여 완료! 참여한 파티를 확인해보세요.',
-      path: `/home/party/${id}`,
+      path: `/home/party/${partyId}`,
     },
     delivery: {
       icon: (
@@ -77,7 +79,7 @@ const NotificationList = ({
         </svg>
       ),
       msg: `"${partyName}" 파티의 배송 현황을 확인하세요.`,
-      path: `/home/party/${id}`,
+      path: `/home/party/${partyId}`,
     },
   };
 

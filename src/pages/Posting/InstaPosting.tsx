@@ -51,6 +51,11 @@ const InstaPosting = ({ item }: PropTypes) => {
     console.log('공유 클릭');
   };
 
+  // <br> 태그를 \n으로 변환하는 함수
+  const formatContent = (content: string) => {
+    return content.replace(/<br\s*\/?>/gi, '\n');
+  };
+
   return (
     <article className="mb-[2.56rem] flex flex-col gap-3 px-3 pb-3">
       {authorId && (
@@ -85,7 +90,9 @@ const InstaPosting = ({ item }: PropTypes) => {
           ))}
         </Swiper>
       )}
-      <p className="w-[21rem] text-body-2">{item.content}</p>
+      <p className="pretendard w-[21rem] whitespace-pre-line text-body-2">
+        {formatContent(item.content)}
+      </p>
       {Array.isArray(item.tag) && item.tag.length > 0 && (
         <LabelList data={item.tag} />
       )}

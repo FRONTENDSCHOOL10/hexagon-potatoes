@@ -55,6 +55,11 @@ const BlogPosting = ({ item, type }: PropTypes) => {
 
   const interleavedContent = interleaveContent(item.content, item.photo);
 
+  // <br> 태그를 \n으로 변환하는 함수
+  const formatContent = (content: string) => {
+    return content.replace(/<br\s*\/?>/gi, '\n');
+  };
+
   return (
     <article className="pretendard mb-[2.56rem] flex flex-col pb-[0.75rem]">
       <header className="flex min-h-[11.38rem] flex-col bg-[#D9D9D9] px-[0.75rem] pb-[0.62rem] pt-[2.81rem] [box-shadow:0px_0px_6px_0px_rgba(0,_0,_0,_0.12)]">
@@ -81,7 +86,6 @@ const BlogPosting = ({ item, type }: PropTypes) => {
 
       <div className="flex flex-col gap-3 px-[0.75rem]">
         <LabelList data={item.tag} />
-        {/* 매거진에 들어가는 블로그 포스팅일때는 이미지가 한장이라서 일반적인 이미지 - 텍스트 형식으로 렌더링 */}
         {type === 'magazine' ? (
           <>
             {item.photo && (
@@ -91,14 +95,17 @@ const BlogPosting = ({ item, type }: PropTypes) => {
                 alt="게시물"
               />
             )}
-            <p className="text-body-2">{item.content}</p>
+            <p className="whitespace-pre-line text-body-2">
+              {formatContent(item.content)}
+            </p>
           </>
         ) : (
-          // 유저팁에 들어가는 블로그 포스팅은 이미지 - 텍스트 적절히 교차 배열되서 랜더링됌
           interleavedContent.map((contentItem, index) => (
             <React.Fragment key={index}>
               {contentItem.type === 'text' ? (
-                <p className="text-body-2">{contentItem.content}</p>
+                <p className="whitespace-pre-line text-body-2">
+                  {formatContent(contentItem.content)}
+                </p>
               ) : (
                 <img
                   className="w-[21rem] object-cover object-center"

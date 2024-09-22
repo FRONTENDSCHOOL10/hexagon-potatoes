@@ -3,7 +3,7 @@ import pb from '@/utils/pocketbase';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
 import { Link } from 'react-router-dom';
 import getPbImageURL from '@/utils/getPbImageURL';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 
 interface ChatType {
   id: string;
@@ -16,7 +16,7 @@ interface ChatType {
   };
   party_id: string;
   party_leader: string;
-  chat_member_id: string;
+  chat_member_id: string[];
   last_message: string;
   last_message_time: string;
 }
@@ -54,9 +54,12 @@ const ChatHome = () => {
           expand: 'party_id.party_leader',
         });
 
-        const userChats = response.items.filter(
-          (chat) => chat.chat_member_id === currentUserId
-        );
+        const userChats = response.items.filter((chat) => {
+          if (Array.isArray(chat.chat_member_id)) {
+            return chat.chat_member_id.includes(currentUserId || '');
+          }
+          return false;
+        });
 
         const chatsWithMessages = await Promise.all(
           userChats.map(async (chat) => {
@@ -90,7 +93,6 @@ const ChatHome = () => {
           })
         );
 
-        // 최신 메시지 순으로 정렬
         const sortedChats = chatsWithMessages.sort(
           (a, b) =>
             new Date(b.last_message_time).getTime() -
@@ -109,7 +111,7 @@ const ChatHome = () => {
   }, [currentUserId]);
 
   if (loading) {
-    return <LoadingSpinner className="h-full w-full" />;
+    return <Skeleton className="h-full w-full" />;
   }
 
   if (!chats.length) {
@@ -117,7 +119,7 @@ const ChatHome = () => {
   }
 
   return (
-    <div className="p-1 space-y-4">
+    <div className="space-y-4 p-1">
       <ul className="divide-y divide-gray-200">
         {chats.map((chat) => {
           const leader = chat?.expand?.party_id?.expand?.party_leader;
@@ -126,20 +128,23 @@ const ChatHome = () => {
             : null;
 
           return (
-            <li key={chat.id} className="flex items-center py-4 border-b">
-              <Link to={`/home/chat/${chat.id}`} className="flex items-center w-full">
+            <li key={chat.id} className="flex items-center border-b py-4">
+              <Link
+                to={`/home/chat/${chat.id}`}
+                className="flex w-full items-center"
+              >
                 {profilePhotoUrl ? (
                   <img
                     src={profilePhotoUrl}
                     alt="프로필"
-                    className="w-10 h-10 rounded-full"
+                    className="h-10 w-10 rounded-full"
                   />
                 ) : (
                   <DefaultProfileSVG size={40} />
                 )}
-                <div className="flex-1 ml-4">
+                <div className="ml-4 flex-1">
                   <p className="text-lg font-semibold">
-                    {leader?.nickname|| '알 수 없음'}
+                    {leader?.nickname || '알 수 없음'}
                   </p>
                   <p className="text-sm">{chat.last_message}</p>
                   <p className="text-sm text-gray-400">

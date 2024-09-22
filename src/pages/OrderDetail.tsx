@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import pb from '@/utils/pocketbase';
+
 import useFetch from '@/hooks/useFetch';
 import StandardInput from '@/components/Inputs/StandardInput';
 import AddressInput from '@/components/Inputs/AddressInput';
@@ -10,6 +11,7 @@ import ItemsList from '@/components/Lists/ItemList';
 import Payment from '@/components/Payment/Payment';
 import Button from '@/components/Buttons/Button';
 import { Helmet } from 'react-helmet-async';
+import Item from '@/components/Lists/Item';
 
 interface ItemData {
   nickname: string;
@@ -31,41 +33,6 @@ interface AuthUserData {
   id: string;
   token: string;
 }
-
-const itemsData: ItemData[] = [
-  {
-    nickname: '주비',
-    item_photo: '',
-    item_name: '유리잔',
-    category: '생활용품',
-    item_weight: 0.3,
-    item_size: '4x15',
-  },
-  {
-    nickname: '소현',
-    item_photo: '',
-    item_name: '향수',
-    category: '미용',
-    item_weight: 0.3,
-    item_size: '6x8',
-  },
-  {
-    nickname: '재명',
-    item_photo: '',
-    item_name: '인형',
-    category: '인형',
-    item_weight: 0.3,
-    item_size: '8x21',
-  },
-  {
-    nickname: '진',
-    item_photo: '',
-    item_name: '헤드셋',
-    category: '음향기기',
-    item_weight: 0.8,
-    item_size: '30x25',
-  },
-];
 
 const initialUserData: UserData = {
   name: '',
@@ -106,7 +73,12 @@ const OrderDetailPage = () => {
   );
 
   const { status: joinedPartyStatus, data: joinedPartyData } = useFetch(
-    `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`
+    `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}?expand=participating_members`,
+    'member_id'
+  );
+
+  const boughtItemInfo = joinedPartyData?.expand.participating_members.find(
+    (d) => d.member_id === loginUserData?.id
   );
 
   useEffect(() => {
@@ -172,7 +144,7 @@ const OrderDetailPage = () => {
 
   const handleClickPaymentBtn = () => {
     updateUserData();
-    navigate('/');
+    navigate(`/home/payment/${boughtItemInfo.id}`);
   };
 
   return (
@@ -201,7 +173,7 @@ const OrderDetailPage = () => {
             addressValue={loginUserData?.address || ''}
             detailAddressValue={loginUserData?.detail_address || ''}
           />
-          {joinedPartyData?.party_leader === loginUserData?.id && (
+          {joinedPartyData?.party_leader === loginUserData?.id ? (
             <>
               <StandardInput
                 type="number"
@@ -211,10 +183,19 @@ const OrderDetailPage = () => {
                 value={loginUserData?.personal_code || ''}
                 onInputChange={handleChangeInput}
               />
-              <ItemsList data={itemsData} />
+              <ItemsList data={joinedPartyData.expand.participating_members} />
             </>
+          ) : (
+            <Item data={boughtItemInfo} />
           )}
-          <Payment />
+
+          {boughtItemInfo && (
+            <Payment
+              productPrice={boughtItemInfo.item_price}
+              shippingFee={2000}
+              customsDuties={2000}
+            />
+          )}
           <Button
             type="submit"
             buttonContent="최종 결제하기"

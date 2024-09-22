@@ -1,10 +1,18 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const Setting = () => {
   const location = useLocation();
+  const navigate = useNavigate(); 
   const isExactSettingRoute = location.pathname === '/home/setting';
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken'); 
+    localStorage.removeItem('authId'); 
+    // 로그아웃 후 리디렉션
+    navigate('/');
+  };
 
   return (
     <>
@@ -19,6 +27,7 @@ const Setting = () => {
       <div className="gap-[1.25rem] space-y-8 p-4">
         {isExactSettingRoute && (
           <>
+            {/* 알림 설정 */}
             <div className="border-b border-gray-200 pb-4">
               <h2 className="mb-2 text-[1rem] font-bold">알림 설정</h2>
               <ul className="space-y-2 text-[0.875rem]">
@@ -104,6 +113,28 @@ const Setting = () => {
                     className="cursor-pointer hover:text-mainblue"
                   >
                     최신버전 업데이트
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div className="pb-4">
+              <h2 className="mb-2 text-[1rem] font-bold">기타</h2>
+              <ul className="space-y-2 text-[0.875rem]">
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="cursor-pointer hover:text-mainblue"
+                  >
+                    로그아웃하기
+                  </button>
+                </li>
+                <li>
+                  <Link
+                    to="withdraw"
+                    className="cursor-pointer hover:text-mainblue"
+                  >
+                    탈퇴하기
                   </Link>
                 </li>
               </ul>

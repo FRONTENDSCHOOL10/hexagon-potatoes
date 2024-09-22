@@ -3,7 +3,7 @@ import PartyArticleList from '@/components/Lists/PartyArticleList';
 import getPartyByKeyword from '@/api/getPartyByKeyword';
 import getLastPath from '@/utils/getLastPath';
 import { Helmet } from 'react-helmet-async';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 
 interface PartyItem {
   type?: 'party' | 'tip';
@@ -37,7 +37,7 @@ const SearchResult = () => {
   }, [keyword]);
 
   if (loading) {
-    return <LoadingSpinner className="h-32 w-full" />;
+    return <Skeleton className="h-32 w-full" />;
   }
   if (error) return <p>{error}</p>;
 

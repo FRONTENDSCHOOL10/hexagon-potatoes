@@ -196,7 +196,6 @@ const JoinPartyPage = () => {
           },
         }
       );
-      console.log(res);
     } catch (error) {
       console.error(error);
     }
@@ -250,21 +249,21 @@ const JoinPartyPage = () => {
             inputName="item_weight"
             type="number"
             inputLabel="상품 무게"
-            placeholder="상품 무게"
+            placeholder="150g"
             onInputChange={handleChangeInput}
           />
           <StandardInput
             inputName="item_size"
             type="text"
             inputLabel="상품 사이즈"
-            placeholder="상품 사이즈"
+            placeholder="12x20x17"
             onInputChange={handleChangeInput}
           />
           <StandardInput
             inputName="item_link"
             type="url"
             inputLabel="상품 링크"
-            placeholder="상품 링크"
+            placeholder="https://www.example.com"
             onInputChange={handleChangeInput}
           />
           <AddressInput

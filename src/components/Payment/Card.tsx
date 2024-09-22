@@ -64,7 +64,7 @@ const Card = () => {
           position: 'relative',
         }}
       >
-        <span className="absolute left-[6.13rem] top-[6.5rem] font-[Pretendard] text-[0.875rem] font-bold not-italic leading-[1.375rem] text-[#CAD4E7]">
+        <span className="pretendard absolute left-[6.13rem] top-[6.5rem] text-[0.875rem] font-bold not-italic leading-[1.375rem] text-[#CAD4E7]">
           카드 추가하기
         </span>
         <button className="absolute left-[7.31rem] top-[3.37rem] flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">

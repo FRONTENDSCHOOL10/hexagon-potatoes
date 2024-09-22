@@ -4,7 +4,7 @@ import NameCard from '@/components/NameCard/NameCard';
 import pb from '@/utils/pocketbase';
 import PartyLeader from './PartyLeader';
 import getPbImageURL from '@/utils/getPbImageURL';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 
 interface User {
   id: string;
@@ -47,6 +47,7 @@ const BestPartyRandom = React.memo(
       useState<RandomBestLeader | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
     const fetchRandomPartyAndLeader = useCallback(async () => {
       const controller = new AbortController();
       const signal = controller.signal;
@@ -107,7 +108,7 @@ const BestPartyRandom = React.memo(
     }, [fetchRandomPartyAndLeader, reloadCount]);
 
     if (loading) {
-      return <LoadingSpinner className="h-28 w-full" />;
+      return <Skeleton className="h-28 w-full" />;
     }
 
     if (error) {
@@ -132,7 +133,7 @@ const BestPartyRandom = React.memo(
       : null;
 
     return type === 'party' ? (
-      <div>
+      <div aria-label="추천 파티">
         {randomParty ? (
           <NameCard
             name={randomParty.party_name}
@@ -152,12 +153,15 @@ const BestPartyRandom = React.memo(
     ) : (
       <div>
         {randomBestLeader ? (
-          <PartyLeader
-            item={{
-              ...randomBestLeader.leaderData,
-              participating_party: randomBestLeader.partyData,
-            }}
-          />
+          <ul aria-label="우수 파티장 프로필">
+            <PartyLeader
+              item={{
+                ...randomBestLeader.leaderData,
+                participating_party: randomBestLeader.partyData,
+                itemImgAlt: '파티장 프로필',
+              }}
+            />
+          </ul>
         ) : (
           <p>우수 파티장 정보를 불러오는 데 실패했습니다.</p>
         )}

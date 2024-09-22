@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import HeaderBar from '../components/HeaderBar/HeaderBar';
-import NavigationBar from '../components/NavigationBar/NavigationBar';
-import { useHeaderConfig } from '../hooks/useHeaderConfig';
+import HeaderBar from '@/components/HeaderBar/HeaderBar';
+import NavigationBar from '@/components/NavigationBar/NavigationBar';
+import { useHeaderConfig } from '@/hooks/useHeaderConfig';
 
 const RootLayout = () => {
   const location = useLocation();

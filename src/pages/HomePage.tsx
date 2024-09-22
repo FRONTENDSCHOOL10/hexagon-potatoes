@@ -6,9 +6,9 @@ import BestPartyRandom from '@/components/Lists/BestPartyRandom';
 import RandomTip from '@/components/Lists/RandomTip';
 import { Helmet } from 'react-helmet-async';
 import { useCallback, useState } from 'react';
-import ReloadButton from '../components/Buttons/ReloadButton';
+import ReloadButton from '@/components/Buttons/ReloadButton';
 
-const headStyle = ` mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-medium`;
+const headStyle = ` mb-[.75rem] pt-4 font-heading-1 text-heading-1 font-bold`;
 const headerSectionStyle = `flex flex-row items-center justify-between`;
 const MAX_RELOADS = 5;
 
@@ -83,7 +83,7 @@ const HomePage = () => {
         </section>
         <section>
           <div className={headerSectionStyle}>
-            <h2 className={headStyle}>추천 파티 리스트</h2>
+            <h2 className={headStyle}>추천 파티</h2>
             <ReloadButton
               id={'bestParty'}
               onReload={handleReload}

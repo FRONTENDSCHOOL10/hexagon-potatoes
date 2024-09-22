@@ -141,7 +141,7 @@ const PartyDetail = () => {
         const { id } = await fetchChatRoom();
         navigate(`/home/chat/${id}`);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     } else {
       const chatRoom = chatRoomData?.items.find((d) =>

@@ -1,5 +1,6 @@
 import getPartyByKeyword from '@/api/getPartyByKeyword';
 import PartyArticleList from '@/components/Lists/PartyArticleList';
+import { Skeleton } from '@/components/LoadingSpinner';
 import getLastPath from '@/utils/getLastPath';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -34,7 +35,10 @@ const PartyListPage = () => {
     fetchParties();
   }, [country]);
 
-  if (loading) return <p>로딩 중...</p>;
+  if (loading) {
+    return <Skeleton className="h-28 w-full" />;
+  }
+
   if (error) return <p>{error}</p>;
 
   const isHaveResult = partyList.length > 0;

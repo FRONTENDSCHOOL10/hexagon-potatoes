@@ -7,6 +7,17 @@ import Button from '@/components/Buttons/Button';
 const Withdraw = () => {
   const [selectedReason, setSelectedReason] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+  };
+
+  const handlePasswordValidation = (isValid: boolean) => {
+    setIsPasswordValid(isValid);
+  };
+
+
   const [checkboxes, setCheckboxes] = useState({
     notUsed: false,
     inconvenientUI: false,
@@ -18,7 +29,7 @@ const Withdraw = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheckboxes({
       ...checkboxes,
       [e.target.name]: e.target.checked,
@@ -35,14 +46,14 @@ const Withdraw = () => {
     try {
       setIsLoading(true);
 
-
+      // 인증 API 엔드포인트 설정
       const endpoint = `${import.meta.env.VITE_PB_API}/collections/users/auth-with-password`;
       const userId = localStorage.getItem('authId');
 
-
+      // 비밀번호 확인 요청
       const passwordResponse = await axios.post(endpoint, {
-        email: localStorage.getItem('authEmail'),
-        password: password,
+        email: localStorage.getItem('authEmail'), // 인증을 위한 이메일
+        password: password, // 입력된 비밀번호
       });
 
       if (!passwordResponse.data) {
@@ -51,15 +62,15 @@ const Withdraw = () => {
         return;
       }
 
-
+      // 사용자 삭제 API 엔드포인트 설정
       const deleteEndpoint = `${import.meta.env.VITE_PB_API}/collections/users/records/${userId}`;
       await axios.delete(deleteEndpoint);
 
       alert('계정이 성공적으로 삭제되었습니다.');
 
-
+      // 로컬 스토리지 삭제 및 리디렉션
       localStorage.clear();
-      window.location.href = '/';
+      window.location.href = '/'; // 홈 또는 로그인 페이지로 리디렉션
     } catch (error) {
       console.error('Error during account deletion:', error);
       setError('계정 삭제 중 오류가 발생했습니다.');
@@ -79,83 +90,20 @@ const Withdraw = () => {
       </p>
 
       <form onSubmit={handleWithdraw} className="space-y-4">
-        <div>
-          <label className="custom-checkbox">
-            <input
-              type="checkbox"
-              name="notUsed"
-              checked={checkboxes.notUsed}
-              onChange={handleCheckboxChange}
-              className="hidden"
-            />
-            <span className="checkbox-custom mr-2"></span> 사용하지 않음
-          </label>
-        </div>
-
-        <div>
-          <label className="custom-checkbox">
-            <input
-              type="checkbox"
-              name="inconvenientUI"
-              checked={checkboxes.inconvenientUI}
-              onChange={handleCheckboxChange}
-              className="hidden"
-            />
-            <span className="checkbox-custom mr-2"></span> UI가 불편함
-          </label>
-        </div>
-
-        <div>
-          <label className="custom-checkbox">
-            <input
-              type="checkbox"
-              name="complicatedUse"
-              checked={checkboxes.complicatedUse}
-              onChange={handleCheckboxChange}
-              className="hidden"
-            />
-            <span className="checkbox-custom mr-2"></span> 서비스 사용 방법이 복잡함
-          </label>
-        </div>
-
-        <div>
-          <label className="custom-checkbox">
-            <input
-              type="checkbox"
-              name="privacyConcerns"
-              checked={checkboxes.privacyConcerns}
-              onChange={handleCheckboxChange}
-              className="hidden"
-            />
-            <span className="checkbox-custom mr-2"></span> 개인정보 유출 우려
-          </label>
-        </div>
-
-        <div>
-          <label className="custom-checkbox">
-            <input
-              type="checkbox"
-              name="appErrors"
-              checked={checkboxes.appErrors}
-              onChange={handleCheckboxChange}
-              className="hidden"
-            />
-            <span className="checkbox-custom mr-2"></span> 앱 오류가 있음
-          </label>
-        </div>
-
-        <div>
-          <label className="custom-checkbox">
-            <input
-              type="checkbox"
-              name="other"
-              checked={checkboxes.other}
-              onChange={handleCheckboxChange}
-              className="hidden"
-            />
-            <span className="checkbox-custom mr-2"></span> 기타
-          </label>
-        </div>
+        {Object.entries(checkboxes).map(([key, value]) => (
+          <div key={key}>
+            <label className="custom-checkbox">
+              <input
+                type="checkbox"
+                name={key}
+                checked={value}
+                onChange={handleCheckboxChange}
+                className="hidden"
+              />
+              <span className="checkbox-custom mr-2"></span> {key}
+            </label>
+          </div>
+        ))}
 
         {checkboxes.other && (
           <StandardInput
@@ -173,16 +121,18 @@ const Withdraw = () => {
           삭제된 정보는 복구할 수 없으니 신중하게 결정해주세요.
         </p>
 
-        <PwdInput inputName="password" onPwdChange={setPassword} />
+       <PwdInput
+        inputName="password"
+        onPwdChange={handlePasswordChange}
+        onValidChange={handlePasswordValidation} 
+      />
 
         {error && <p className="text-error">{error}</p>}
 
         <Button
           type="submit"
           buttonContent="탈퇴하기"
-          isActive={password.length > 0}
-          onClick={handleWithdraw}
-          disabled={isLoading}
+          disabled={isLoading || password.length === 0}
         />
       </form>
     </div>

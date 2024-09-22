@@ -40,7 +40,7 @@ const SearchBar = () => {
         검색
       </label>
       <input
-        className="inline-block w-full rounded-lg bg-gray-100 p-3 text-sub-2 font-semibold text-black outline-mainblue"
+        className="inline-block w-full rounded-lg bg-gray-100 p-3 text-sub-2 font-semibold text-black outline-mainblue placeholder:text-gray-500"
         id="searchInput"
         onChange={handleChangeInput}
         onKeyDown={handleKeyDown}
@@ -48,7 +48,12 @@ const SearchBar = () => {
         type="text"
         placeholder="검색어를 입력해 주세요 (파티 이름, 소개, 닉네임, 국가)"
       />
-      <button className="absolute px-3" onClick={handleMovePage}>
+      <button
+        type="button"
+        className="absolute px-3"
+        aria-label="검색"
+        onClick={handleMovePage}
+      >
         <svg className="size-7 fill-current">
           <use href="/assets/sprite-sheet.svg#search" />
         </svg>
