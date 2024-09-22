@@ -12,6 +12,7 @@ import { checkAuthId } from '@/api/auth';
 import Alert from '@/components/Alert/Alert';
 import { PageLoadingSpinner } from '@/components/LoadingSpinner';
 import ChatRoom from '@/pages/ChatRoom';
+import PaymentDetail from './pages/PaymentDetail';
 
 // 레이지 로딩
 const Tutorial = lazy(() => import('@/pages/Tutorial'));
@@ -309,7 +310,7 @@ const routes = [
         element: <ProtectedSuspenseRoute component={PartyListPage} />,
       },
       {
-        path: 'orderDetail',
+        path: 'orderDetail/:partyId',
         element: <ProtectedSuspenseRoute component={OrderDetailPage} />,
       },
       {
@@ -323,6 +324,10 @@ const routes = [
       {
         path: 'search/:keyword',
         element: <ProtectedSuspenseRoute component={SearchResultPage} />,
+      },
+      {
+        path: 'payment/:partyMemberId',
+        element: <ProtectedSuspenseRoute component={PaymentDetail} />,
       },
     ],
   },

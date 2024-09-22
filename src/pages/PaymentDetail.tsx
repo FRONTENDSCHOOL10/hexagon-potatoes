@@ -2,8 +2,10 @@ import Alert from '@/components/Alert/Alert';
 import Button from '@/components/Buttons/Button';
 import Card from '@/components/Payment/Card';
 import Payment from '@/components/Payment/Payment';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useFetch from '@/hooks/useFetch';
+import pb from '@/utils/pocketbase';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface PropTypes {
   productPrice: number;
@@ -11,12 +13,17 @@ interface PropTypes {
   customsDuties: number;
 }
 
-const PaymentDetail = ({
-  productPrice,
-  shippingFee,
-  customsDuties,
-}: PropTypes) => {
+const PaymentDetail = ({}: PropTypes) => {
+  const { partyMemberId } = useParams<{ partyMemberId: string }>();
   const [showModal, setShowModal] = useState(false);
+  const url = `${pb.baseUrl}api/collections/party_member/records/${partyMemberId}`;
+
+  const { data, error, status } = useFetch(url);
+  const productPrice = data?.item_price;
+
+  // 여긴 추가적으로 채워줘야됌
+  const shippingFee = 0;
+  const customsDuties = 0;
 
   const navigate = useNavigate();
 
@@ -25,9 +32,12 @@ const PaymentDetail = ({
   };
   const handleOnClose = () => {
     console.log('결제완료');
-    navigate('/home/community');
+    navigate('/home');
     // 결제완료 페이지로 연결해야될듯
   };
+
+  if (status !== 'success') return null;
+
   return (
     <>
       <section className="mb-3 ml-3 mt-3 flex h-[13.1rem] flex-col">
