@@ -98,7 +98,7 @@ const WritePost = () => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        timeout: 30000, // 30 seconds timeout
+        timeout: 30000,
       });
       const postingId = response?.data?.id;
       navigate(
@@ -147,7 +147,7 @@ const WritePost = () => {
             placeholder="본문을 입력하세요"
             name="content"
             onChange={(e) => handleInputChange('content', e.target.value)}
-            className="mb-3 h-[25rem] whitespace-pre-wrap rounded-xl border border-gray-200 p-5 font-[Pretendard] text-[0.875rem] font-normal not-italic leading-5 placeholder:text-gray-200"
+            className="pretendard mb-3 h-[25rem] whitespace-pre-wrap rounded-xl border border-gray-200 p-5 text-[0.875rem] font-normal not-italic leading-5 placeholder:text-gray-200"
           ></textarea>
         </div>
         {error && (

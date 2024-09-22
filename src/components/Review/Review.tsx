@@ -19,7 +19,7 @@ const Review = ({ user, profileImg, content, date, starRate }: PropTypes) => {
       <header className="flex flex-row items-center justify-between">
         <span
           aria-label="닉네임"
-          className="flex h-[1.5rem] items-center overflow-ellipsis text-center font-[Pretendard] text-xs font-normal not-italic text-[#020715]"
+          className="pretendard flex h-[1.5rem] items-center overflow-ellipsis text-center text-xs font-normal not-italic text-[#020715]"
         >
           {profileImg ? (
             <img className="mr-1.5 h-6 w-6" src={profileImg} alt="프로필" />
