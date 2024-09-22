@@ -1,29 +1,30 @@
+import { memo, useCallback, useEffect, useState, useMemo } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Tooltip } from 'react-tooltip';
 import formatCurrency from '@/utils/currencyFormat';
 import { formatDateShort, formatDateString } from '@/utils/dateFormatter';
 import pb from '@/utils/pocketbase';
-import axios from 'axios';
-import { memo, useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Tooltip } from 'react-tooltip';
 
 interface PropTypes {
   postId: string | number;
-  onBookmark: () => void;
   onShare: () => void;
   date: string;
   type: 'tip' | 'magazine' | 'boast';
 }
 
-const PostActionBar = ({
-  postId,
-  onBookmark,
-  onShare,
-  date,
-  type,
-}: PropTypes) => {
-  const [likes, setLikes] = useState<number | null>(null);
+interface LikeState {
+  isLiked: boolean;
+  count: number | null;
+}
+
+const PostActionBar = ({ postId, onShare, date, type }: PropTypes) => {
+  const [likeState, setLikeState] = useState<LikeState>({
+    isLiked: false,
+    count: null,
+  });
+  const [isSaved, setIsSaved] = useState<boolean>(false);
   const [views, setViews] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const getUrl = useCallback(() => {
     switch (type) {
@@ -42,7 +43,7 @@ const PostActionBar = ({
     try {
       const url = getUrl();
       const response = await axios.get(url);
-      setLikes(response.data.like);
+      setLikeState((prev) => ({ ...prev, count: response.data.like }));
     } catch (error) {
       console.error('좋아요 수 가져오기 실패:', error);
     }
@@ -54,46 +55,55 @@ const PostActionBar = ({
     fetchLikes();
   }, [fetchLikes]);
 
-  const onLike = async () => {
-    if (isLoading || likes === null) return;
-    setIsLoading(true);
-    setLikes((prevLikes) => (prevLikes !== null ? prevLikes + 1 : 1));
+  const handleSave = useCallback(() => {
+    setIsSaved((prev) => !prev);
+  }, []);
+
+  const handleLike = useCallback(async () => {
+    const newIsLiked = !likeState.isLiked;
+    const newCount = (likeState.count ?? 0) + (newIsLiked ? 1 : -1);
+
+    setLikeState({ isLiked: newIsLiked, count: newCount });
+
     try {
       const url = getUrl();
-      const response = await axios.patch(url, { like: likes + 1 });
-      if (response.status === 200) {
-        console.log('좋아요 업데이트 성공');
-      }
+      await axios.patch(url, { like: newCount });
     } catch (error) {
       console.error('좋아요 업데이트 실패:', error);
-    } finally {
-      setIsLoading(false);
+      // 에러 발생 시 상태를 원래대로 되돌립니다.
+      setLikeState((prev) => ({ isLiked: !newIsLiked, count: prev.count }));
     }
-  };
+  }, [likeState, getUrl]);
+
+  const memoizedDate = useMemo(() => formatDateShort(date), [date]);
+
   return (
     <>
-      <div className="font-[Pretendard] text-[0.75rem] font-normal not-italic leading-[1.0625rem] text-[#626871]">
-        <time dateTime={formatDateString(date)}>
-          {formatDateShort(date)}
+      <div className="pretendard text-[0.75rem] font-normal not-italic leading-[1.0625rem] text-[#626871]">
+        <time dateTime={formatDateString(memoizedDate)}>
+          {formatDateShort(memoizedDate)}
           {'\u00A0'}
         </time>
         {/* 좋아요, 조회수는 하드코딩으로 넣기 */}
-        <span> 좋아요 {likes !== 0 && likes} </span>
+        <span> 좋아요 {likeState.count !== 0 && likeState.count} </span>
         <span> 조회 {views}</span>
       </div>
-      <div className="flex h-[1.5625rem] items-center gap-4">
+      <div className="flex h-[1.5625rem] items-center gap-1">
         <button
           data-tooltip-id="my-tooltip"
           data-tooltip-content="좋아요"
           type="button"
           aria-label="좋아요"
-          onClick={onLike}
+          onClick={handleLike}
+          className="rounded-full p-1.5 transition-colors duration-200 hover:bg-gray-100"
         >
           <svg
             width="16"
             height="15"
             role="img"
-            className="text-gray-200"
+            className={`transition-colors duration-200 ${
+              likeState.isLiked ? 'text-mainblue' : 'text-gray-200'
+            }`}
             aria-hidden="true"
           >
             <use width="16" height="15" href="/assets/sprite-sheet.svg#heart" />
@@ -106,6 +116,7 @@ const PostActionBar = ({
           data-tooltip-content="댓글"
           type="button"
           aria-label="댓글 보기"
+          className="rounded-full p-1.5 transition-colors duration-200 hover:bg-gray-100"
         >
           <svg
             width="16"
@@ -127,14 +138,17 @@ const PostActionBar = ({
           data-tooltip-content="북마크"
           type="button"
           aria-label="북마크"
-          onClick={onBookmark}
+          onClick={handleSave}
+          className="rounded-full p-1.5 transition-colors duration-200 hover:bg-gray-100"
         >
           <svg
             width="15"
             height="17"
             viewBox="0 0 15 17"
             role="img"
-            className="text-gray-200"
+            className={`transition-colors duration-200 ${
+              isSaved ? 'text-mainblue' : 'text-gray-200'
+            }`}
             aria-hidden="true"
           >
             <use
@@ -150,6 +164,7 @@ const PostActionBar = ({
           type="button"
           aria-label="공유"
           onClick={onShare}
+          className="rounded-full p-1.5 transition-colors duration-200 hover:bg-gray-100"
         >
           <svg
             width="17"
@@ -160,7 +175,7 @@ const PostActionBar = ({
             aria-hidden="true"
           >
             <use
-              width="17"
+              width="15"
               height="17"
               href="/assets/sprite-sheet.svg#share2"
             />
