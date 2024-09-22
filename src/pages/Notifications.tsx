@@ -87,6 +87,7 @@ const Notifications = () => {
         }
         const responseData = await fetchUserNotifications(userId);
         setNotifications(responseData);
+
         setLoading(false);
       } catch (err) {
         console.error('Error fetching notifications:', err);
@@ -125,6 +126,7 @@ const Notifications = () => {
               handleReadStatusChange={handleReadStatusChange}
               time={item.created}
               isRead={item.read}
+              partyId={item.expand.party_id.id}
             />
           ))
         ) : (
