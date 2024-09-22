@@ -44,6 +44,7 @@ const Login = () => {
         />
       </Helmet>
       <div className="flex flex-col gap-3 p-3">
+        <h1 className="sr-only">로그인 페이지</h1>
         <form onSubmit={handleLogin} className="flex flex-col gap-3">
           <img
             className="h-[5.9375rem] w-[21rem] self-center"
