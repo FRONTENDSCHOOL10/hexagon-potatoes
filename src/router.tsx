@@ -67,6 +67,14 @@ interface wrrraperPropTypes {
 
 const Loading = () => <PageLoadingSpinner />;
 
+const isTutorialCompleted = () => {
+  const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
+  const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
+  const isPass = tutorialCompleted || isAlreadyLogin;
+  console.log(isPass);
+  return isPass ? true : false;
+};
+const isComplete = isTutorialCompleted();
 const PrivateRoute = ({ children }: PropTypes) => {
   const [isValidUser, setIsValidUser] = useState<boolean | null>(null);
   const navigate = useNavigate();
@@ -125,11 +133,27 @@ const PublicSuspenseRoute = ({
 const routes = [
   {
     path: '/tutorial',
-    element: <PublicSuspenseRoute component={Tutorial} />,
+    Component: () => {
+      const isComplete = isTutorialCompleted();
+
+      if (isComplete) {
+        return <Navigate to="/" replace />;
+      }
+
+      return <PublicSuspenseRoute component={Tutorial} />;
+    },
   },
   {
     path: '/',
-    element: <PublicSuspenseRoute component={Landing} />,
+    Component: () => {
+      const isComplete = isTutorialCompleted();
+
+      if (!isComplete) {
+        return <Navigate to="/tutorial" replace />;
+      }
+
+      return <PublicSuspenseRoute component={Landing} />;
+    },
   },
   {
     path: '/login',
