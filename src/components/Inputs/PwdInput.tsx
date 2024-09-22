@@ -20,7 +20,7 @@ const PwdInput = ({
   const [isShowPwd, setIsShowPwd] = useState(false);
   const [isEnteredVal, setIsEnteredVal] = useState(false);
   const [inputVal, setInputVal] = useState('');
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const pwdInputId = useId();
   const inputStyle = (isValid: boolean) =>
@@ -55,10 +55,10 @@ const PwdInput = ({
     }
   };
 
-  const handleToggleShowPwd = (ref: React.RefObject<HTMLInputElement>) => {
+  const handleToggleShowPwd = () => {
     setIsShowPwd((prev) => {
-      if (ref.current?.value) {
-        !prev ? (ref.current.type = 'text') : (ref.current.type = 'password');
+      if (inputRef.current) {
+        inputRef.current.type = prev ? 'password' : 'text';
       }
       return !prev;
     });

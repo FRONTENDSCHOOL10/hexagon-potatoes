@@ -28,7 +28,7 @@ const AddImage = ({ onInputChange, onClickDeleteBtn, imgData }) => {
         <svg className="size-4 text-gray-300">
           <use href="/assets/sprite-sheet.svg#addimage" />
         </svg>
-        <span className="leading-none text-gray-300">1 / 5</span>
+        <span className="leading-none text-gray-300">{} / 5</span>
       </label>
       <input
         accept="image/jpg, image/jpeg, image/png"
