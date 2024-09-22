@@ -71,7 +71,6 @@ const isTutorialCompleted = () => {
   const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
   const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
   const isPass = tutorialCompleted || isAlreadyLogin;
-  console.log(isPass);
   return isPass ? true : false;
 };
 const isComplete = isTutorialCompleted();

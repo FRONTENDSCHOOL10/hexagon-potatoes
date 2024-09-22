@@ -5,8 +5,19 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'swiper/css/a11y';
 import Button from '@/components/Buttons/Button';
 import { Helmet } from 'react-helmet-async';
+
+interface PropTypes {
+  image: string;
+  alt: string;
+  title: string;
+  description: string;
+  textColor?: string;
+  titleId?: string;
+  descriptionId?: string;
+}
 
 // 튜토리얼 슬라이드 데이터
 const TUTORIAL_SLIDES = [
@@ -86,20 +97,24 @@ const useSlideChangeEffect = (
 };
 
 // 튜토리얼 슬라이드 컴포넌트
-const TutorialSlide: React.FC<{
-  image: string;
-  alt: string;
-  title: string;
-  description: string;
-  textColor?: string;
-}> = ({ image, alt, title, description, textColor = 'text-black' }) => (
+const TutorialSlide = ({
+  image,
+  alt,
+  title,
+  description,
+  textColor = 'text-black',
+  titleId,
+  descriptionId,
+}: PropTypes) => (
   <div className="relative">
-    <h1
+    <h2
+      id={titleId}
       className={`absolute left-[22px] top-[93px] font-h1 text-[length:var(--h1-font-size)] font-[number:var(--h1-font-weight)] leading-[var(--h1-line-height)] ${textColor}`}
     >
       {title}
-    </h1>
+    </h2>
     <p
+      id={descriptionId}
       className={`absolute left-[21px] top-[189px] w-[254px] font-sub-2 text-[length:var(--sub-2-font-size)] font-[number:var(--sub-2-font-weight)] leading-[var(--sub-2-line-height)] ${textColor}`}
     >
       {description}
@@ -127,6 +142,18 @@ const Tutorial = () => {
     navigate('/');
   }, [navigate]);
 
+  useEffect(() => {
+    const prevButton = document.querySelector('.swiper-button-prev');
+    const nextButton = document.querySelector('.swiper-button-next');
+
+    if (prevButton) {
+      prevButton.setAttribute('tabIndex', '0');
+    }
+    if (nextButton) {
+      nextButton.setAttribute('tabIndex', '0');
+    }
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -138,6 +165,7 @@ const Tutorial = () => {
         <meta name="keywords" content="튜토리얼, 배송비, 공동 구매, 쉽메이트" />
       </Helmet>
       <div className="relative flex justify-center">
+        <h1 className="sr-only">튜토리얼 페이지</h1>
         {showSkipButton && (
           <button
             type="button"
@@ -151,15 +179,29 @@ const Tutorial = () => {
           keyboard={{ enabled: true }}
           ref={swiperRef}
           pagination={showPagination ? { clickable: true } : false}
-          navigation={true}
+          navigation={{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }}
           modules={[Keyboard, Pagination, Navigation]}
+          aria-label="튜토리얼"
         >
           {TUTORIAL_SLIDES.map((slide, index) => (
-            <SwiperSlide key={index}>
-              <TutorialSlide {...slide} />
+            <SwiperSlide key={index} aria-labelledby={`slide-title-${index}`}>
+              <TutorialSlide
+                {...slide}
+                titleId={`slide-title-${index}`}
+                descriptionId={`slide-description-${index}`}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
+        <button className="swiper-button-prev cursor-pointer" type="button">
+          <span className="sr-only">이전 슬라이드</span>
+        </button>
+        <button className="swiper-button-next cursor-pointer" type="button">
+          <span className="sr-only">다음 슬라이드</span>
+        </button>
         {showStartButton && (
           <div className="absolute bottom-10 z-20 w-[21rem]">
             <Button
