@@ -20,12 +20,13 @@ import Shipstate from '@/components/shipstate/Shipstate';
 
 interface UserData {
   id: string;
+  token: string;
   [key: string]: any;
 }
 
 const PartyDetail = () => {
   const [partyLeaderData, setPartyLeaderData] = useState<UserData | null>(null);
-  const [loginUserId, setLoginUserId] = useState<string>('');
+  const [loginUserData, setLoginUserData] = useState<string>('');
   const navigate = useNavigate();
   const { partyId } = useParams<{ partyId: string }>();
   const encodedFilter = encodeURIComponent(`(party_id='${partyId}')`);
@@ -38,6 +39,9 @@ const PartyDetail = () => {
     `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`
   );
 
+  const isCompleted =
+    partyData?.member_ids?.length >= partyData?.target_members;
+
   const {
     status: postingStatus,
     data: postingData,
@@ -47,7 +51,14 @@ const PartyDetail = () => {
     'member_id'
   );
 
-  console.log(postingData);
+  const {
+    status: chatRoomStatus,
+    data: chatRoomData,
+    error: chatRoomErr,
+  } = useFetch(
+    `${import.meta.env.VITE_PB_URL}api/collections/chat/records?filter=${encodedFilter}`,
+    'chat_member_id'
+  );
 
   useEffect(() => {
     const fetchPartyLeader = async (): Promise<void> => {
@@ -63,18 +74,81 @@ const PartyDetail = () => {
       }
     };
     fetchPartyLeader();
-  }, [partyData, partyStatus]);
+  }, [partyData]);
+
+  useEffect(() => {
+    const updatePartyData = async (): Promise<void> => {
+      if (partyData && isCompleted) {
+        try {
+          await axios.patch<AxiosResponse>(
+            `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyData.id}`,
+            {
+              party_status: 'completed',
+            }
+          );
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+    updatePartyData();
+  }, [partyData, isCompleted]);
 
   useEffect(() => {
     const getAuthData = () => {
       const id = localStorage.getItem('authId');
-      setLoginUserId(id);
+      const token = localStorage.getItem('authToken');
+      setLoginUserData({ id, token });
     };
     getAuthData();
   }, []);
 
   const handleClickJoinPartyBtn = () => {
     navigate('/home/JoinParty', { state: { partyId } });
+  };
+
+  const createChatRoomData = () => {
+    const formData = new FormData();
+
+    formData.append('party_id', partyId || '');
+    formData.append('chat_member_id', partyLeaderData?.id);
+    formData.append('chat_member_id', loginUserData.id);
+    return formData;
+  };
+
+  const fetchChatRoom = async () => {
+    try {
+      const formData = createChatRoomData();
+      const response = await axios.post(
+        `${import.meta.env.VITE_PB_URL}api/collections/chat/records`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${loginUserData.token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleClickChatWithLeaderBtn = async () => {
+    if (chatRoomData === null || chatRoomData.items.length === 0) {
+      try {
+        const { id } = await fetchChatRoom();
+        navigate(`/home/chat/${id}`);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      const chatRoom = chatRoomData?.items.find((d) =>
+        d.chat_member_id.includes(partyLeaderData?.id, loginUserData.id)
+      );
+      navigate(`/home/chat/${chatRoom.id}`);
+    }
   };
 
   return (
@@ -110,7 +184,11 @@ const PartyDetail = () => {
                 customs_limit={partyData.target_members}
                 dutiesLimit={partyData.dutiesLimit || '0'}
                 weight={partyData.weight}
-                current_members={String(partyData.member_ids?.length) || '0'}
+                current_members={
+                  partyData?.member_ids !== null
+                    ? String(partyData?.member_ids.length)
+                    : '0'
+                }
               />
             </article>
 
@@ -121,7 +199,7 @@ const PartyDetail = () => {
               </article>
             )}
 
-            {partyLeaderData.id !== loginUserId && (
+            {partyLeaderData.id !== loginUserData.id && (
               <div
                 aria-label="버튼 영역"
                 role="group"
@@ -130,59 +208,65 @@ const PartyDetail = () => {
                 <Button
                   type="button"
                   isActive
-                  onClick={() => navigate('/home/chatHome')}
+                  onClick={handleClickChatWithLeaderBtn}
                   buttonContent="파티 리더와 채팅"
                 />
                 <Button
                   type="button"
-                  isActive
+                  isActive={!isCompleted}
                   onClick={handleClickJoinPartyBtn}
-                  buttonContent="파티 참여하기"
+                  buttonContent={
+                    isCompleted ? '파티가 마감되었습니다' : '파티 참여하기'
+                  }
                 />
               </div>
             )}
-            <article className="flex flex-col gap-y-3.5">
-              <h2 className="mt-4 text-heading-1">
-                파티원들은 이런 물품을 구매했어요
-              </h2>
-              <Swiper
-                spaceBetween={0}
-                slidesPerView="auto"
-                pagination={true}
-                autoplay={true}
-                modules={[Pagination, A11y, Autoplay]}
-                a11y={{
-                  prevSlideMessage: '이전 이미지',
-                  nextSlideMessage: '다음 이미지',
-                  firstSlideMessage: '첫 번째 이미지',
-                  lastSlideMessage: '마지막 이미지',
-                }}
-                style={{
-                  maxWidth: '360px',
-                }}
-              >
-                <ul>
-                  {postingData?.items.map((post) => (
-                    <SwiperSlide>
-                      <li key={post.id}>
-                        <PostingCard
-                          profileImg={getPbImageURL(
-                            pb.baseUrl,
-                            post.expand.member_id,
-                            'profile_photo'
-                          )}
-                          user={post.expand.member_id.nickname}
-                          postingImg={post.item_photo}
-                          party={true}
-                          content={post.item_name}
-                          data={post}
-                        />
-                      </li>
-                    </SwiperSlide>
-                  ))}
-                </ul>
-              </Swiper>
-            </article>
+            {postingData?.items.length !== 0 ? (
+              <article className="flex flex-col gap-y-3.5">
+                <h2 className="mt-4 text-heading-1">
+                  파티원들은 이런 물품을 구매했어요
+                </h2>
+                <Swiper
+                  spaceBetween={0}
+                  slidesPerView="auto"
+                  pagination={true}
+                  autoplay={true}
+                  modules={[Pagination, A11y, Autoplay]}
+                  a11y={{
+                    prevSlideMessage: '이전 이미지',
+                    nextSlideMessage: '다음 이미지',
+                    firstSlideMessage: '첫 번째 이미지',
+                    lastSlideMessage: '마지막 이미지',
+                  }}
+                  style={{
+                    maxWidth: '360px',
+                  }}
+                >
+                  <ul>
+                    {postingData?.items.map((post) => (
+                      <SwiperSlide>
+                        <li key={post.id}>
+                          <PostingCard
+                            profileImg={getPbImageURL(
+                              pb.baseUrl,
+                              post.expand.member_id,
+                              'profile_photo'
+                            )}
+                            user={post.expand.member_id.nickname}
+                            postingImg={post.item_photo}
+                            party={true}
+                            content={post.item_name}
+                            data={post}
+                          />
+                        </li>
+                      </SwiperSlide>
+                    ))}
+                  </ul>
+                </Swiper>
+              </article>
+            ) : (
+              <span>아직 참여한 멤버가 없어요!</span>
+            )}
           </>
         )}
       </section>

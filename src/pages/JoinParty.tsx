@@ -141,6 +141,8 @@ const JoinPartyPage = () => {
     formData.append('detail_address', data.detail_address);
     formData.append('name', loginUserData.name);
     formData.append('nickname', loginUserData.nickname);
+    formData.append('party_id', partyId);
+    formData.append('member_id', loginUserData.id);
 
     const compressedImages = await Promise.all(
       data.item_photo.map(async (photo) => {
@@ -166,14 +168,12 @@ const JoinPartyPage = () => {
         {
           address,
           detail_address,
-          participate_party: [
-            ...(loginUserData?.participating_party || []),
-            'uh9y0kfq4nxf1lx',
-          ],
+          participating_party: partyId,
         },
         {
           headers: {
             Authorization: `Bearer ${authUserData.token}`,
+            'Content-Type': 'multipart/form-data',
           },
         }
       );
@@ -183,16 +183,26 @@ const JoinPartyPage = () => {
         formData
       );
 
-      await axios.patch(
+      const res = await axios.patch(
         `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`,
-        { member_ids: [...(partyData?.member_ids || []), member.data.id] }
+        {
+          member_ids: member.data.id,
+          current_members: partyData.current_members + 1,
+          participating_members: authUserData.id,
+        },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
+      console.log(res);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleClickCreatePartyBtn = async () => {
+  const handleClickJoinPartyBtn = async () => {
     await fetchData();
     navigate(`/home/party/${partyId}`);
   };
@@ -268,7 +278,7 @@ const JoinPartyPage = () => {
           type="submit"
           buttonContent="파티 참여하기"
           isActive={isActive}
-          onClick={handleClickCreatePartyBtn}
+          onClick={handleClickJoinPartyBtn}
         />
       </section>
     </>

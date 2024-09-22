@@ -155,11 +155,6 @@ const BestPartyRandom = React.memo(
           <PartyLeader
             item={{
               ...randomBestLeader.leaderData,
-              profile_photo: getPbImageURL(
-                url,
-                randomBestLeader.leaderData,
-                'profile_photo'
-              ),
               participating_party: randomBestLeader.partyData,
             }}
           />
