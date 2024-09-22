@@ -47,6 +47,7 @@ const BestPartyRandom = React.memo(
       useState<RandomBestLeader | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
     const fetchRandomPartyAndLeader = useCallback(async () => {
       const controller = new AbortController();
       const signal = controller.signal;
@@ -156,11 +157,6 @@ const BestPartyRandom = React.memo(
             <PartyLeader
               item={{
                 ...randomBestLeader.leaderData,
-                profile_photo: getPbImageURL(
-                  url,
-                  randomBestLeader.leaderData,
-                  'profile_photo'
-                ),
                 participating_party: randomBestLeader.partyData,
                 itemImgAlt: '파티장 프로필',
               }}
