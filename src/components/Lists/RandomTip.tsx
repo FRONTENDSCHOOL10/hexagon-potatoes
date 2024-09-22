@@ -4,7 +4,7 @@ import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import Article from '@/components/Lists/Article';
 import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 
 interface PropTypes {
   reloadCount: number;
@@ -85,7 +85,7 @@ const RandomTip = ({ reloadCount }: PropTypes) => {
   }, [reloadCount]);
 
   if (loading) {
-    return <LoadingSpinner className="h-[33rem] w-full" />;
+    return <Skeleton className="h-[33rem] w-full" />;
   }
 
   if (error) {

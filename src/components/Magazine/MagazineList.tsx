@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 
 const MagazineList = () => {
   const baseUrl = `${pb.baseUrl}/api/collections/magazine/records`;
@@ -17,7 +17,7 @@ const MagazineList = () => {
   const magazineData = data && Array.isArray(data.items) ? data.items : [];
 
   if (status === 'loading') {
-    return <LoadingSpinner className="h-64 w-full" />;
+    return <Skeleton className="h-64 w-full" />;
   }
 
   if (status === 'error') {
@@ -31,10 +31,10 @@ const MagazineList = () => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative shadow-shadow-blue">
       <Swiper
         className="mySwiper"
-        modules={[Keyboard, Pagination, Navigation]}
+        modules={[Keyboard, Navigation]}
         slidesPerView={3}
         spaceBetween={160}
         centeredSlides={true}
@@ -61,16 +61,10 @@ const MagazineList = () => {
         ))}
       </Swiper>
 
-      <button
-        className="swiper-button-prev cursor-pointer rounded-full p-2 hover:bg-gray-100 focus:bg-gray-100"
-        type="button"
-      >
+      <button className="swiper-button-prev cursor-pointer" type="button">
         <span className="sr-only">이전 슬라이드</span>
       </button>
-      <button
-        className="swiper-button-next cursor-pointer rounded-full p-2 hover:bg-gray-100 focus:bg-gray-100"
-        type="button"
-      >
+      <button className="swiper-button-next cursor-pointer" type="button">
         <span className="sr-only">다음 슬라이드</span>
       </button>
     </div>

@@ -4,7 +4,7 @@ import NameCard from '@/components/NameCard/NameCard';
 import pb from '@/utils/pocketbase';
 import PartyLeader from './PartyLeader';
 import getPbImageURL from '@/utils/getPbImageURL';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Skeleton } from '@/components/LoadingSpinner';
 
 interface User {
   id: string;
@@ -107,7 +107,7 @@ const BestPartyRandom = React.memo(
     }, [fetchRandomPartyAndLeader, reloadCount]);
 
     if (loading) {
-      return <LoadingSpinner className="h-28 w-full" />;
+      return <Skeleton className="h-28 w-full" />;
     }
 
     if (error) {
