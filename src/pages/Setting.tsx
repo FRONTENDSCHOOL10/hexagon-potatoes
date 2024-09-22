@@ -1,17 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import Alert from '@/components/Alert/Alert'; // Alert 컴포넌트 import
 
 const Setting = () => {
   const location = useLocation();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const isExactSettingRoute = location.pathname === '/home/setting';
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertType, setAlertType] = useState<'notice' | 'error'>('notice');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [isLogoutConfirmation, setIsLogoutConfirmation] = useState(false);
+
   const handleLogout = () => {
-    localStorage.removeItem('authToken'); 
-    localStorage.removeItem('authId'); 
-    // 로그아웃 후 리디렉션
-    navigate('/');
+    // 로그아웃 확인 Alert 표시
+    setIsLogoutConfirmation(true);
+    setAlertVisible(true);
+    setAlertType('notice');
+    setAlertMessage('로그아웃 하시겠습니까?');
+  };
+
+  const confirmLogout = () => {
+    // 실제 로그아웃 수행
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authId');
+
+    // 로그아웃 완료 메시지 표시
+    setAlertMessage('로그아웃이 완료되었습니다.');
+    setIsLogoutConfirmation(false); // 로그아웃 확인 상태 해제
+
+    // 로그아웃 완료 후 최초 화면으로 이동
+    setTimeout(() => {
+      setAlertVisible(false);
+      navigate('/'); // 최초 화면으로 이동
+    }, 1500); // 1.5초 후 이동
+  };
+
+  const handleCloseAlert = () => {
+    if (isLogoutConfirmation) {
+      confirmLogout();
+    } else {
+      setAlertVisible(false);
+    }
   };
 
   return (
@@ -25,6 +56,14 @@ const Setting = () => {
         <meta name="keywords" content="설정, 알림, 사용자, 관리" />
       </Helmet>
       <div className="gap-[1.25rem] space-y-8 p-4">
+        {alertVisible && (
+          <Alert
+            type={alertType}
+            title={alertType === 'notice' ? '알림' : '오류'}
+            subtext={alertMessage}
+            onClose={handleCloseAlert}
+          />
+        )}
         {isExactSettingRoute && (
           <>
             {/* 알림 설정 */}
@@ -50,6 +89,7 @@ const Setting = () => {
               </ul>
             </div>
 
+            {/* 사용자 설정 */}
             <div className="border-b border-gray-200 pb-4">
               <h2 className="mb-2 text-[1rem] font-bold">사용자 설정</h2>
               <ul className="space-y-2 text-[0.875rem]">
@@ -80,7 +120,8 @@ const Setting = () => {
               </ul>
             </div>
 
-            <div className="pb-4">
+            {/* 기타 설정 */}
+            <div className="border-b border-gray-200 pb-4">
               <h2 className="mb-2 text-[1rem] font-bold">기타</h2>
               <ul className="space-y-2 text-[0.875rem]">
                 <li>

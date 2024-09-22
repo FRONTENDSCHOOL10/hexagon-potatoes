@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MiniButton from '@/components/Buttons/MiniButton';
 import PartyResult from '@/components/PartyResult/PartyResult';
 import NameCard from '@/components/NameCard/NameCard';
 import MypageNoticeList from '@/components/MypageNoticeList/MypageNoticeList';
 import SavingMoneyCard from '@/components/SavingMoneyCard/SavingMoneyCard';
+import getUserById from '@/api/getUserById';
 import { Helmet } from 'react-helmet-async';
+
+interface ProfileType {
+  id: string;
+  profile_photo: string;
+  nickname: string;
+  user_email: string;
+  user_desc?: string;
+  participating_party: string[];
+}
 
 const MyPage = () => {
   const [activeButton, setActiveButton] = useState('파티장');
+  const [profile, setProfile] = useState<ProfileType | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const noticeListData = {
     파티장: [
@@ -24,6 +37,28 @@ const MyPage = () => {
     ],
   };
 
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const localUserId = localStorage.getItem('authId') ?? '아이디없음';
+        const userResponse = await getUserById(localUserId);
+        if (userResponse) {
+          setProfile(userResponse);
+        } else {
+          setError('유저 정보가 없습니다');
+        }
+      } catch (err: any) {
+        setError(`데이터를 가져오는 중 문제가 발생했습니다: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
   const handleButtonClick = (buttonName: string) => {
     setActiveButton(buttonName);
   };
@@ -37,14 +72,24 @@ const MyPage = () => {
       </Helmet>
       <div className="flex flex-col items-center">
         <div className="my-[1.5rem]">
-          <NameCard
-            name="  "
-            subtext="user@example.com"
-            type="viewProfile"
-          />
+          {loading ? (
+            <p>로딩 중...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : profile ? (
+            <NameCard
+              name={profile.nickname}
+              subtext={profile.user_desc || profile.user_email}
+              profileImg={profile.profile_photo}
+              type="viewProfile"
+              id={profile.id}
+            />
+          ) : (
+            <p>프로필 정보가 없습니다.</p>
+          )}
         </div>
 
-        <SavingMoneyCard nickname={'닉네임'} />
+        <SavingMoneyCard nickname={profile?.nickname || '닉네임'} />
 
         <div className="mt-4 flex gap-4">
           <MiniButton
@@ -60,7 +105,7 @@ const MyPage = () => {
         <div className="mt-6">
           {activeButton === '파티장' && (
             <div>
-              <PartyResult />
+              <PartyResult partyCount={profile?.participating_party?.length || 0} />
               {noticeListData['파티장'].map((section, index) => (
                 <MypageNoticeList
                   key={index}
