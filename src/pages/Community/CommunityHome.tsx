@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import TipArticleList from '@/components/Lists/TipArticleList';
 import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 import useFetch from '@/hooks/useFetch';
@@ -7,6 +8,29 @@ import { Helmet } from 'react-helmet-async';
 
 const tipUrl = `${import.meta.env.VITE_PB_URL}/api/collections/tip/records`;
 const boastUrl = `${import.meta.env.VITE_PB_URL}/api/collections/posting/records`;
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 50,
+      damping: 10,
+    },
+  },
+};
 
 const CommunityHome = () => {
   const {
@@ -22,13 +46,14 @@ const CommunityHome = () => {
 
   const renderMiniPostingCard = useCallback(
     (d: any) => (
-      <MiniPostingCard
-        key={d.id}
-        id={d?.id}
-        nickname={d?.expand?.author_id?.nickname}
-        content={d?.content}
-        photo={d.photo.length !== 0 ? d : null}
-      />
+      <motion.div key={d.id} variants={itemVariants}>
+        <MiniPostingCard
+          id={d?.id}
+          nickname={d?.expand?.author_id?.nickname}
+          content={d?.content}
+          photo={d.photo.length !== 0 ? d : null}
+        />
+      </motion.div>
     ),
     []
   );
@@ -63,9 +88,14 @@ const CommunityHome = () => {
         <h2 className="self-stretch pt-3 text-heading-1 text-[black]">
           유저들의 자랑
         </h2>
-        <div className="flex h-[14.8125rem] w-[22.5rem] items-center justify-center gap-3">
+        <motion.div
+          className="flex h-[14.8125rem] w-[22.5rem] items-center justify-center gap-3"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {randomBoasts.map(renderMiniPostingCard)}
-        </div>
+        </motion.div>
       </section>
     </>
   );

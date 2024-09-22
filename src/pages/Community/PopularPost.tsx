@@ -1,8 +1,68 @@
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
+import { useRef } from 'react';
 import PostingCard from '@/components/PostingCard/PostingCard';
 import useFetch from '@/hooks/useFetch';
-import getPbImageURL, { getPbImagesURL } from '@/utils/getPbImageURL';
+import getPbImageURL from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import { Helmet } from 'react-helmet-async';
+
+const containerVariants: Variants = {
+  hidden: { opacity: 1, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
+
+const PostingCardWithAnimation = ({ data, url }) => {
+  const cardRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.5], [0.3, 1, 1]);
+  const blurValue = useTransform(scrollYProgress, [0, 0.15, 0.2], [2, 0.5, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [0.95, 1, 1]);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      style={{
+        opacity,
+        filter: useTransform(blurValue, (value) => `blur(${value}px)`),
+        scale,
+      }}
+      variants={itemVariants}
+      className="mb-4"
+    >
+      <PostingCard
+        profileImg={
+          data?.expand?.author_id?.profile_photo
+            ? getPbImageURL(url, data?.expand?.author_id, 'profile_photo')
+            : ''
+        }
+        user={data.expand.author_id.nickname}
+        postingImg={data.photo}
+        content={data.content}
+        label={data.tag}
+        data={data}
+      />
+    </motion.div>
+  );
+};
 
 const PopularPost = () => {
   const url = `${pb.baseUrl}`;
@@ -26,23 +86,16 @@ const PopularPost = () => {
         <meta name="keywords" content="인기 게시물, 게시판, 쉽메이트" />
       </Helmet>
       <h1 className="sr-only">인기포스트</h1>
-      <section className="mt-3 flex flex-col gap-3">
-        {sortedPostData?.map((d: any, index: number) => (
-          <PostingCard
-            key={d.id}
-            profileImg={
-              d?.expand?.author_id?.profile_photo
-                ? getPbImageURL(url, d?.expand?.author_id, 'profile_photo')
-                : ''
-            }
-            user={d.expand.author_id.nickname}
-            postingImg={d.photo}
-            content={d.content}
-            label={d.tag}
-            data={d}
-          />
+      <motion.section
+        className="mt-3 flex flex-col gap-3"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {sortedPostData?.map((d: any) => (
+          <PostingCardWithAnimation key={d.id} data={d} url={url} />
         ))}
-      </section>
+      </motion.section>
     </>
   );
 };

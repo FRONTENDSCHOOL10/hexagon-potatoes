@@ -90,7 +90,7 @@ const InstaPosting = ({ item }: PropTypes) => {
           ))}
         </Swiper>
       )}
-      <p className="w-[21rem] whitespace-pre-line text-body-2">
+      <p className="pretendard w-[21rem] whitespace-pre-line text-body-2">
         {formatContent(item.content)}
       </p>
       {Array.isArray(item.tag) && item.tag.length > 0 && (
