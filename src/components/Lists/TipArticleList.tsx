@@ -54,15 +54,16 @@ const itemVariants = {
 
 const TipArticleList = ({ data }: PropTypes) => {
   return (
-    <motion.ul
+    <motion.div
       className="flex w-full flex-col gap-y-3"
+      role="list"
       aria-label="팁 목록"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       {data?.map((item) => (
-        <motion.li key={item.id} variants={itemVariants}>
+        <motion.div key={item.id} variants={itemVariants} role="listitem">
           <Article
             type={'tip'}
             content_title={item.title}
@@ -80,9 +81,9 @@ const TipArticleList = ({ data }: PropTypes) => {
             label={item.tag}
             level={3}
           />
-        </motion.li>
+        </motion.div>
       ))}
-    </motion.ul>
+    </motion.div>
   );
 };
 
