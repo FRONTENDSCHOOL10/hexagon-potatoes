@@ -32,9 +32,11 @@ const SimpleLogin = () => {
           aria-label="구글로 로그인"
           type="button"
         >
-          <svg className="h-10 w-10">
-            <use href="/assets/login/google.svg#google" />
-          </svg>
+          <img
+            src="/assets/login/google.webp"
+            alt="구글"
+            className="h-10 w-10"
+          />
         </button>
         <Tooltip
           id="googleTooltip"
@@ -55,9 +57,11 @@ const SimpleLogin = () => {
           aria-label="카카오로 로그인"
           type="button"
         >
-          <svg className="h-10 w-10">
-            <use href="/assets/login/kakao.svg#kakao" />
-          </svg>
+          <img
+            src="/assets/login/kakao.webp"
+            alt="카카오"
+            className="h-10 w-10"
+          />
         </button>
         <Tooltip
           id="kakaoTooltip"
@@ -78,9 +82,11 @@ const SimpleLogin = () => {
           aria-label="애플로 로그인"
           type="button"
         >
-          <svg className="h-10 w-10">
-            <use href="/assets/login/apple.svg#apple" />
-          </svg>
+          <img
+            src="/assets/login/apple.webp"
+            alt="애플"
+            className="h-10 w-10"
+          />
         </button>
         <Tooltip
           id="appleTooltip"
