@@ -34,7 +34,7 @@ const MagazineList = () => {
     <div className="relative shadow-shadow-blue">
       <Swiper
         className="mySwiper"
-        modules={[Keyboard, Pagination, Navigation]}
+        modules={[Keyboard, Navigation]}
         slidesPerView={3}
         spaceBetween={160}
         centeredSlides={true}
