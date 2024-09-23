@@ -280,10 +280,6 @@ const routes = [
             element: <ProtectedSuspenseRoute component={Announcements} />,
           },
           {
-            path: 'change-country',
-            element: <ProtectedSuspenseRoute component={ChangeCountry} />,
-          },
-          {
             path: 'clear-cache',
             element: <ProtectedSuspenseRoute component={ClearCache} />,
           },
