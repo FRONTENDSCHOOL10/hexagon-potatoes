@@ -77,7 +77,7 @@ const OrderDetailPage = () => {
     'member_id'
   );
 
-  const boughtItemInfo = joinedPartyData?.expand.participating_members.find(
+  const boughtItemInfo = joinedPartyData?.expand?.participating_members?.find(
     (d) => d.member_id === loginUserData?.id
   );
 
@@ -183,7 +183,9 @@ const OrderDetailPage = () => {
                 value={loginUserData?.personal_code || ''}
                 onInputChange={handleChangeInput}
               />
-              <ItemsList data={joinedPartyData.expand.participating_members} />
+              <ItemsList
+                data={joinedPartyData?.expand?.participating_members}
+              />
             </>
           ) : (
             <Item data={boughtItemInfo} />
