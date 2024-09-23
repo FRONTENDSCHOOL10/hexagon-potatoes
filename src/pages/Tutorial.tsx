@@ -61,7 +61,7 @@ const TUTORIAL_SLIDES = [
 // 세션 스토리지에 튜토리얼 완료 상태 저장
 const saveTutorialCompletion = () => {
   try {
-    sessionStorage.setItem('tutorialCompleted', 'true');
+    localStorage.setItem('tutorialCompleted', 'true');
   } catch (error) {
     console.error('Failed to save tutorial completion status:', error);
   }
