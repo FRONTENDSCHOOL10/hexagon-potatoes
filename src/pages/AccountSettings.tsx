@@ -8,6 +8,7 @@ import Button from '@/components/Buttons/Button';
 import axios from 'axios';
 import pb from '@/utils/pocketbase';
 import Alert from '@/components/Alert/Alert'; 
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom'; 
 import { Skeleton } from '@/components/LoadingSpinner';
 
@@ -169,7 +170,11 @@ const AccountSettings = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <>
+      <Helmet>
+        개인정보 수정 | Shipmate
+      </Helmet>
+      <div className="flex flex-col gap-6">
       {alertVisible && (
         <Alert
           type={alertType}
@@ -227,6 +232,7 @@ const AccountSettings = () => {
         onClick={handleSaveChanges}
       />
     </div>
+    </>
   );
 };
 

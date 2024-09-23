@@ -4,6 +4,7 @@ import DefaultProfileSVG from '@/components/DefaultProfileSVG/DefaultProfileSVG'
 import { Link } from 'react-router-dom';
 import getPbImageURL from '@/utils/getPbImageURL';
 import { Skeleton } from '@/components/LoadingSpinner';
+import { Helmet } from 'react-helmet-async';
 
 interface ChatType {
   id: string;
@@ -120,6 +121,9 @@ const ChatHome = () => {
 
   return (
     <div className="space-y-4 p-1">
+      <Helmet>
+        <title>채팅 | Shipmate</title>
+      </Helmet>
       <ul className="divide-y divide-gray-200">
         {chats.map((chat) => {
           const leader = chat?.expand?.party_id?.expand?.party_leader;
@@ -144,7 +148,7 @@ const ChatHome = () => {
                 )}
                 <div className="ml-4 flex-1">
                   <p className="text-lg font-semibold">
-                    {leader?.nickname || '알 수 없음'}
+                    {leader?.nickname || '알 수 없음'} 님의 파티
                   </p>
                   <p className="text-sm">{chat.last_message}</p>
                   <p className="text-sm text-gray-400">

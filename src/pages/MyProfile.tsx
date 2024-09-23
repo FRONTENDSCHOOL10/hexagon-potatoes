@@ -3,12 +3,12 @@ import NameCard from '@/components/NameCard/NameCard';
 import MyprofileFollower from '@/components/MyprofileFollower/MyprofileFollower';
 import PartyArticleList from '@/components/Lists/PartyArticleList';
 import SquarePostingCard from '@/components/PostingCard/SquarePostingCard';
-import getPbImageURL from '@/utils/getPbImageURL';
 import pb from '@/utils/pocketbase';
 import getUserById from '@/api/getUserById';
 import axios from 'axios';
 import { Skeleton } from '@/components/LoadingSpinner';
 import getAllPartyByUserId from '@/api/getAllPartyByUserId';
+import { Helmet } from 'react-helmet-async';
 
 interface PocketBaseRecord {
   id: string;
@@ -138,6 +138,9 @@ const MyProfile = () => {
 
   return (
     <div className="space-y-4 p-4">
+      <Helmet>
+        <title>프로필 | Shipmate</title>
+      </Helmet>
       {renderProfileHeader()}
       <MyprofileFollower />
       <section className="mt-4">
