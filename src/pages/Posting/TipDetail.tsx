@@ -40,7 +40,7 @@ const TipDetail = () => {
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://sheepmate.netlify.app/home/community/boast/${boastId}`}
+          content={`https://sheepmate.netlify.app/home/community/boast/${tipId}`}
         />
         <meta
           property="og:image"
