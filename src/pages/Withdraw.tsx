@@ -4,7 +4,8 @@ import StandardInput from '@/components/Inputs/StandardInput';
 import PwdInput from '@/components/Inputs/PwdInput';
 import Button from '@/components/Buttons/Button';
 import Alert from '@/components/Alert/Alert';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async'; 
 
 interface ProfileType {
   id: string;
@@ -106,6 +107,9 @@ const Withdraw = () => {
 
   return (
     <div className="gap-[1rem]">
+      <Helmet>
+        <title>탈퇴하기 | Shipmate</title>
+      </Helmet>
       {alertVisible && (
         <Alert
           type="notice"

@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Skeleton } from '@/components/LoadingSpinner';
 import Alert from '@/components/Alert/Alert';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 interface PocketBaseRecord {
   id: string;
@@ -177,6 +178,11 @@ const ProfileEdit = () => {
 
   return (
     <div className="p-4 flex flex-col gap-6">
+      <Helmet>
+        <title>
+          프로필 수정 | Shipmate
+        </title>
+      </Helmet>
       {alertVisible && (
         <Alert
           type={alertType}
