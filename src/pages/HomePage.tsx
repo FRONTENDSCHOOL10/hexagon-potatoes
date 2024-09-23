@@ -36,7 +36,9 @@ const HomePage = () => {
         />
         <meta name="keywords" content="홈페이지, 홈, 직구" />
 
+        {/* Open Graph meta tags */}
         <meta property="og:title" content="홈페이지 | Shipmate" />
+        <meta property="og:site_name" content="Shipmate" />
         <meta
           property="og:description"
           content="Shipmate의 홈페이지에서 해외직구와 관련해 검색, 매거진, 국가 리스트, 추천 파티 리스트 등 다양한 정보를 확인하세요."
@@ -45,7 +47,21 @@ const HomePage = () => {
         <meta property="og:url" content="https://sheepmate.netlify.app/home" />
         <meta
           property="og:image"
-          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png?ex=66f235f5&is=66f0e475&hm=143d17f0a2bdb88e9772825fab5b924e2cc2fdea9167cbe4dcc1bc82344d4b76&"
+          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        {/* Twitter Card meta tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="홈페이지 | Shipmate" />
+        <meta
+          name="twitter:description"
+          content="Shipmate의 홈페이지에서 해외직구와 관련해 검색, 매거진, 국가 리스트, 추천 파티 리스트 등 다양한 정보를 확인하세요."
+        />
+        <meta
+          name="twitter:image"
+          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png"
         />
       </Helmet>
 
