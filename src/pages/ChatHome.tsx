@@ -144,7 +144,7 @@ const ChatHome = () => {
                 )}
                 <div className="ml-4 flex-1">
                   <p className="text-lg font-semibold">
-                    {leader?.nickname || '알 수 없음'}
+                    {leader?.nickname || '알 수 없음'} 님의 파티
                   </p>
                   <p className="text-sm">{chat.last_message}</p>
                   <p className="text-sm text-gray-400">

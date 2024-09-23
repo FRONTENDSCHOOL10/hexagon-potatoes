@@ -44,7 +44,7 @@ const ChatRoom = () => {
 
       if (pageNum === 1) {
         setMessages(response.items.reverse()); 
-        scrollToBottom(); 
+         
       } else {
         setMessages((prevMessages) => [...response.items.reverse(), ...prevMessages]);
       }
@@ -137,12 +137,12 @@ const ChatRoom = () => {
   }
 
   return (
-    <div className="relative h-screen flex flex-col">
-      <Helmet>
+    <>
+    <Helmet>
         <title>{nickname ? `${nickname} 의 채팅방` : `${chatId}와의 채팅방`}</title>
-      </Helmet>
-
-      <div className="flex-1 p-4 pb-12">
+    </Helmet>
+    <div className="relative flex flex-col">
+        <div className="flex-1 p-4 pb-12 ">
         {hasMore && (
           <button
             onClick={loadMoreMessages}
@@ -175,7 +175,7 @@ const ChatRoom = () => {
               </div>
             )}
             <div
-              className={`relative p-3 rounded-full max-w-[70%] ${
+              className={`relative p-3 rounded-[25px] max-w-[70%] ${
                 msg.sender_id === localStorage.getItem('authId')
                   ? 'bg-mainblue text-right text-white'
                   : 'bg-gray-100 text-left'
@@ -206,6 +206,7 @@ const ChatRoom = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 
