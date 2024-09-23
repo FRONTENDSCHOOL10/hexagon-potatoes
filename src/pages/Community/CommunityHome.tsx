@@ -1,23 +1,17 @@
-import { motion } from 'framer-motion';
 import TipArticleList from '@/components/Lists/TipArticleList';
 import MiniPostingCard from '@/components/PostingCard/MiniPostingCard';
 import useFetch from '@/hooks/useFetch';
 import getRandomItems from '@/utils/getRandomItems';
-import React, { memo, useCallback, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { memo, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Autoplay, Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const tipUrl = `${import.meta.env.VITE_PB_URL}/api/collections/tip/records`;
 const boastUrl = `${import.meta.env.VITE_PB_URL}/api/collections/posting/records`;
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
@@ -64,7 +58,7 @@ const CommunityHome = () => {
   const randomTips = getRandomItems(tipDatas, 3);
 
   const boastDatas = boastData.items ?? [];
-  const randomBoasts = getRandomItems(boastDatas, 2);
+  // const randomBoasts = getRandomItems(boastDatas, 2);
 
   return (
     <>
@@ -88,14 +82,29 @@ const CommunityHome = () => {
         <h2 className="self-stretch pt-3 text-heading-1 text-[black]">
           유저들의 자랑
         </h2>
-        <motion.div
-          className="flex h-[14.8125rem] w-[22.5rem] items-center justify-center gap-3"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+        <Swiper
+          spaceBetween={3}
+          slidesPerView={2}
+          className="h-[14.8125rem] w-[22.5rem]"
+          navigation={true}
+          modules={[Autoplay, Navigation]}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
         >
-          {randomBoasts.map(renderMiniPostingCard)}
-        </motion.div>
+          {boastDatas.map((d) => (
+            <SwiperSlide key={d.id}>
+              <motion.div
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {renderMiniPostingCard(d)}
+              </motion.div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
     </>
   );
