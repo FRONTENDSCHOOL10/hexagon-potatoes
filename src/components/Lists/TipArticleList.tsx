@@ -53,6 +53,10 @@ const itemVariants = {
 };
 
 const TipArticleList = ({ data }: PropTypes) => {
+  const formatContent = (content: string) => {
+    return content.replace(/<br\s*\/?>/gi, '\n');
+  };
+
   return (
     <motion.div
       className="flex w-full flex-col gap-y-3"
@@ -70,7 +74,7 @@ const TipArticleList = ({ data }: PropTypes) => {
             content_img={
               item.photo ? getPbImagesURL(0, item) : DefaultProfileSVG
             }
-            subtitle={item.content}
+            subtitle={formatContent(item.content)}
             profile_photo={
               item?.expand?.author_id?.profile_photo
                 ? getPbImageURL(url, item.expand?.author_id, 'profile_photo')
