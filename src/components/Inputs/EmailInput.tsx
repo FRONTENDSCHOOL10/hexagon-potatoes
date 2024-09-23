@@ -4,7 +4,7 @@ import checkDuplicate from '@/utils/checkDuplicate';
 
 interface PropTypes {
   inputName: string;
-  onEmailChange: (name: string) => (value: string | number) => void;
+  onEmailChange: (name: string, value: string, isValid: boolean) => void;
   onValidChange: (validation: boolean) => void;
 }
 
@@ -40,10 +40,11 @@ const EmailInput = ({ onEmailChange, onValidChange, inputName }: PropTypes) => {
 
   const validateInputVal = async (val: string) => {
     const isValidInput = validateEmail(val);
-    const isDuplicate = await checkDuplicate('user_email', val);
+    const isDuplicateEmail = await checkDuplicate('user_email', val);
     setIsValid(isValidInput);
-    setIsDuplicate(isDuplicate);
-    onValidChange(isValidInput && isDuplicate);
+    setIsDuplicate(isDuplicateEmail);
+    onValidChange(isValidInput && isDuplicateEmail);
+    return isValidInput && isDuplicateEmail;
   };
 
   const checkInputFilled = (val: string) => {
@@ -61,12 +62,13 @@ const EmailInput = ({ onEmailChange, onValidChange, inputName }: PropTypes) => {
     }
   };
 
-  const handleDropDownClick = (domain: string) => {
+  const handleDropDownClick = async (domain: string) => {
     const updatedInputVal = `${inputVal.split('@')[0]}${domain}`;
     setInputVal(updatedInputVal);
     setIsDropBox(false);
     setSelected(-1);
-    validateInputVal(updatedInputVal);
+    const isValidEmail = await validateInputVal(updatedInputVal);
+    onEmailChange(inputName, updatedInputVal, isValidEmail);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -95,12 +97,12 @@ const EmailInput = ({ onEmailChange, onValidChange, inputName }: PropTypes) => {
     }
   };
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVal = e.target.value;
     setInputVal(newVal);
-    validateInputVal(newVal);
+    const isValidEmail = await validateInputVal(newVal);
     checkInputFilled(newVal);
-    onEmailChange(inputName)(newVal);
+    onEmailChange(inputName, newVal, isValidEmail);
     updateEmailList(newVal);
   };
 

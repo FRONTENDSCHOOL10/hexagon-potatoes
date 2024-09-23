@@ -98,7 +98,7 @@ const Setting = () => {
                     to="account"
                     className="cursor-pointer hover:text-mainblue"
                   >
-                    계정 / 정보 관리
+                    개인정보 수정
                   </Link>
                 </li>
                 <li>
@@ -130,14 +130,6 @@ const Setting = () => {
                     className="cursor-pointer hover:text-mainblue"
                   >
                     공지사항
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="change-country"
-                    className="cursor-pointer hover:text-mainblue"
-                  >
-                    국가 변경
                   </Link>
                 </li>
                 <li>

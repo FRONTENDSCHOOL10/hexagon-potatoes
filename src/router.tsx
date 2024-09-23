@@ -46,7 +46,6 @@ const AccountSettings = lazy(() => import('@/pages/AccountSettings'));
 const BlockedUsers = lazy(() => import('@/pages/BlockedUsers'));
 const OtherSettings = lazy(() => import('@/pages/OtherSettings'));
 const Announcements = lazy(() => import('@/pages/Announcements'));
-const ChangeCountry = lazy(() => import('@/pages/ChangeCountry'));
 const ClearCache = lazy(() => import('@/pages/ClearCache'));
 const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
 const PartyListPage = lazy(() => import('@/pages/PartyList'));
@@ -69,7 +68,7 @@ interface wrrraperPropTypes {
 const Loading = () => <PageLoadingSpinner />;
 
 const isTutorialCompleted = () => {
-  const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
+  const tutorialCompleted = localStorage.getItem('tutorialCompleted');
   const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
   const isPass = tutorialCompleted || isAlreadyLogin;
   return isPass ? true : false;
@@ -278,10 +277,6 @@ const routes = [
           {
             path: 'announcements',
             element: <ProtectedSuspenseRoute component={Announcements} />,
-          },
-          {
-            path: 'change-country',
-            element: <ProtectedSuspenseRoute component={ChangeCountry} />,
           },
           {
             path: 'clear-cache',

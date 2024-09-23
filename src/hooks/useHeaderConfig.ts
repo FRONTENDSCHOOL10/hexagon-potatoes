@@ -34,6 +34,16 @@ const headerConfigs: Record<string, HeaderConfig> = {
   '/home/setting': { type: 'back', title: '설정' },
   '/home/nowwedeveloping': { type: 'back', title: '개발중' },
   '/home/my-profile': { type: 'back', title: '프로필' },
+  '/home/profile-edit': { type: 'back', title: '프로필 수정' },
+  '/home/setting/notification': { type: 'back', title: '알림 수신 설정' },
+  '/home/setting/do-not-disturb': { type: 'back', title: '방해금지 시간 설정' },
+  '/home/setting/account': { type: 'back', title: '개인정보 수정' },
+  '/home/setting/blocked-users': { type: 'back', title: '차단 사용자 관리' },
+  '/home/setting/other-settings': { type: 'back', title: '기타 설정' },
+  '/home/setting/announcements': { type: 'back', title: '공지사항' },
+  '/home/setting/clear-cache': { type: 'back', title: '캐시 데이터 삭제하기' },
+  '/home/setting/update-version': { type: 'back', title: '최신버전 업데이트' },
+  '/home/setting/withdraw': { type: 'back', title: '탈퇴하기' },
 };
 
 // 동적 경로 패턴 정의

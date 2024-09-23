@@ -10,7 +10,7 @@ const Landing = () => {
   const handleGoLogin = useCallback(() => navigate('/login'), []);
   const handleGoSignup = useCallback(() => navigate('/login/signup'), []);
   const handleBack = () => {
-    sessionStorage.removeItem('tutorialCompleted');
+    localStorage.removeItem('tutorialCompleted');
     localStorage.removeItem('authId');
     localStorage.removeItem('authToken');
     navigate('/tutorial');
@@ -26,7 +26,19 @@ const Landing = () => {
         />
         <meta
           name="keywords"
-          content="랜딩 페이지, 직구, 해외직구, 쇼핑, 회원가입, 로그"
+          content="랜딩 페이지, 직구, 해외직구, 쇼핑, 회원가입, 로그인"
+        />
+
+        <meta property="og:title" content="시작 | Shipmate" />
+        <meta
+          property="og:description"
+          content="Shipmate에 어서오세요! 저희와 함께 사고 싶은 물건을 더 쉽고 가볍게 구매해보세요."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://sheepmate.netlify.app" />
+        <meta
+          property="og:image"
+          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png?ex=66f235f5&is=66f0e475&hm=143d17f0a2bdb88e9772825fab5b924e2cc2fdea9167cbe4dcc1bc82344d4b76&"
         />
       </Helmet>
       <main className="relative flex h-screen flex-col items-center justify-start gap-3 bg-white p-3">

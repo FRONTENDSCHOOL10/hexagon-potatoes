@@ -2,8 +2,10 @@ import { useId } from 'react';
 
 import Swiper from 'swiper';
 
-const AddImage = ({ onInputChange, onClickDeleteBtn, imgData }) => {
+const AddImage = ({ onInputChange, onClickDeleteBtn, imgData, max }) => {
   const imageInputId = useId();
+
+  const maxImg = max;
 
   const handlePressEnter = (e: React.KeyboardEvent<HTMLLabelElement>) => {
     if (e.key === 'Enter') {
@@ -28,11 +30,14 @@ const AddImage = ({ onInputChange, onClickDeleteBtn, imgData }) => {
         <svg className="size-4 text-gray-300">
           <use href="/assets/sprite-sheet.svg#addimage" />
         </svg>
-        <span className="leading-none text-gray-300">{} / 5</span>
+        <span className="leading-none text-gray-300">
+          {imgData.length || '0'} / {maxImg}
+        </span>
       </label>
       <input
         accept="image/jpg, image/jpeg, image/png"
         multiple
+        disabled={imgData.length >= maxImg}
         className="sr-only absolute left-0 top-[2.13rem] size-[4.375rem] rounded-xl border-none bg-gray-100 text-transparent opacity-0"
         type="file"
         id={imageInputId}
