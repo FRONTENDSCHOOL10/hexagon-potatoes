@@ -141,7 +141,7 @@ const PartyDetail = () => {
         const { id } = await fetchChatRoom();
         navigate(`/home/chat/${id}`);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     } else {
       const chatRoom = chatRoomData?.items.find((d) =>
@@ -186,7 +186,7 @@ const PartyDetail = () => {
                 weight={partyData.weight}
                 current_members={
                   partyData?.member_ids !== null
-                    ? String(partyData?.member_ids.length)
+                    ? String(partyData?.member_ids)
                     : '0'
                 }
               />
@@ -244,8 +244,8 @@ const PartyDetail = () => {
                 >
                   <ul>
                     {postingData?.items.map((post) => (
-                      <SwiperSlide>
-                        <li key={post.id}>
+                      <SwiperSlide key={post.id}>
+                        <li>
                           <PostingCard
                             profileImg={getPbImageURL(
                               pb.baseUrl,

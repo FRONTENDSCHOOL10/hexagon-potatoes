@@ -6,7 +6,7 @@ const ModalLayout = ({ isOpen, onClose, children }) => {
 
   return ReactDOM.createPortal(
     <div
-      className={`fixed left-0 top-0 flex h-full w-full flex-col items-center justify-center bg-[#00000047]`}
+      className={`fixed left-0 top-0 flex z-50 h-full w-full flex-col items-center justify-center bg-[#00000047]`}
     >
       <div
         aria-modal="true"

@@ -80,7 +80,6 @@ const AddressInput = ({
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const inputVal = e.target.value;
-    console.log(inputVal);
     setDetailAddressInputVal(inputVal);
     onAddressChange(detailAddressInputName)(inputVal);
   };
