@@ -10,7 +10,7 @@ const Landing = () => {
   const handleGoLogin = useCallback(() => navigate('/login'), []);
   const handleGoSignup = useCallback(() => navigate('/login/signup'), []);
   const handleBack = () => {
-    sessionStorage.removeItem('tutorialCompleted');
+    localStorage.removeItem('tutorialCompleted');
     localStorage.removeItem('authId');
     localStorage.removeItem('authToken');
     navigate('/tutorial');
