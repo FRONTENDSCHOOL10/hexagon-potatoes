@@ -78,7 +78,7 @@ const NotificationList = ({
           <use href="/assets/sprite-sheet.svg#box" />
         </svg>
       ),
-      msg: `"${partyName}" 파티의 배송 현황을 확인하세요.`,
+      msg: `"${partyName}" 이 파티의 배송 현황을 확인하세요.`,
       path: `/home/party/${partyId}`,
     },
   };
