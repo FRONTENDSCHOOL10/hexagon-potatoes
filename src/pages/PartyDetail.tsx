@@ -186,7 +186,7 @@ const PartyDetail = () => {
                 weight={partyData.weight}
                 current_members={
                   partyData?.member_ids !== null
-                    ? String(partyData?.member_ids)
+                    ? String(partyData?.member_ids.length)
                     : '0'
                 }
               />
