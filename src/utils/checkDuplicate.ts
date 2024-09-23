@@ -14,7 +14,6 @@ export async function checkDuplicate(
     });
 
     const records = response.data.items;
-    console.log(records);
 
     // 레코드가 없으면 중복이 아님
     return !(records && records.length > 0); // 중복이면 false, 중복 아니면 true
