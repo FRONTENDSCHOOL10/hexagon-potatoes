@@ -78,6 +78,7 @@ const PartyCollect = () => {
     formData.append('personal_code', data.personal_code);
     formData.append('target_members', data.target_members);
     formData.append('weight', data.weight);
+    formData.append('party_status', 'recruiting');
 
     return formData;
   };
