@@ -142,7 +142,7 @@ const ChatRoom = () => {
         <title>{nickname ? `${nickname} 의 채팅방` : `${chatId}와의 채팅방`}</title>
     </Helmet>
     <div className="relative flex flex-col">
-        <div className="flex-1 p-4 pb-12 ">
+        <div className="flex-1 p-4 pb-[80px] ">
         {hasMore && (
           <button
             onClick={loadMoreMessages}
@@ -189,7 +189,7 @@ const ChatRoom = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="sticky bottom-12 flex items-center gap-2 pt-3 pb-3 bg-white z-[60]">
+      <div className="fixed bottom-12 w-[360px] flex items-center gap-2 pt-3 pb-3 bg-white z-[60]">
         <input
           type="text"
           value={message}
