@@ -36,6 +36,9 @@ const PostingCard = ({
   party,
 }: PropTypes) => {
   const defaultTipImage = '/assets/shipmatelogo.webp'; // 기본 팁 이미지 URL
+  const formatContent = (content: string) => {
+    return content.replace(/<br\s*\/?>/gi, '\n');
+  };
   return (
     <article className="mx-auto h-auto w-[21rem] justify-between rounded-[0.9375rem] bg-[#FFF] shadow-shadow-blue">
       <header className="flex h-12 flex-row items-center justify-between p-3">
@@ -103,7 +106,9 @@ const PostingCard = ({
       </figure>
 
       <footer className="flex h-auto flex-col justify-between gap-0.5 px-3 pb-0.5 pt-3">
-        <p className="text-body-1 leading-[1.18rem] text-black">{content}</p>
+        <p className="text-body-1 leading-[1.18rem] text-black">
+          {formatContent(content)}
+        </p>
         <LabelList data={label} />
       </footer>
     </article>
