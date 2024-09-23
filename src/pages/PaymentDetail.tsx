@@ -22,8 +22,8 @@ const PaymentDetail = ({}: PropTypes) => {
   const productPrice = data?.item_price;
 
   // 여긴 추가적으로 채워줘야됌
-  const shippingFee = 0;
-  const customsDuties = 0;
+  const shippingFee = 2000;
+  const customsDuties = 2000;
 
   const navigate = useNavigate();
 
