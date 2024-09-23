@@ -46,7 +46,6 @@ const AccountSettings = lazy(() => import('@/pages/AccountSettings'));
 const BlockedUsers = lazy(() => import('@/pages/BlockedUsers'));
 const OtherSettings = lazy(() => import('@/pages/OtherSettings'));
 const Announcements = lazy(() => import('@/pages/Announcements'));
-const ChangeCountry = lazy(() => import('@/pages/ChangeCountry'));
 const ClearCache = lazy(() => import('@/pages/ClearCache'));
 const UpdateVersion = lazy(() => import('@/pages/UpdateVersion'));
 const PartyListPage = lazy(() => import('@/pages/PartyList'));
