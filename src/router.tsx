@@ -68,7 +68,7 @@ interface wrrraperPropTypes {
 const Loading = () => <PageLoadingSpinner />;
 
 const isTutorialCompleted = () => {
-  const tutorialCompleted = sessionStorage.getItem('tutorialCompleted');
+  const tutorialCompleted = localStorage.getItem('tutorialCompleted');
   const isAlreadyLogin = Boolean(localStorage.getItem('authId'));
   const isPass = tutorialCompleted || isAlreadyLogin;
   return isPass ? true : false;
