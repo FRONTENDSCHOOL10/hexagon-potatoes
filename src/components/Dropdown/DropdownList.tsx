@@ -107,19 +107,4 @@ export const categories = [
   },
 ];
 
-export const countries = [
-  '미국',
-  '중국',
-  '일본',
-  '독일',
-  '영국',
-  '프랑스',
-  '이탈리아',
-  '캐나다',
-  '호주',
-  '홍콩',
-  '싱가포르',
-  '대만',
-  '베트남',
-  '태국',
-];
+export const countries = ['미국', '중국', '일본'];

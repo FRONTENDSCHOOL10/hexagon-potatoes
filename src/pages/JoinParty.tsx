@@ -182,13 +182,19 @@ const JoinPartyPage = () => {
         `${import.meta.env.VITE_PB_URL}api/collections/party_member/records`,
         formData
       );
-
+      console.log([...partyData.member_ids, member.data.id]);
       const res = await axios.patch(
         `${import.meta.env.VITE_PB_URL}api/collections/party/records/${partyId}`,
         {
           member_ids: member.data.id,
-          current_members: partyData.current_members + 1,
-          participating_members: authUserData.id,
+          current_members:
+            partyData.participating_members.length !== 0
+              ? partyData.participating_members?.length + 1
+              : 1,
+          participating_members: [
+            ...partyData.participating_members,
+            authUserData.id,
+          ],
         },
         {
           headers: {
@@ -196,6 +202,7 @@ const JoinPartyPage = () => {
           },
         }
       );
+      console.log(res);
     } catch (error) {
       console.error(error);
     }
@@ -223,6 +230,7 @@ const JoinPartyPage = () => {
             onInputChange={handleImgInputChange}
             onClickDeleteBtn={handleRemoveImg}
             imgData={data.item_photo}
+            max={3}
           />
           <StandardInput
             inputName="item_name"
