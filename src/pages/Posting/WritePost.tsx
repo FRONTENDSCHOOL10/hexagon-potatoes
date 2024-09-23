@@ -121,6 +121,20 @@ const WritePost = () => {
           content="유저팁 또는 자랑 게시물을 작성하세요."
         />
         <meta name="keywords" content="게시물, 유저팁, 자랑, 쉽메이트" />
+        <meta property="og:title" content="게시물 작성 | Shipmate" />
+        <meta
+          property="og:description"
+          content="유저팁 또는 자랑 게시물을 작성하세요."
+        />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://sheepmate.netlify.app/home/writepost`}
+        />
+        <meta
+          property="og:image"
+          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png?ex=66f235f5&is=66f0e475&hm=143d17f0a2bdb88e9772825fab5b924e2cc2fdea9167cbe4dcc1bc82344d4b76&"
+        />
       </Helmet>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-3">
         <Dropdown
