@@ -70,10 +70,20 @@ const PostActionBar = ({ postId, onShare, date, type }: PropTypes) => {
       await axios.patch(url, { like: newCount });
     } catch (error) {
       console.error('좋아요 업데이트 실패:', error);
-      // 에러 발생 시 상태를 원래대로 되돌립니다.
       setLikeState((prev) => ({ isLiked: !newIsLiked, count: prev.count }));
     }
   }, [likeState, getUrl]);
+
+  const handleShare = useCallback(() => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl)
+      .then(() => {
+        alert('URL이 복사되었습니다.');
+      })
+      .catch((error) => {
+        console.error('URL 복사 실패:', error);
+      });
+  }, []);
 
   const memoizedDate = useMemo(() => formatDateShort(date), [date]);
 
@@ -84,7 +94,6 @@ const PostActionBar = ({ postId, onShare, date, type }: PropTypes) => {
           {formatDateShort(memoizedDate)}
           {'\u00A0'}
         </time>
-        {/* 좋아요, 조회수는 하드코딩으로 넣기 */}
         <span> 좋아요 {likeState.count !== 0 && likeState.count} </span>
         <span> 조회 {views}</span>
       </div>
@@ -110,7 +119,6 @@ const PostActionBar = ({ postId, onShare, date, type }: PropTypes) => {
           </svg>
         </button>
         <Link
-          // 나중에 연결될 댓글 페이지 제작 후 path 연결해주기
           to={`/post/${postId}/comments`}
           data-tooltip-id="my-tooltip"
           data-tooltip-content="댓글"
@@ -163,7 +171,7 @@ const PostActionBar = ({ postId, onShare, date, type }: PropTypes) => {
           data-tooltip-content="공유"
           type="button"
           aria-label="공유"
-          onClick={onShare}
+          onClick={handleShare}
           className="rounded-full p-1.5 transition-colors duration-200 hover:bg-gray-100"
         >
           <svg
@@ -179,7 +187,7 @@ const PostActionBar = ({ postId, onShare, date, type }: PropTypes) => {
               height="17"
               href="/assets/sprite-sheet.svg#share2"
             />
-          </svg>{' '}
+          </svg>
         </button>
         <Tooltip
           id="my-tooltip"
