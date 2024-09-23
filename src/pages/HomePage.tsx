@@ -35,7 +35,20 @@ const HomePage = () => {
           content="Shipmate의 홈페이지에서 해외직구와 관련해 검색, 매거진, 국가 리스트, 추천 파티 리스트 등 다양한 정보를 확인하세요."
         />
         <meta name="keywords" content="홈페이지, 홈, 직구" />
+
+        <meta property="og:title" content="홈페이지 | Shipmate" />
+        <meta
+          property="og:description"
+          content="Shipmate의 홈페이지에서 해외직구와 관련해 검색, 매거진, 국가 리스트, 추천 파티 리스트 등 다양한 정보를 확인하세요."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://sheepmate.netlify.app/home" />
+        <meta
+          property="og:image"
+          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png?ex=66f235f5&is=66f0e475&hm=143d17f0a2bdb88e9772825fab5b924e2cc2fdea9167cbe4dcc1bc82344d4b76&"
+        />
       </Helmet>
+
       <div className="space-y-[12px] px-3">
         <h1 className="sr-only">홈페이지</h1>
         <GoSearch />

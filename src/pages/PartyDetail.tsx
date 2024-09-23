@@ -86,7 +86,22 @@ const PartyDetail = () => {
           content="파티의 리더와 정보, 배송 진행 상황 등을 확인하고 채팅이나 파티에 참여해보세요."
         />
         <meta name="keywords" content="파티, 상세 정보, 배송, 해외 직구" />
+        <meta property="og:title" content="파티 상세 페이지 | Shipmate" />
+        <meta
+          property="og:description"
+          content="파티의 리더와 정보, 배송 진행 상황 등을 확인하고 채팅이나 파티에 참여해보세요."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content={`https://sheepmate.netlify.app/home/party/${partyId}`}
+        />{' '}
+        <meta
+          property="og:image"
+          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png?ex=66f235f5&is=66f0e475&hm=143d17f0a2bdb88e9772825fab5b924e2cc2fdea9167cbe4dcc1bc82344d4b76&"
+        />{' '}
       </Helmet>
+
       <section>
         <h1 className="sr-only">파티 상세 페이지</h1>
 

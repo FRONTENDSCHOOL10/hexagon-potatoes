@@ -163,7 +163,19 @@ const Tutorial = () => {
           content="쉽메이트 튜토리얼 페이지에서 배송비 절약 및 공동 구매 방법을 배워보세요."
         />
         <meta name="keywords" content="튜토리얼, 배송비, 공동 구매, 쉽메이트" />
+        <meta property="og:title" content="튜토리얼 | Shipmate" />
+        <meta
+          property="og:description"
+          content="쉽메이트 튜토리얼 페이지에서 배송비 절약 및 공동 구매 방법을 배워보세요."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://yourwebsite.com/tutorial" />
+        <meta
+          property="og:image"
+          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png?ex=66f235f5&is=66f0e475&hm=143d17f0a2bdb88e9772825fab5b924e2cc2fdea9167cbe4dcc1bc82344d4b76&"
+        />{' '}
       </Helmet>
+
       <div className="relative flex justify-center">
         <h1 className="sr-only">튜토리얼 페이지</h1>
         {showSkipButton && (

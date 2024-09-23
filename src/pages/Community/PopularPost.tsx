@@ -84,7 +84,23 @@ const PopularPost = () => {
           content="현재 인기 있는 게시물을 확인해보세요."
         />
         <meta name="keywords" content="인기 게시물, 게시판, 쉽메이트" />
+
+        <meta property="og:title" content="인기 게시물 | Shipmate" />
+        <meta
+          property="og:description"
+          content="현재 인기 있는 게시물을 확인해보세요."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content="https://sheepmate.netlify.app/home/community/popularPost"
+        />
+        <meta
+          property="og:image"
+          content="https://cdn.discordapp.com/attachments/1044545035221352531/1287620951554527324/landing_1.png?ex=66f235f5&is=66f0e475&hm=143d17f0a2bdb88e9772825fab5b924e2cc2fdea9167cbe4dcc1bc82344d4b76&" // 이 부분은 실제 이미지 URL로 변경하세요
+        />
       </Helmet>
+
       <h1 className="sr-only">인기포스트</h1>
       <motion.section
         className="mt-3 flex flex-col gap-3"
