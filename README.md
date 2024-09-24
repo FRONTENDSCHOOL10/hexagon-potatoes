@@ -72,7 +72,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 조장 안재명 <br/> <a href="https://github.com/A-Jamong"><img src="https://img.shields.io/badge/Github-9CFAF3?style=flat-square&logo=GitHub&logoColor=white"/></a> | 스크럼마스터 최소현<br/><a href="https://github.com/minimumchoi"><img src="https://img.shields.io/badge/Github-48FA75?style=flat-square&logo=GitHub&logoColor=white"/></a> | 디자인마스터 유진 <br/><a href="https://github.com/jinjintv"><img src="https://img.shields.io/badge/Github-48CDFA?style=flat-square&logo=GitHub&logoColor=white"/></a> | 코딩마스터 정주비<br/><a href="https://github.com/JubiJung"><img src="https://img.shields.io/badge/Github-0A73F9?style=flat-square&logo=GitHub&logoColor=white"/></a> |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <img src="./readme/ajm.png">                                                                                                                                      | <img width="300px" src="./readme/csh.webp">                                                                                                                                | <img src="./readme/jin.png">                                                                                                                                           | <img src="./readme/jin.png">                                                                                                                                          |
+| <img src="./readme/ajm.png">                                                                                                                                      | <img width="300px" src="./readme/csh.webp">                                                                                                                                | <img src="./readme/jin.png">                                                                                                                                           | <img src="./readme/jubi.jpg.png">                                                                                                                                     |
 
 <br/>
 
@@ -388,9 +388,9 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 ### 🐑 파티 모집 🐑
 
-| 파티 모집                                                                         |
-| --------------------------------------------------------------------------------- |
-| <img width ="350px" src="./readme/{readme 폴더에 gif넣고 파일명 여기입력하세요}"> |
+| 파티 모집                                           |
+| --------------------------------------------------- |
+| <img width ="350px" src="./readme/createParty.gif"> |
 
 - <b>input 핸들링</b>
   - input으로 사용자의 데이터를 받아서 DB 업데이트.
@@ -405,9 +405,9 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 ### 🐑 파티 상세 🐑
 
-| 파티 참여                                                                        | 채팅                                                                             |
-| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| <img width="350px" src="./readme/{readme 폴더에 gif넣고 파일명 여기입력하세요}"> | <img width="350px" src="./readme/{readme 폴더에 gif넣고 파일명 여기입력하세요}"> |
+| 파티 참여                                        | 채팅                                              |
+| ------------------------------------------------ | ------------------------------------------------- |
+| <img width="350px" src="./readme/joinParty.gif"> | <img width="350px" src="./readme/leaderChat.gif"> |
 
 #### 파티 참여
 
@@ -430,9 +430,9 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 ### 🐑 주문 상세 🐑
 
-| 주문 상세                                                                        |
-| -------------------------------------------------------------------------------- |
-| <img width="350px" src="./readme/{readme 폴더에 gif넣고 파일명 여기입력하세요}"> |
+| 주문 상세                                          |
+| -------------------------------------------------- |
+| <img width="350px" src="./readme/orderDetail.gif"> |
 
 - <b>주문 상세 및 결제 페이지</b>
   - 파티원이 참여한 파티가 마감되면 결제 알림을 통해 주문 상세 페이지로 이동.
