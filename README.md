@@ -6,11 +6,13 @@
 
 ### 목차
 
-##### 프로젝트 소개
+#### 프로젝트 소개
 
 1.[ 서비스 소개](#1-서비스-소개) <br/> 2.[ 사용스택](#2-사용스택)<br/> 3.[ 팀원소개 ](#3-팀원-소개) <br/> 4.[ 발표, 피그마 링크](#4-발표-피그마-링크) <br/> 5.[ 파일 트리](#5-파일트리) <br/> 6.[ 주요 페이지 및 기능](#6-주요-페이지-및-기능)
 
 <hr/>
+
+<br/>
 
 <img src="./readme/logo.png"/>
 
@@ -20,15 +22,16 @@
 
 ### Shipmate: 함께 항해하는 글로벌 쇼핑의 동반자
 
-Shipmate는 '해외 배송'을 의미하는 'Ship'과 '동료' 또는 '짝'을 뜻하는 'Mate'를 결합한 이름입니다.
+Shipmate는 <b>'해외 배송'</b>을 의미하는 <b>'Ship'</b>과 <b>'동료'</b> 또는 <b>'짝'</b>을 뜻하는 <b>'Mate'</b>를 결합한 이름입니다.
 이 이름에는 두 가지 핵심 메시지가 담겨 있습니다:
 
-국경을 넘는 쇼핑 여정: 'Ship'은 전 세계 상품을 향한 항해를 상징합니다.
-함께하는 즐거움: 'Mate'는 이 여정을 함께 나누는 동반자를 의미합니다.
+<b>국경을 넘는 쇼핑 여정</b>: 'Ship'은 전 세계 상품을 향한 항해를 상징합니다.
+<b>함께하는 즐거움</b>: 'Mate'는 이 여정을 함께 나누는 동반자를 의미합니다.
 
 Shipmate는 단순한 해외직구를 넘어, 같은 관심사를 가진 사람들이 모여 더 나은 조건으로 글로벌 상품을 구매할 수 있는 플랫폼입니다.
 
 <b>"함께 직구하자, 더 크게 누리자"</b> - 이것이 Shipmate가 추구하는 가치입니다.
+
 <br/>
 <img src="./readme/miniLogo.png"/>
 <br/>
@@ -58,7 +61,6 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 | <b>언어</b>                      | <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white">                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | <b> 프레임워크 및 라이브러리</b> | <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white"> <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white"> <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white"> <img src="https://img.shields.io/badge/swiper-6332F6?style=for-the-badge&logo=swiper&logoColor=white"> <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white"> |
 | <b>에디터 및 도구</b>            | <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white"> <img src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white"> <img src="https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white">                                                                                                                                                                                                                                                                                                             |
-| <b>AI</b>                        | <img src="https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | <b>협업</b>                      | <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | <b>배포</b>                      | <img src="https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | <b>버전 관리</b>                 | <img src="https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
@@ -72,17 +74,46 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 조장 안재명 <br/> <a href="https://github.com/A-Jamong"><img src="https://img.shields.io/badge/Github-9CFAF3?style=flat-square&logo=GitHub&logoColor=white"/></a> | 스크럼마스터 최소현<br/><a href="https://github.com/minimumchoi"><img src="https://img.shields.io/badge/Github-48FA75?style=flat-square&logo=GitHub&logoColor=white"/></a> | 디자인마스터 유진 <br/><a href="https://github.com/jinjintv"><img src="https://img.shields.io/badge/Github-48CDFA?style=flat-square&logo=GitHub&logoColor=white"/></a> | 코딩마스터 정주비<br/><a href="https://github.com/JubiJung"><img src="https://img.shields.io/badge/Github-0A73F9?style=flat-square&logo=GitHub&logoColor=white"/></a> |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <img src="./readme/ajm.png">                                                                                                                                      | <img width="300px" src="./readme/csh.webp">                                                                                                                                | <img src="./readme/jin.png">                                                                                                                                           | <img src="./readme/jubi.jpg.png">                                                                                                                                     |
+| <img width="200px" src="./readme/ajm.png">                                                                                                                        | <img  width="200px" src="./readme/csh.webp">                                                                                                                               | <img width="200px" src="./readme/jin.png">                                                                                                                             | <img width="200px" src="./readme/jubi.jpg">                                                                                                                           |
+
+### 맡은 페이지
+
+#### 🐑 재명
+
+[튜토리얼 및 랜딩](#-튜토리얼-및-랜딩)
+[로그인 및 회원가입](#-회원가입-및-로그인-)
+[메인](#-홈-)
+[검색](#-검색-)
+
+#### 🐑 소현
+
+[알림 및 결제 ](#-알림-)
+[커뮤니티](#-커뮤니티-)
+[포스팅 상세](#-포스팅-상세-)
+[포스팅 작성 ](#-포스팅-작성-)
+
+#### 🐑 유진
+
+[채팅]()
+[마이페이지]()
+
+#### 🐑 주비
+
+[파티상세](#-파티-상세-)
+[주문상세](#-주문-상세-)
+[파티모집](#-파티-모집-)
 
 <br/>
 
 ## 4. 발표, 피그마 링크
 
-[💚 발표자료]()
+[💚 발표자료](https://www.canva.com/design/DAGRZEVQ6jc/nj7PE9v2Ia8O9EFH-JzfjA/view?utm_content=DAGRZEVQ6jc&utm_campaign=designshare&utm_medium=link&utm_source=editor#1)
 
 [🩵 피그마링크](https://www.figma.com/design/Vq7P8yJgJS8YUrCj2wxjRX/6%EC%A1%B0-%ED%94%BC%EA%B7%B8%EB%A7%88?node-id=0-1&t=tGankYaHKHX9HNXI-1)
 
 [💙 배포링크](https://sheepmate.netlify.app/)
+
+<br/>
 
 ## 5. 파일트리
 
@@ -292,13 +323,11 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 ## 6. 주요 페이지 UI 및 기능
 
-<img src="./readme/miniLogo.png"/>
-
 ### 🐑 튜토리얼 및 랜딩🐑
 
 | 튜토리얼                                        | 랜딩                                           |
 | ----------------------------------------------- | ---------------------------------------------- |
-| <img width="350px" src="./readme/tutorial.gif"> | <img width="350px" src="./readme/landing.gif"> |
+| <img width="300px" src="./readme/tutorial.gif"> | <img width="300px" src="./readme/landing.gif"> |
 
 #### 튜토리얼
 
@@ -316,7 +345,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 회원가입                                      | 로그인                                       |
 | --------------------------------------------- | -------------------------------------------- |
-| <img width="350px" src="./readme/signup.gif"> | <img width="350px" src="./readme/login.gif"> |
+| <img width="300px" src="./readme/signup.gif"> | <img width="300px" src="./readme/login.gif"> |
 
 #### 로그인
 
@@ -332,7 +361,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 네비게이션                                 | 매거진 / 국가리스트                            | 이달의 우수 파티장 / 추천 파티 / 직구 자랑 / 팁 |
 | ------------------------------------------ | ---------------------------------------------- | ----------------------------------------------- |
-| <img width="350px" src="./readme/nav.gif"> | <img width="350px" src="./readme/country.gif"> | <img width="350px" src="./readme/reload.gif">   |
+| <img width="300px" src="./readme/nav.gif"> | <img width="300px" src="./readme/country.gif"> | <img width="300px" src="./readme/reload.gif">   |
 
 #### 네비게이션
 
@@ -375,7 +404,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 검색                                          |
 | --------------------------------------------- |
-| <img width="350px" src="./readme/search.gif"> |
+| <img width="300px" src="./readme/search.gif"> |
 
 - <b>검색</b>
   - 파티장 닉네임, 파티 정보, 국가 등을 기준으로 검색
@@ -390,7 +419,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 파티 모집                                           |
 | --------------------------------------------------- |
-| <img width ="350px" src="./readme/createParty.gif"> |
+| <img width ="300px" src="./readme/createParty.gif"> |
 
 - <b>input 핸들링</b>
   - input으로 사용자의 데이터를 받아서 DB 업데이트.
@@ -407,7 +436,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 파티 참여                                        | 채팅                                              |
 | ------------------------------------------------ | ------------------------------------------------- |
-| <img width="350px" src="./readme/joinParty.gif"> | <img width="350px" src="./readme/leaderChat.gif"> |
+| <img width="300px" src="./readme/joinParty.gif"> | <img width="300px" src="./readme/leaderChat.gif"> |
 
 #### 파티 참여
 
@@ -432,7 +461,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 주문 상세                                          |
 | -------------------------------------------------- |
-| <img width="350px" src="./readme/orderDetail.gif"> |
+| <img width="300px" src="./readme/orderDetail.gif"> |
 
 - <b>주문 상세 및 결제 페이지</b>
   - 파티원이 참여한 파티가 마감되면 결제 알림을 통해 주문 상세 페이지로 이동.
@@ -445,7 +474,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 알림                                                 | 결제                                                 |
 | ---------------------------------------------------- | ---------------------------------------------------- |
-| <img width="350px" src="./readme/notification1.gif"> | <img width="350px" src="./readme/notification2.gif"> |
+| <img width="300px" src="./readme/notification1.gif"> | <img width="300px" src="./readme/notification2.gif"> |
 
 #### 알림
 
@@ -467,7 +496,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 커뮤니티 홈                                       | 추천피드 / 팔로잉 / 유저팁 / 매거진               |
 | ------------------------------------------------- | ------------------------------------------------- |
-| <img width="350px" src="./readme/community1.gif"> | <img width="350px" src="./readme/community2.gif"> |
+| <img width="300px" src="./readme/community1.gif"> | <img width="300px" src="./readme/community2.gif"> |
 
 #### 커뮤니티 - 홈
 
@@ -496,7 +525,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 포스팅 상세                                          |
 | ---------------------------------------------------- |
-| <img width="350px" src="./readme/postingDetail.gif"> |
+| <img width="300px" src="./readme/postingDetail.gif"> |
 
 - <b>Swiper</b>
   - 블로그형 글이 아닌 인스타포스팅 형식의 글은 이미지가 1장 이상일 경우 스와이퍼를 통해 슬라이드 구현
@@ -510,7 +539,7 @@ Shipmate는 해외직구의 진입 장벽을 낮추고, 더 많은 소비자가 
 
 | 카테고리선택 및 파일추가                          | 해시태그                                          |
 | ------------------------------------------------- | ------------------------------------------------- |
-| <img width="350px" src="./readme/writePost1.gif"> | <img width="350px" src="./readme/writePost2.gif"> |
+| <img width="300px" src="./readme/writePost1.gif"> | <img width="300px" src="./readme/writePost2.gif"> |
 
 - <b>카테고리에 따른 작성폼 변경</b>
   - 유저팁 작성 시 제목란 추가
