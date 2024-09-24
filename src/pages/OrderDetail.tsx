@@ -188,7 +188,7 @@ const OrderDetailPage = () => {
               />
             </>
           ) : (
-            <Item data={boughtItemInfo} />
+            boughtItemInfo && <Item data={boughtItemInfo} />
           )}
 
           {boughtItemInfo && (
